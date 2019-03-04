@@ -1,6 +1,10 @@
 #
+# Silhouette directory
+SILHOUETTE = /Users/Jie/projects/silhouette
+
+#
 # Silhouette clang
-LLVM_BUILD = /Users/Jie/projects/silhouette/build/llvm
+LLVM_BUILD = $(SILHOUETTE)/build/llvm
 
 #
 # GCC's ARM objdump
@@ -16,6 +20,7 @@ PROGS := hello
 SOURCES := $(addsuffix .c, $(PROGS))
 OFILES := $(addsuffix .o, $(PROGS))
 ASMFILES := $(addsuffix .s, $(PROGS))
+STATSFILES := $(addsuffix .stats, $(PROGS))
 
 CC = $(LLVM_BUILD)/bin/clang
 
@@ -25,7 +30,8 @@ CFLAGS += $(ARM_FLAGS)
 # 
 # passes
 STR2STRT = -Xclang -backend-option -Xclang -enable-arm-silhouette-str2strt
-MEM_OVERHEAD = -Xclang -backend-option -Xclang -enable-arm-silhouette-mem-overhead
+MEM_OVERHEAD = -Xclang -backend-option -Xclang -enable-arm-silhouette-mem-overhead \
+			   -save-stats
 
 #==============================================================================#
 
@@ -35,6 +41,7 @@ str: $(SOURCES)
 
 mem: $(SOURCES)
 	$(CC) $(CFLAGS) $(MEM_OVERHEAD) $^ 
+	mv $(STATSFILES) $(SILHOUETTE)/silhouette-misc/data/small-tests/mem-overhead
 
 asm: $(ASMFILES)
 
@@ -42,5 +49,5 @@ asm: $(ASMFILES)
 	$(OBJDUMP) -d $< > $@
 
 clean:
-	rm -f *.o *.s
+	rm -f *.o *.s *.stats
 
