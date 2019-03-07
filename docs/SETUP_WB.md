@@ -24,3 +24,14 @@ You can try to build project now by right-clicking your Project in 'Project Expl
 1. When compiling, if you see an error message similar to `error: startup/startup_stm32l475xx.o: Conflicting CPU architectures 13/0`, navigate to `startup` directory inside your project, rename `startup_stm32l475xx.S` to `startup_stm32l475xx.s` (lowercase .s). 
 2. (May cause unknown side effects) When compiling, if you see error `error: unknown register name 'vfpcc' in asm`, open `CMSIS/core/cmsis_gcc.h` inside your project, search `vfpcc`, comment out surrounding codes. 
     - NOTE: This modification may cause unknown side effects for instructions using vfpcc register. We are still checking if it is safe to do so. 
+
+## Using Minicom to connect to STM32 Board's COM Terminal
+1. Connect STM32 board to computer. 
+2. Install minicom.
+3. Use `dmesg | grep tty` to find which tty device STM32 is. 
+4. For the first time running Minicom, use `sudo minicom -s` to enter configuration menu. 
+5. Select 'Serial port setup'. 
+6. Press 'A' to change 'Serial Device'. Change the path to the path shown in step 2. When finished, press Enter. 
+7. Press 'F' to change 'Hardware Flow Control' to 'No'. Then press Enter to return to main configuration menu. 
+8. (Optional) If you want to save this configuration as default so that you don't need to do it every time when launching Minicom, select 'Save setup as dfl'. 
+9. Select 'Exit'. It should be connected to the board. 
