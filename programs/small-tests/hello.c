@@ -1,4 +1,7 @@
+#ifdef HELLO
 #include <stdio.h>
+#include "hello.h"
+
 
 #define BASE(i) &base[(i)*width]
 
@@ -59,3 +62,5 @@ int main() {
     char buffer[6];
     sprintf(buffer, "Hello!\n");
 }
+
+#endif

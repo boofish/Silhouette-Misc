@@ -35,3 +35,8 @@ You can try to build project now by right-clicking your Project in 'Project Expl
 7. Press 'F' to change 'Hardware Flow Control' to 'No'. Then press Enter to return to main configuration menu. 
 8. (Optional) If you want to save this configuration as default so that you don't need to do it every time when launching Minicom, select 'Save setup as dfl'. 
 9. Select 'Exit'. It should be connected to the board. 
+
+## Get output from minicom
+To see outputs from minicom, include the util.h file to your project, and use
+function `vMainUARTPrintString()` as the printer. Also, you need call 
+`Console_UART_Init()` before printing.
