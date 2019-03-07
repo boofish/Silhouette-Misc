@@ -1,4 +1,3 @@
-#ifdef HELLO
 #include <stdio.h>
 #include "hello.h"
 
@@ -59,8 +58,9 @@ qsort(base, nel, width, compar)
 }
 
 int main() {
-    char buffer[6];
-    sprintf(buffer, "Hello!\n");
-}
+    volatile char *str = "Hello from hello\n";
 
-#endif
+    printf("str = %s\n", str);
+
+    return 0;
+}
