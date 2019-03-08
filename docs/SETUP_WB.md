@@ -25,7 +25,7 @@ You can try to build project now by right-clicking your Project in 'Project Expl
 2. (May cause unknown side effects) When compiling, if you see error `error: unknown register name 'vfpcc' in asm`, open `CMSIS/core/cmsis_gcc.h` inside your project, search `vfpcc`, comment out surrounding codes. 
     - NOTE: This modification may cause unknown side effects for instructions using vfpcc register. We are still checking if it is safe to do so. 
 
-## Using Minicom to connect to STM32 Board's COM Terminal
+## Using Minicom to Connect to STM32 Board's COM Terminal (Obselete, see 'Set up PUTTY' section below instead)
 1. Connect STM32 board to computer. 
 2. Install minicom.
 3. Use `dmesg | grep tty` to find which tty device STM32 is. 
@@ -36,7 +36,21 @@ You can try to build project now by right-clicking your Project in 'Project Expl
 8. (Optional) If you want to save this configuration as default so that you don't need to do it every time when launching Minicom, select 'Save setup as dfl'. 
 9. Select 'Exit'. It should be connected to the board. 
 
-## Get output from minicom
+## Get output from minicom (Obselete)
 To see outputs from minicom, include the util.h file to your project, and use
 function `vMainUARTPrintString()` as the printer. Also, you need call 
 `Console_UART_Init()` before printing.
+
+## Set Up PUTTY
+1. Download and install PUTTY. For Ubuntu, PUTTY can be installed with `sudo apt install putty` command.
+2. Use `dmesg | grep tty` to find which tty device STM32 is.
+3. Open PUTTY with admin permission: `sudo putty`. 
+4. In the configuration menu, in 'Session' category, select 'Serial' option as connection type. In 'Serial line' field, enter the path shown in step 2 (For Ubuntu the default path for STM32 should be `/dev/ttyACM0`). In 'Speed' field, change the value to 115200. 
+5. (Optional) Select 'Terminal' category. Enable 'Implicit CR in every LF'. By default, serial terminals treat '\n' and '\r\n' differently. This setting adds '\r' automatically for every '\n', so that the output is readable. 
+6. Select 'Serial' sub-category in 'Connection' category. Change 'Flow control' to None. 
+7. (Optional) Select 'Session' category again, save session to Default Settings, or enter a session name to save. This way, the session settings are saved for future. 
+8. Click 'Open'. 
+
+## Set Up printf to Print Properly to Serial Terminal
+1. In your source code, include util.h found in this directory. It will redirect printf function to use device specific `HAL_UART_Transmit` function to print. There is no need to modify existing printf function calls. 
+2. In your source code's init section, call `Console_UART_Init()` to initialize the hardware. 

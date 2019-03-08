@@ -3,6 +3,9 @@
  *
  * */
 
+#include "stm32l4xx.h"
+#include "stm32l475e_iot01.h"
+
 //
 // to print in minicom
 /* Private variables ---------------------------------------------------------*/
@@ -37,3 +40,27 @@ void vMainUARTPrintString( char * pcString )
                        ulTimeout );
 }
 /*-----------------------------------------------------------*/
+
+// From stm32cubel4's UART_printf example
+/**
+  * @brief  Retargets the C library printf function to the USART.
+  * @param  None
+  * @retval None
+  */
+
+/* Private function prototypes -----------------------------------------------*/
+#ifdef __GNUC__
+/* With GCC, small printf (option LD Linker->Libraries->Small printf
+   set to 'Yes') calls __io_putchar() */
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif /* __GNUC__ */
+PUTCHAR_PROTOTYPE
+{
+  /* Place your implementation of fputc here */
+  /* e.g. write a character to the USART1 and Loop until the end of transmission */
+  HAL_UART_Transmit(&xConsoleUart, (uint8_t *)&ch, 1, 0xFFFF);
+
+  return ch;
+}
