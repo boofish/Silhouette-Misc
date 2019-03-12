@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LLVM_SRC=/Users/Jie/projects/silhouette//Silhouette
+LLVM_SRC=~/projects/silhouette/Silhouette
 
 rm -rf CMakeCache.txt
 
