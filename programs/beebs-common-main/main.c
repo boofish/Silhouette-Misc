@@ -93,14 +93,13 @@ int main(void)
 {
 	Console_UART_Init();
 	initialise_benchmark();
-	printf("Start running compress_test\r\n");
+	printf("Start running benchmark\r\n");
 	int error_no = benchmark();
-	printf("Finihsed running\r\n");
 	int result = verify_benchmark(error_no);
 	if (result){
-		printf("Finished compress_test successfully: %d\r\n", result);
+		printf("Finished successfully: %d\r\n", result);
 	} else{
-		printf("Error running compress_test. Result: %d\r\n", result);
+		printf("Error running benchmark. Result: %d\r\n", result);
 	}
 	return 0;
 }
