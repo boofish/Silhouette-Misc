@@ -64,9 +64,34 @@ For each defined region, CP15 registers specify:
 Regions >= 256 bytes could be furthuer split into 8 subregions.
 
 
-> PL0: lowest privilege level, i.e. unprivileged.
+> PL0: lowest privilege level, i.e. unprivileged. <br>
 > PL1: usually privileged.
 
 
 ## How does FreeRTOS support MPU?
+
+### Footprints in FreeRTOS source (where can we found the MPU code?)
+
+#### Based on [Amazon-freertos-1.4.7](https://github.com/aws/amazon-freertos/tree/v1.4.7) (FreeRTOS 10.1.1)
+
+| code path  | description | examples |
+| ---       | ---        | ----   |
+| [*/private/mpu_prototypes.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/private/mpu_prototypes.h) | MPU functions as the replacements of non-MPU API functions | - `MPU_*()` <br> - `MPU_xTaskCreate(...)` |
+| [*/private/mpu_wrappers.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/private/mpu_wrappers.h) | Wrappers to map non-MPU functions to equivalent MPU functions. | - `#define xTaskCreate	MPU_xTaskCreate(...)` |
+| [*/private/portable.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/private/portable.h) | Portable Layer API. Each function must be defined for each port. | - `#include "mpu_wrappers.h"` <br> - `if(portUSING_MPU_WRAPPERS == 1) StackType_t *pxPortInitialiseStack(.., + BaseType_t xRunPrivileged )` <br> - `void vPortStoreTaskMPUSettings(...)`
+| [lib/include/task.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/task.h) | macros, data structs, API for task management | - `struct xMEMORY_REGION`: defines memory ranges allocated to the task when an MPU is used. <br> - `void vTaskAllocateMPURegions(...)` <br> - `BaseType_t xTaskCreate(...)`
+| [*/ARM_CM4_MPU/portmacro.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/FreeRTOS/portable/GCC/ARM_CM4_MPU/portmacro.h) | Port specific definitions. <br> contains MPU related data structures. | - `struct xMPU_REGION_REGISTERS` <br> - `struct xMPU_SETTINGS`
+| [*/ARM_CM4_MPU/port.c](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/FreeRTOS/portable/GCC/ARM_CM4_MPU/port.c) | Portable Layer API. Contains: <br> - Hardware initialization, <br> - MPU initialization, etc  | - `#define portMPU_TYPE_REG (*((uint32_t*) 0xe000ed90))` <br> - `prvSetupMPU()` <br> - `vPortStoreTaskMPUSettings()` |
+
+### MPU initialization
+Based on [Amazon-freertos-1.4.7](https://github.com/aws/amazon-freertos/tree/v1.4.7) 
+`prvSetupMPU()`
+
+### Creating a task using MPU
+`MPU_xTaskCreate()`
+
+
+
+### Configure FreeRTOS to use MPU
+? 
 
