@@ -1,10 +1,10 @@
 
-# MPU Basics
+# 1. MPU Basics
 
-This introduces what is MPU and how to use it for memory management in FreeRTOS on two architecture: ARMv7-M and ARMv7-R.
+This introduces what is MPU and how to use it for memory management in FreeRTOS on two architectures: ARMv7-M and ARMv7-R.
 
 
-## What are the options for memory management in ISA level?
+## 1.1 What are the options for memory management in ISA level?
 Three kinds of memory management solutions contributed by ARMv7-M and ARMv7-R:
 
 1. System address map. 32-bit address space is equally divided into 8 regions, 0.5GB each, including: Code, SRAM, Periperal, 2 RAM regions, 2 Device regions, System region.
@@ -13,7 +13,7 @@ Three kinds of memory management solutions contributed by ARMv7-M and ARMv7-R:
 
 ARMv7-M supports the first two solutioins, ARMv7-R supports the second, and ARMv7-A supports the third.
 
-## On ARMv7-M, what kind of access control policy can system address map enforce for a certain region?
+## 1.2 On ARMv7-M, what kind of access control policy can system address map enforce for a certain region?
 
 System address map defines attributes for each memory region. These attributes are used by the processor to determine the access behaviors. Attributes includes:
 
@@ -27,9 +27,9 @@ System address map defines attributes for each memory region. These attributes a
 
 When MPU disabled, the system use the attributes in this default map for access control. When MPU enabled, the default map could be used as background map for privileged access. A background map means if MPU does not define the permission, or 
 
-## How to manage MPU in ISA level?
+## 1.3 How to manage MPU in ISA level?
 
-### On ARMv7-M:
+### 1.3.1 On ARMv7-M:
 
 > Reference: [ARMv7-M manual](manual/DDI0403E_B_armv7m_arm.pdf), Section B3.5.1~3.5.9
 
@@ -50,7 +50,7 @@ Three general MPU registers are used to support the enforcement of MPU:
 - MPU_RNR. This is used to select region currently accessed by MPU_RBAR and MPU_RASR. Normally, software must first write the region number to MPU_RNR, and then use MPU_RBAR or MPU_RASR to access the selected region. However, if MPU_RBAR.VALID bit is set, the software can write to MPU_RBAR without first write MPU_RNR.
 
 
-### On ARMv7-R
+### 1.3.2 On ARMv7-R
 
 > Reference: [ARMv7-AR manual](manual/armv7ar-manual-0.DDI0406C_d.pdf), Chapter B5.
 
@@ -68,30 +68,44 @@ Regions >= 256 bytes could be furthuer split into 8 subregions.
 > PL1: usually privileged.
 
 
-## How does FreeRTOS support MPU?
+## 1.4 How does FreeRTOS support MPU?
 
-### Footprints in FreeRTOS source (where can we found the MPU code?)
+### 1.4.1 Footprints in FreeRTOS source (where can we found the MPU code?)
 
 #### Based on [Amazon-freertos-1.4.7](https://github.com/aws/amazon-freertos/tree/v1.4.7) (FreeRTOS 10.1.1)
 
 | code path  | description | examples |
 | ---       | ---        | ----   |
 | [*/private/mpu_prototypes.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/private/mpu_prototypes.h) | MPU functions as the replacements of non-MPU API functions | - `MPU_*()` <br> - `MPU_xTaskCreate(...)` |
-| [*/private/mpu_wrappers.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/private/mpu_wrappers.h) | Wrappers to map non-MPU functions to equivalent MPU functions. | - `#define xTaskCreate	MPU_xTaskCreate(...)` |
+| [*/private/mpu_wrappers.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/private/mpu_wrappers.h) | Wrappers to map non-MPU functions to equivalent MPU functions. | - `#define xTaskCreate	MPU_xTaskCreate` |
 | [*/private/portable.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/private/portable.h) | Portable Layer API. Each function must be defined for each port. | - `#include "mpu_wrappers.h"` <br> - `if(portUSING_MPU_WRAPPERS == 1) StackType_t *pxPortInitialiseStack(.., + BaseType_t xRunPrivileged )` <br> - `void vPortStoreTaskMPUSettings(...)`
 | [lib/include/task.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/task.h) | macros, data structs, API for task management | - `struct xMEMORY_REGION`: defines memory ranges allocated to the task when an MPU is used. <br> - `void vTaskAllocateMPURegions(...)` <br> - `BaseType_t xTaskCreate(...)`
 | [*/ARM_CM4_MPU/portmacro.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/FreeRTOS/portable/GCC/ARM_CM4_MPU/portmacro.h) | Port specific definitions. <br> contains MPU related data structures. | - `struct xMPU_REGION_REGISTERS` <br> - `struct xMPU_SETTINGS`
 | [*/ARM_CM4_MPU/port.c](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/FreeRTOS/portable/GCC/ARM_CM4_MPU/port.c) | Portable Layer API. Contains: <br> - Hardware initialization, <br> - MPU initialization, etc  | - `#define portMPU_TYPE_REG (*((uint32_t*) 0xe000ed90))` <br> - `prvSetupMPU()` <br> - `vPortStoreTaskMPUSettings()` |
 
-### MPU initialization
+### 1.4.2 MPU initialization
 Based on [Amazon-freertos-1.4.7](https://github.com/aws/amazon-freertos/tree/v1.4.7) 
 `prvSetupMPU()`
 
-### Creating a task using MPU
+### 1.4.3 Creating a task using MPU
 `MPU_xTaskCreate()`
 
 
+# 2. Build FreeRTOS with MPU
 
-### Configure FreeRTOS to use MPU
-? 
+> Reference [offical FreeRTOS manual](https://www.freertos.org/FreeRTOS-MPU-memory-protection-unit.html)
+
+## 2.1 Prepare the source
+
+### Change port from ARM_CM4F to ARM_CM4_MPU
+
+### Add mpu_wrappers.c into source tree
+
+### Update linker scripts for MPU regions
+
+
+## 2.2 Customize MPU memory layout and permissions
+
+## 2.3 Adapting/Optimizing MPU for Silhouette
+
 
