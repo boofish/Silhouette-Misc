@@ -92,12 +92,15 @@ int verify_benchmark(int unused)
 int main(void)
 {
 	Console_UART_Init();
+	HAL_Init();
 	initialise_benchmark();
-	printf("Start running benchmark\r\n");
+	uint32_t t0 = HAL_GetTick();
+	printf("Start running benchmark. Time: %u\r\n", t0);
 	int error_no = benchmark();
+	uint32_t t1 = HAL_GetTick();
 	int result = verify_benchmark(error_no);
 	if (result){
-		printf("Finished successfully: %d\r\n", result);
+		printf("Finished successfully: %d, time: %u\r\n", result, t1);
 	} else{
 		printf("Error running benchmark. Result: %d\r\n", result);
 	}
