@@ -102,21 +102,22 @@ From Eclipse IDE (System Workbench for STM32) menu, Select 'File' -> 'New' -> 'C
 - set *Project type* as 'Executable -> Ac6 STM32 MCU Project'
 - leave else as default. An example setup as below:
 
-![new-proj](images/mpu-1-new-proj.png)
+<img src="images/mpu-1-new-proj.png" alt="drawing" width="600px"/>
 
 Then, click 'Next', a dialog named *select configurations*, I only left them as default. 
 
 Click 'Next', we have the *Target configuration* dialog. In *Board* tab, find and select 'STM32L4' in **Series** dropdown menu, and select 'B-L475E-IOT01A1' in **Board** dropdown menu. leave else as default. Example shown below: 
 
-![target-config](images/mpu-2-target-config.png)
+<img src="images/mpu-2-target-config.png" alt="drawing" width="600px"/>
 
 Click 'Next', goes to *Project Firmware configuration* dialog, select **Hardware Abstraction Layer (Cube HAL)** (default is **No firmware**); in the bottom white box, named *Additional utilities and third-party utilities*, select **FreeRTOS**. Leave else as default. An exmple shown as below:
 
-![firmware](images/mpu-3-firmware.png)
+<img src="images/mpu-3-firmware.png" alt="drawing" width="600px"/>
 
 Finally, click 'Finish'. You will get a project with the following folder/file hierachies:
 
-- <Project name>
+<pre>
+- Project name
   |- Includes
   |- HAL_Driver
   |- Middlewares
@@ -131,7 +132,7 @@ Finally, click 'Finish'. You will get a project with the following folder/file h
   |- inc
   |- B-L475E-IOT01A1.xml
   |- LinkerScript.ld      // This is the linker script 
-
+</pre>
 
 ## 2.2 Define protected data or code
 
