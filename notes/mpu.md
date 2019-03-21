@@ -91,21 +91,44 @@ Based on [Amazon-freertos-1.4.7](https://github.com/aws/amazon-freertos/tree/v1.
 `MPU_xTaskCreate()`
 
 
-# 2. Build FreeRTOS with MPU
+# 2. MPU on Bare-metal Cortex-M4 Board
+
+After learning from the ARM manual and FreeRTOS source code, now let's start hacking on real board. This section and [next section](#3-build-freertos-with-mpu-on-cortex-m4-board) will discuss how to compose MPU code on a bare metal machine as well as how to enable the existing MPU code in FreeRTOS for Cortext-M4 board.
+
+## 2.1 Create a new project with FreeRTOS code from IDE
+
+## 2.2 Define protected data or code
+
+## 2.3 Update linker script to place protected code/data
+
+## 2.4 Setup memory fault handler
+
+## 2.5 Setup SVC handler [optional]
+
+## 2.6 Initialize MPU
+
+## 2.7 Test run
+
+
+# 3. Build FreeRTOS with MPU on Cortex-M4 Board
 
 > Reference [offical FreeRTOS manual](https://www.freertos.org/FreeRTOS-MPU-memory-protection-unit.html)
 
-## 2.1 Prepare the source
+This is based on Amazon FreeRTOS (tested on [current release version 1.4.7](https://github.com/aws/amazon-freertos/tree/v1.4.7), and an [older version of 1.1.0](https://github.com/aws/amazon-freertos/tree/v1.1.0)). 
 
-### Change port from ARM_CM4F to ARM_CM4_MPU
+## 2.1 Download the project source code
 
-### Add mpu_wrappers.c into source tree
+## 2.2 Create a project and import existing code
 
-### Update linker scripts for MPU regions
+## 2.3 Change port from ARM_CM4F to ARM_CM4_MPU
 
+## 2.4 Add mpu_wrappers.c into source tree
 
-## 2.2 Customize MPU memory layout and permissions
+## 2.5 Update FreeRTOS configuration file
 
-## 2.3 Adapting/Optimizing MPU for Silhouette
+## 2.6 Update linker scripts for MPU regions
 
+## 2.7 Test run
+
+# 4. Adapting/Optimizing MPU for Silhouette
 
