@@ -2,6 +2,21 @@
 
 ## stores that have not been handled
 ~~- STR(immediate) (A7.7.158) : Encoding T4~~
-- STR(register) (A7.7.159)
+~~- STR(register) (A7.7.159)~~
+
     ~~- Encoding 1~~
-    - Encoding 2
+    ~~- Encoding 2~~
+
+- push
+- inline asm
+
+
+
+
+
+
+
+
+
+
+
