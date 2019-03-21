@@ -1,3 +1,10 @@
+Overview:
+
+[1. MPU Basics](#1-mpu-basics). This section introduce the basic knowlege necessary for hacking MPU on a baremetal & FreeRTOS
+
+[2. MPU on Bare-metal Cortex-M4 Board](#2-mpu-on-bare-metal-cortex-m4-board). A guide for how to setup the MPU bare-metal code running on Cortext-M4 Board (referred board is STM32 Discovery Kit B-L475E-IOT01A2)
+
+[3. Build FreeRTOS with MPU on Cortex-M4 Board](#3-build-freertos-with-mpu-on-cortex-m4-board). A guide to port an existing version of MPU code in FreeRTOS for the Cortext-M4 Board (STM32 Discovery Kit B-L475E-IOT01A2).
 
 # 1. MPU Basics
 
@@ -77,7 +84,7 @@ Regions >= 256 bytes could be furthuer split into 8 subregions.
 | code path  | description | examples |
 | ---       | ---        | ----   |
 | [*/private/mpu_prototypes.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/private/mpu_prototypes.h) | MPU functions as the replacements of non-MPU API functions | - `MPU_*()` <br> - `MPU_xTaskCreate(...)` |
-| [*/private/mpu_wrappers.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/private/mpu_wrappers.h) | Wrappers to map non-MPU functions to equivalent MPU functions. | - `#define xTaskCreate	MPU_xTaskCreate` |
+| [*/private/mpu_wrappers.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/private/mpu_wrappers.h) | Wrappers to map non-MPU functions to equivalent MPU functions. | - `#define xTaskCreate MPU_xTaskCreate` |
 | [*/private/portable.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/private/portable.h) | Portable Layer API. Each function must be defined for each port. | - `#include "mpu_wrappers.h"` <br> - `if(portUSING_MPU_WRAPPERS == 1) StackType_t *pxPortInitialiseStack(.., + BaseType_t xRunPrivileged )` <br> - `void vPortStoreTaskMPUSettings(...)`
 | [lib/include/task.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/include/task.h) | macros, data structs, API for task management | - `struct xMEMORY_REGION`: defines memory ranges allocated to the task when an MPU is used. <br> - `void vTaskAllocateMPURegions(...)` <br> - `BaseType_t xTaskCreate(...)`
 | [*/ARM_CM4_MPU/portmacro.h](https://github.com/aws/amazon-freertos/blob/v1.4.7/lib/FreeRTOS/portable/GCC/ARM_CM4_MPU/portmacro.h) | Port specific definitions. <br> contains MPU related data structures. | - `struct xMPU_REGION_REGISTERS` <br> - `struct xMPU_SETTINGS`
@@ -126,7 +133,7 @@ Finally, click 'Finish'. You will get a project with the following folder/file h
   |- Utilities
   |- src
      |- main.c          // this has the entry function
-     |- sstm32l4xx_it.c  // this defines some exception handlers
+     |- stm32l4xx_it.c  // this defines some exception handlers
   |- startup
   |- CMSIS
   |- inc
@@ -134,17 +141,226 @@ Finally, click 'Finish'. You will get a project with the following folder/file h
   |- LinkerScript.ld      // This is the linker script 
 </pre>
 
-## 2.2 Define protected data or code
+## 2.2 Define/Access protected data or code
+Data or code needs to be placed at a certain MPU region in order to be protected by MPU. A region of code or data in the source code can be defined by section attribute. In this tutorial, we name our protected section as **shadow_stack**. For example, to declare a protected variable **shadow_stack_data**:
+
+```
+char shadow_stack_data[StackSize] __attribute__((section (".shadow_stack"))) __attribute__((__used__)) = "shadow";
+```
+
+To Access it using normal load in privileged mode:
+
+```
+ // read shadow using normal load
+  __asm volatile
+     ( "ldr r0, %0\n"
+       ::"m"(shadow_stack_data): "r0","memory"
+     ); 
+  // or just:
+ printf("%s\r\n", shadow_stack_data);
+```
+
+To access it using unprivileged load in privileged mode:
+
+```C
+// reading variable using unprivileged load instruction in privileged mode
+// here should get memory fault if MPU marks the accessed memory region as no access for unprivileged mode.
+__asm volatile
+  ( "ldrt r0, %0\n"
+    ::"m"(shadow_stack_data): "r0","memory"
+  );
+```
+
+To access the data using normal load in unprivileged mode, we need to first drop the CPU privilege to user mode, then access the data:
+
+> **WARNING** after dropping privilege, the only way to get back is via SVC instruction with a proper SVC handler. To set it up, see [2.5 Setup SVC handler [optional]](#25-setup-svc-handler-optional)
+
+```C
+// drop privilege. 
+__asm volatile ( " mrs r0, control  \n"
+      " orr r0, #1   \n"
+      " msr control, r0 \n"
+      :::"r0", "memory" );
+
+// access protected data, should fault
+__asm volatile ( "ldr r0, %0\n"
+          ::"m"(shadow_stack_data): "r0","memory" ); 
+```
 
 ## 2.3 Update linker script to place protected code/data
 
+Previous step defines the code/data section to be protected by MPU. The linker needs to place each section into certain memory regions to generate the final binary. Which section goes to which memory region is determined by commands in the linker script.
+
+For example, the following commands will define a memory region and place the protected data section **shadow_stack** onto that region:
+
+```ld
+MEMORY {
+  FLASH (rx)     : ORIGIN = 0x8000000,  LENGTH = 1024K
+  RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 96K
+  RAM_STACK (xrw)      : ORIGIN = 0x10000000, LENGTH = 32K /* memory to place shadow_stack */
+}
+
+SECTIONS {
+  .shadow_stack :
+  {
+    . = ALIGN(0x20);        /* aligned by 32 bytes */
+    _shadow_stack_start = .;  /* define a variable as starting address of the region */
+    *(.shadow_stack)        /* place the section */
+    . = ALIGN(0x20);        /* align the memory */
+    _shadow_stack_end = .;  /* define a variable as the ending address of the region */ 
+  } >RAM_STACK    /* loading the above section of data into the memory region defined as RAM_STACK*/
+}
+```
+
+> More info about [Linker Script](https://sourceware.org/binutils/docs/ld/Scripts.html#Scripts) <br>
+> [Linker script in STM32](http://developers.stf12.net/cpp-demo/gcc-linker-script-and-stm32-a-tutorial)
+
 ## 2.4 Setup memory fault handler
+Once MPU enabled, denied memory access will cause a memory fault. By default, all undefined faults goes to a default handler which is an infinite loop. In order to distinguish memory access fault, we define the memory fault handler which is also an infinite loop. Each time we got traped in the loop, we know we have an memory access error. For example, add the following code to `src/stm32l4xx_it.c`:
+
+```C
+// file: src/stm32l4xx_it.c
+
+/**
+* @brief This function handles Memory management fault.
+*/
+void MemManage_Handler(void)
+{
+  while (1)
+  {
+  }
+}
+
+```
+
+No other changes needed since the function name of `MemManage_Handler` already got registered by default in the vector table. Details can be found at `inc/stm32l4xx_it.h` and `startup/startup_stm32l475xx.S`. 
 
 ## 2.5 Setup SVC handler [optional]
 
+Supervisor Calls (SVC) are used by application code to request a service from the underlying operating system. Using the SVC instruction, the application can instigate a Supervisor Call for a service requiring privileged access to the system. The is how the unprivileged process **indirectly** using the privileged operations on the system.
+
+Once we drop the CPU privilege into user mode, we can use a specially designed SVC handler to change the privilege back. The following code will allow a user space code to change to privileged via `svc #2` instruction. Number 2 can be replaced by any other unused number by current SVC handlers.
+ 
+First, change `vPortSVCHandler` to
+```C
+// file: Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c
+void vPortSVCHandler( void )
+{
+ /* Assumes psp was in use. */
+ __asm volatile
+ (
+   " tst lr, #4      \n"
+   " ite eq       \n"
+   " mrseq r0, msp     \n" /* lele: this branch taken */
+   " mrsne r0, psp     \n"
+   " b %0       \n"
+   ::"i"(prvSVCHandler):"r0", "memory"
+ );
+}
+```
+
+Then, add the definition of `prvSVCHandler`:
+
+```C
+// file: Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c
+
+static void prvSVCHandler( uint32_t *pulParam) {
+uint8_t ucSVCNumber;
+
+/* The stack contains: r0, r1, r2, r3, r12, r14, the return address and
+xPSR.  The first argument (r0) is pulParam[ 0 ]. */
+
+ucSVCNumber =  ( ( uint8_t * ) pulParam[ 6 ] )[ -2 ];
+switch( ucSVCNumber )
+{
+  case 2 : 
+    __asm volatile
+    (
+      " mrs r1, control  \n" /* Obtain current control value. */
+      " bic r1, #1   \n" /* Set privilege bit. */
+      " msr control, r1  \n" /* Write back new control value. */
+      ::: "r1", "memory"
+    );
+    break;
+  default: /* Unknown SVC call. */
+    break;
+  }
+}
+
+```
+
+Now, we can define the function of `raisePrivilege()` as:
+
+```C
+
+int raisePrivilege(){
+ __asm volatile
+ (
+  " svcne %0       \n" /* Switch to privileged. */
+  " bx lr        \n"
+  :: "i" (2) : "r0", "memory"
+ );
+ return 0; // never reached.
+}
+```
+
+In user space, calling `raisePrivilege()` will switch CPU mode to privileged and the process will become a `kernel thread` when returned from this function. (This is just a hack for testing without any security policy obeyed.)
+
 ## 2.6 Initialize MPU
 
+From [1.3.1 MPU On ARMv7-M](#131-on-armv7-m), we know each MPU region is configured by a set of registers. Here is an example code to do it:
+
+```C
+#define portPRIVILEGED_RAM_REGION   ( 3UL )
+#define portNVIC_SYS_CTRL_STATE_REG    ( * ( ( volatile uint32_t * ) 0xe000ed24 ) )
+#define portNVIC_MEM_FAULT_ENABLE    ( 1UL << 16UL )
+/* Constants required to access and manipulate the MPU. */
+#define portMPU_CTRL_REG      ( * ( ( volatile uint32_t * ) 0xe000ed94 ) )
+#define portMPU_REGION_NUMBER_REG       ( * ( ( volatile uint32_t * ) 0xe000ed98 ) )
+#define portMPU_REGION_BASE_ADDRESS_REG   ( * ( ( volatile uint32_t * ) 0xe000ed9C ) )
+#define portMPU_REGION_ATTRIBUTE_REG   ( * ( ( volatile uint32_t * ) 0xe000edA0 ) )
+#define portMPU_REGION_VALID     ( 0x10UL )
+#define portMPU_REGION_ENABLE     ( 0x01UL )
+
+
+#define portMPU_REGION_PRIVILEGED_READ_WRITE ( 0x01UL << 24UL )
+
+void init_mpu_shadow_stack(void){
+
+ extern uint32_t _shadow_stack_start[];
+ extern uint32_t _shadow_stack_end[];
+
+  /* setup shadow stack with privilege access only. */
+  portMPU_REGION_BASE_ADDRESS_REG = ( ( uint32_t ) _shadow_stack_start ) | /* Base address. */
+      ( portMPU_REGION_VALID ) |
+      ( portPRIVILEGED_RAM_REGION );
+
+  portMPU_REGION_ATTRIBUTE_REG = ( portMPU_REGION_PRIVILEGED_READ_WRITE ) |
+      ( portMPU_REGION_CACHEABLE_BUFFERABLE ) |
+      (prvGetMPURegionSizeSetting( ( uint32_t ) _shadow_stack_end - ( uint32_t ) _shadow_stack_start ) ) |
+      ( portMPU_REGION_ENABLE );
+
+  /* Enable the memory fault exception. */
+  portNVIC_SYS_CTRL_STATE_REG |= portNVIC_MEM_FAULT_ENABLE;
+
+  /* Enable the MPU with the background region configured. */
+  portMPU_CTRL_REG |= ( portMPU_ENABLE | portMPU_BACKGROUND_ENABLE );
+
+}
+```
+
 ## 2.7 Test run
+
+Full source code is available at [bare-metal-mpu](code/bare-mpu.tar.xz). Import it using IDE, and test run it. What it does is:
+
+- initialize debugging port.
+- initialize MPU.
+- read data using regular load instruction in protected region (section **shadow_stack**)
+- read data using unprivileged load in protected region (should fail & trap in MemManage_Handler)
+- drop privilege
+- read data in protected region (should fail & trap in MemManage_Handler)
+- raise privilege
+- read data again in protected region.
 
 
 # 3. Build FreeRTOS with MPU on Cortex-M4 Board
