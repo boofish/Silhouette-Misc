@@ -96,6 +96,42 @@ Based on [Amazon-freertos-1.4.7](https://github.com/aws/amazon-freertos/tree/v1.
 After learning from the ARM manual and FreeRTOS source code, now let's start hacking on real board. This section and [next section](#3-build-freertos-with-mpu-on-cortex-m4-board) will discuss how to compose MPU code on a bare metal machine as well as how to enable the existing MPU code in FreeRTOS for Cortext-M4 board.
 
 ## 2.1 Create a new project with FreeRTOS code from IDE
+From Eclipse IDE (System Workbench for STM32) menu, Select 'File' -> 'New' -> 'C Project', in the dialog:
+
+- set the *Project name*
+- set *Project type* as 'Executable -> Ac6 STM32 MCU Project'
+- leave else as default. An example setup as below:
+
+![new-proj](images/mpu-1-new-proj.png)
+
+Then, click 'Next', a dialog named *select configurations*, I only left them as default. 
+
+Click 'Next', we have the *Target configuration* dialog. In *Board* tab, find and select 'STM32L4' in **Series** dropdown menu, and select 'B-L475E-IOT01A1' in **Board** dropdown menu. leave else as default. Example shown below: 
+
+![target-config](images/mpu-2-target-config.png)
+
+Click 'Next', goes to *Project Firmware configuration* dialog, select **Hardware Abstraction Layer (Cube HAL)** (default is **No firmware**); in the bottom white box, named *Additional utilities and third-party utilities*, select **FreeRTOS**. Leave else as default. An exmple shown as below:
+
+![firmware](images/mpu-3-firmware.png)
+
+Finally, click 'Finish'. You will get a project with the following folder/file hierachies:
+
+- <Project name>
+  |- Includes
+  |- HAL_Driver
+  |- Middlewares
+    |- Third_Party
+      |- FreeRTOS      // this is the FreeRTOS code
+  |- Utilities
+  |- src
+     |- main.c          // this has the entry function
+     |- sstm32l4xx_it.c  // this defines some exception handlers
+  |- startup
+  |- CMSIS
+  |- inc
+  |- B-L475E-IOT01A1.xml
+  |- LinkerScript.ld      // This is the linker script 
+
 
 ## 2.2 Define protected data or code
 
