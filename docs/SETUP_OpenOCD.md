@@ -20,7 +20,8 @@ This documentation describes how to flash, run, and debug program to STM32L475 b
 
 ## Known Issues Debugging in GDB
 1. In my test program, although debugging features are working, and the program runs properly, the program could not terminate. After reaching the return statement in main function, the program will not terminate but will get stuck in a loop at unknown location. When Sending SIGINT by pressing Ctrl-C, gdb shows following message: 
-    ```Program received signal SIGINT, Interrupt.
-Reset_Handler () at ../startup/startup_stm32l475xx.s:117
-117	    b LoopForever
+```
+    Program received signal SIGINT, Interrupt.
+    Reset_Handler () at ../startup/startup_stm32l475xx.s:117
+    117	    b LoopForever
 ```
