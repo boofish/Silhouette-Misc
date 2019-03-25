@@ -1,3 +1,4 @@
 # intermediate compilation files
 *.o
 *.s
+**/.vscode/*
