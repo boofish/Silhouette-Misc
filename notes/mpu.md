@@ -109,17 +109,17 @@ From Eclipse IDE (System Workbench for STM32) menu, Select 'File' -> 'New' -> 'C
 - set *Project type* as 'Executable -> Ac6 STM32 MCU Project'
 - leave else as default. An example setup as below:
 
-<img src="images/mpu-1-new-proj.png" alt="drawing" width="600px"/>
+<img src="images/mpu-1-new-proj.png" alt="drawing" width="875px"/>
 
 Then, click 'Next', a dialog named *select configurations*, I only left them as default. 
 
 Click 'Next', we have the *Target configuration* dialog. In *Board* tab, find and select 'STM32L4' in **Series** dropdown menu, and select 'B-L475E-IOT01A1' in **Board** dropdown menu. leave else as default. Example shown below: 
 
-<img src="images/mpu-2-target-config.png" alt="drawing" width="600px"/>
+<img src="images/mpu-2-target-config.png" alt="drawing" width="874px"/>
 
 Click 'Next', goes to *Project Firmware configuration* dialog, select **Hardware Abstraction Layer (Cube HAL)** (default is **No firmware**); in the bottom white box, named *Additional utilities and third-party utilities*, select **FreeRTOS**. Leave else as default. An exmple shown as below:
 
-<img src="images/mpu-3-firmware.png" alt="drawing" width="600px"/>
+<img src="images/mpu-3-firmware.png" alt="drawing" width="877px"/>
 
 Finally, click 'Finish'. You will get a project with the following folder/file hierachies:
 
@@ -144,13 +144,13 @@ Finally, click 'Finish'. You will get a project with the following folder/file h
 ## 2.2 Define/Access protected data or code
 Data or code needs to be placed at a certain MPU region in order to be protected by MPU. A region of code or data in the source code can be defined by section attribute. In this tutorial, we name our protected section as **shadow_stack**. For example, to declare a protected variable **shadow_stack_data**:
 
-```
+```C
 char shadow_stack_data[StackSize] __attribute__((section (".shadow_stack"))) __attribute__((__used__)) = "shadow";
 ```
 
 To Access it using normal load in privileged mode:
 
-```
+```C
  // read shadow using normal load
   __asm volatile
      ( "ldr r0, %0\n"
@@ -351,7 +351,7 @@ void init_mpu_shadow_stack(void){
 
 ## 2.7 Test run
 
-Full source code is available at [bare-metal-mpu](code/bare-mpu.tar.xz). Import it using IDE, and test run it. What it does is:
+Full source code is available at [bare-metal-mpu](../programs/bare-mpu/). It can be imported by the IDE. What it does is:
 
 - initialize debugging port.
 - initialize MPU.
@@ -369,19 +369,185 @@ Full source code is available at [bare-metal-mpu](code/bare-mpu.tar.xz). Import 
 
 This is based on Amazon FreeRTOS (tested on [current release version 1.4.7](https://github.com/aws/amazon-freertos/tree/v1.4.7), and an [older version of 1.1.0](https://github.com/aws/amazon-freertos/tree/v1.1.0)). 
 
-## 2.1 Download the project source code
+## 3.1 Download the project source code
 
-## 2.2 Create a project and import existing code
+```
+git clone https://github.com/aws/amazon-freertos
+cd amazon-freertos/
+git checkout v1.4.7
+```
 
-## 2.3 Change port from ARM_CM4F to ARM_CM4_MPU
+## 3.2 Import the demo project for the board
 
-## 2.4 Add mpu_wrappers.c into source tree
+In the IDE, select 'File'-> 'Open Projects from File System...'. In the dialog, click 'Directory' to select the import source. The directory for Cortext-M4 board should be in
 
-## 2.5 Update FreeRTOS configuration file
+```amazon-freertos/demos/st/stm32l475_discovery/ac6/```
 
-## 2.6 Update linker scripts for MPU regions
+Then, click 'Finish'.
 
-## 2.7 Test run
+After this, there should be a new project called `aws_demos`. If there is already a project with the same name before import this one, the names conflict and the import will not be successful. Please either delete the previous project from the IDE or [rename the project from the file system without IDE](#51-rename-project-from-the-file-system-without-ide).
+
+
+## 3.3 Change port from ARM_CM4F to ARM_CM4_MPU
+
+FreeRTOS source files that are specific to compilers and processors are contained in the `amazon-freertos/lib/FreeRTOS/portable/` directory. The portable directory is arranged as a hierarchy, first by compiler, then by processor architecture. For example, we use the `GCC` as compiler port and `ARM_CM4F`, or `ARM_CM4_MPU` as processor port for Cortext-M4 architecture.
+
+The demo in `amazon-freertos/demos/st/stm32l475_discovery/ac6/` has `ARM_CM4F` as default architecture port, which does not have MPU compatible code. By changing it to `ARM_CM4_MPU` port, we can enable the MPU management without writing our own. The following allow exchange the architecture port:
+
+1. right click the project, select 'Property' -> 'C/C++ Build' -> 'Settings' -> 'Tool Settings' -> select 'MCU GCC Compiler' -> 'Includes'.  Change the include path from `"${workspace_loc:/${ProjName}/lib/aws/FreeRTOS/portable/GCC/ARM_CM4F}"` to `"${workspace_loc:/${ProjName}/lib/aws/FreeRTOS/portable/GCC/ARM_CM4_MPU}"`
+
+2. In `.project` file for the project, change all occurances of `CM4F` to `CM4_MPU`. 
+
+3. right click the project, select 'Index' -> 'Rebuild'. Then navigate the project in the IDE's explorer, check the folder `lib/aws/FreeRTOS/portable/GCC/ARM_CM4F}` should now be replaced with `/lib/aws/FreeRTOS/portable/GCC/ARM_CM4_MPU}`.
+
+Before change port:
+
+<img src="images/mpu-port-change-before.png" alt="drawing" width="440px"/>
+
+After change port:
+
+<img src="images/mpu-port-change-after.png" alt="drawing" width="443px"/>
+
+## 3.4 Add mpu_wrappers.c into source tree
+
+The file `mpu_wrappers.c` contains code wrap up the non-MPU FreeRTOS APIs with MPU wrappers. What the wrappers do is to first raise the CPU privilege and call the non-MPU API, and then reset the CPU privilege. Every wrapper is renamed with `MPU_` prefix added to the non-MPU API name. For example, the following is a wrapper for `xTaskCreate()` in FreeRTOS tasks management API:
+
+```C
+BaseType_t MPU_xTaskCreate( TaskFunction_t pvTaskCode, const char * const pcName, uint16_t usStackDepth, void *pvParameters, UBaseType_t uxPriority, TaskHandle_t *pxCreatedTask )
+	{
+	BaseType_t xReturn;
+	BaseType_t xRunningPrivileged = xPortRaisePrivilege();
+
+		xReturn = xTaskCreate( pvTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pxCreatedTask );
+		vPortResetPrivilege( xRunningPrivileged );
+		return xReturn;
+  }
+```
+
+To use MPU with FreeRTOS, we need to compile with the wrappers.
+In Project Explorer, navigate to `lib/aws/FreeRTOS/portable` directory, right click the `portable` folder, select 'New' -> 'Folder'. In the dialog, select 'Advanced >>' button in the bottom. Then choose 'Link to alternate location(Linked Folder)'. Click 'Browse...' to select the folder `amazon-freertos/lib/FreeRTOS/portable/Common`. The folder name should be automatically set to 'Common' in the dialog. An example screenshot:
+
+<img src="images/mpu-new-linked-common.png" alt="drawing" width="877px"/>
+
+Click 'Finish'. You should see the folder and a file `mpu_wrappers.c` under that folder.
+
+## 3.5 Update FreeRTOS configuration file
+
+In file `config_files/FreeRTOSConfig.h`, add one line of code 
+
+```C
+#define Include_xTaskGetCurrentTaskHandle 1
+```
+
+
+## 3.6 Update linker scripts for MPU regions
+
+MPU code in FreeRTOS `ARM_CM4_MPU` port creates two new sections to protect the kernel data & code, named `privileged_data` and `privileged_functions`. There are also variables defined in the linker script to locate the memory bounds for MPU initialization in [port.c:prvSetupMPU()](../programs/amazon-freertos/lib/FreeRTOS/portable/GCC/ARM_CM4_MPU/port.c). In the linker script, we need to specify the location of the two sections. 
+
+1. Privileged code section must be placed at the start of the flash, after vectors. For example:
+
+```
+privileged_functions :
+  {
+  	KEEP(*(.isr_vector))
+  	*(privileged_functions)
+  } > FLASH
+  
+```
+
+2. Then place the privileged data. For example:
+
+```
+  privileged_data :
+  {
+  	. = ALIGN(0x20);
+  	__privileged_data_start__ = .;
+  	_sdata = .;
+  	*(privileged_data);
+  	. = ALIGN(0x20);
+  	__privileged_data_end__ = .;
+  } > RAM2 AT>FLASH
+```
+
+3. Define variables used in MPU initialization:
+
+```
+/* define the variables required by FreeRTOS-MPU. First ensure the section sizes
+are a binary power of two to comply with the MPU region size rules. */
+_Privileged_Functions_Region_Size = 16K; /* 16K , specified in code, port.c: prvSetupMPU() */
+
+/* Then define the variables themselves. */
+__FLASH_segment_start__ = ORIGIN( FLASH );
+__FLASH_segment_end__ = __FLASH_segment_start__ + LENGTH( FLASH );
+__privileged_functions_start__ = ORIGIN( FLASH );
+__privileged_functions_end__ = __privileged_functions_start__ + _Privileged_Functions_Region_Size;
+__SRAM_segment_start__ = ORIGIN( RAM2 );
+__SRAM_segment_end__ = __SRAM_segment_start__ + LENGTH( RAM2 );
+
+_Privileged_Data_Region_Size = __privileged_data_end__ - __privileged_data_start__;
+
+```
+
+
+## 3.7 Test run
+
+Now we can build and run the demo code. Default settings in demo code will start the scheduler and have a logging task being started as first process, along with other tasks to fire up the sevices such as WiFi access point. The logging task cannot run unprivileged, and a MemManage fault will cause the system to halt. So we need to raise privilege for the logging task. 
+
+In `amazon-freertos/demos/common/logging/aws_logging_task_dynamic_buffers.c`, change the function `prvLoggingTask()` as following:
+
+```diff
+--- a/demos/common/logging/aws_logging_task_dynamic_buffers.c
++++ b/demos/common/logging/aws_logging_task_dynamic_buffers.c
+@@ -114,6 +114,7 @@ static void prvLoggingTask( void *pvParameters )
+ {
+ char *pcReceivedString;
+ 
++       BaseType_t old_pri = xPortRaisePrivilege();
+     for( ;; )
+     {
+         /* Block to wait for the next string to print. */
+@@ -123,6 +124,8 @@ char *pcReceivedString;
+             vPortFree( ( void * ) pcReceivedString );
+         }
+     }
++    vPortResetPrivilege(old_pri);
++
+ }
+ /*-----------------------------------------------------------*/
+ 
+```
+
+Now right click the project in Explorer, select 'Debug As'-> '1 Ac6 STM32 C/C++ Application'. 
+
+The project will build and flash the project into the board and start execution in debugging mode.
+
+To avoid getting through all the steps above, there is a ported version ready to use [here for v1.4.7](../programs/mpu-freertos147/) and [here for v1.1.0](../programs/mpu-freertos110).
+
 
 # 4. Adapting/Optimizing MPU for Silhouette
+
+# 5. FAQ
+
+## 5.1 Rename project from the file system without IDE
+
+In the IDE (System workbench for STM32), if you use an existing project via 'File' -> 'Open Projects from File System', renaming the project sometime fails: The IDE will create a new project with the new name in the IDE's default workspace directory, which will break the compiling environment setup inside the project. This is especially true for the `amazon-freertos` code, where the project directory contains only the IDE configuration files and all source code are file/folder links relative to the project directory. Simply moving the project directory to another place will break all links.
+
+In this case, here is a 'brute forced' way to rename a project for importing: 
+
+1. Locate the project folder contains `.project` file. This is the IDE folder contains all configurations for the project. For example, `amazon-freertos/demos/st/stm32l475_discovery/ac6/` is the project folder for our Cortex-M4 board.
+
+2. Change the old name from new name in configuration file `.project` and `.cproject`. The old name can be found in the name section of `.project` file:
+```XML
+<projectDescription>
+	<name>aws_demos</name>
+  ...
+</projectDescription>
+``` 
+Search all occurance of `aws_demos` and replace it with new name in the file `.project` and `.cproject`.
+
+3. Import the project. In IDE, select 'File' -> 'Open Projects from File System...', then click 'Directory' button and set the path of the folder contains `.project` and `.cproject`, for example, `amazon-freertos/demos/st/stm32l475_discovery/ac6/`. Click 'Finish'.
+
+4. Check the Project Explorer in the IDE, you should find the imported project got renamed.
+
+5. Before build the project, you should clean the project and rebuild the index to keep the changes up to date in IDE's internal states. Select the project in the Project Explorer, right click -> 'Clean Project', then right click again -> 'Index' -> 'Rebuild'.
 
