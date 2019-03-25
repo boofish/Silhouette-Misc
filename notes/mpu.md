@@ -351,7 +351,7 @@ void init_mpu_shadow_stack(void){
 
 ## 2.7 Test run
 
-Full source code is available at [bare-metal-mpu](../programs/bare-mpu/). It can be imported by the IDE. What it does is:
+Full source code is available at [bare-metal-mpu](../programs/mpu-bare-metal/). It can be imported by the IDE. What it does is:
 
 - initialize debugging port.
 - initialize MPU.
@@ -442,7 +442,7 @@ In file `config_files/FreeRTOSConfig.h`, add one line of code
 
 ## 3.6 Update linker scripts for MPU regions
 
-MPU code in FreeRTOS `ARM_CM4_MPU` port creates two new sections to protect the kernel data & code, named `privileged_data` and `privileged_functions`. There are also variables defined in the linker script to locate the memory bounds for MPU initialization in [port.c:prvSetupMPU()](../programs/amazon-freertos/lib/FreeRTOS/portable/GCC/ARM_CM4_MPU/port.c). In the linker script, we need to specify the location of the two sections. 
+MPU code in FreeRTOS `ARM_CM4_MPU` port creates two new sections to protect the kernel data & code, named `privileged_data` and `privileged_functions`. There are also variables defined in the linker script to locate the memory bounds for MPU initialization in [port.c:prvSetupMPU()](../programs/mpu-freertos-147/lib/FreeRTOS/portable/GCC/ARM_CM4_MPU/port.c). In the linker script, we need to specify the location of the two sections. 
 
 1. Privileged code section must be placed at the start of the flash, after vectors. For example:
 
@@ -521,7 +521,7 @@ Now right click the project in Explorer, select 'Debug As'-> '1 Ac6 STM32 C/C++ 
 
 The project will build and flash the project into the board and start execution in debugging mode.
 
-To avoid getting through all the steps above, there is a ported version ready to use [here for v1.4.7](../programs/mpu-freertos147/) and [here for v1.1.0](../programs/mpu-freertos110).
+To avoid getting through all the steps above, there is a ported version ready to use [here for v1.4.7](../programs/mpu-freertos-147/) and [here for v1.1.0](../programs/mpu-freertos-110).
 
 
 # 4. Adapting/Optimizing MPU for Silhouette
