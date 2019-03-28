@@ -40,7 +40,7 @@ SILHOUETTE=~/projects/silhouette
 PROJ_DIR=$SILHOUETTE/projs/$1
 BEEBS_PROJ=$SILHOUETTE/projs/beebs
 BEEBS_DIR=$SILHOUETTE/silhouette-misc/programs/beebs
-BEEBS_SRC=$BEEBS_DIR/beebs-beebs-2.1-release/src
+BEEBS_SRC=$BEEBS_DIR/beebs-beebs-2.1-release
 
 # A list of functions we don't need change when updating src code of test programs.
 SRC_WHITELIST="main.c syscalls.c support.h stm32l4xx_it.c system_stm32l4xx.c"
@@ -73,6 +73,21 @@ function init() {
     echo "Copying main.c and support.h to $1's source directory."
     cp $BEEBS_DIR/beebs-common-main/main.c $PROJ_DIR/src
     cp $BEEBS_SRC/include/support.h $PROJ_DIR/src
+
+    # Step 4, copy the source code of the test case to the src directory.
+    if [ ! $1 == "beebs" ]; then
+        echo "Copy source files of test program to project directory."
+        cd "$BEEBS_SRC/src/$1"
+        if [ $? == 1 ]; then
+            echo "There is not a $1 test program in the BEEBS benchmark suite."
+            exit
+        fi
+        src_files=`ls *.c *.h 2>/dev/null`
+        for src_file in $src_files; do
+            echo "Copying $src_file to $PROJ_DIR."
+            cp $src_file $PROJ_DIR/src
+        done
+    fi
 }
 
 
@@ -95,7 +110,7 @@ function update_prog() {
     fi
 
     # copy new test program to the src directory
-    cd "$BEEBS_SRC/$1"
+    cd "$BEEBS_SRC/src/$1"
     if [ $? == 1 ]; then
         echo "There is not a $1 test program in the BEEBS benchmark suite."
         exit
@@ -114,7 +129,7 @@ function update_prog() {
 if [[ $# == 2 && $2 == "init" ]]; then
     # We just created a new project in the IDE. Now let's initialize the running 
     # environment of it. (Don't forget to change the compiler.)
-    init
+    init $1
 else
     # Check if the BEEBS project was already created in the IDE.
     # If not, fist create one manually.
