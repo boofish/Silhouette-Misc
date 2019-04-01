@@ -82,7 +82,7 @@ int initialise_benchmark()
 
 // each benchmark will need to override this function
 // otherwise this function returns -1 to indicate no verification done
-int verify_benchmark(int unused)
+int verify_benchmark(int unused) 
 {
     return -1;
 }
@@ -91,18 +91,31 @@ int verify_benchmark(int unused)
 
 int main(void)
 {
+    // Initialize the printer.
 	Console_UART_Init();
-	HAL_Init();
+
+
 	initialise_benchmark();
-	uint32_t t0 = HAL_GetTick();
+    uint32_t t_start, t_end, t;
+
+    // Record running time.
+	HAL_Init();
+	t_start = HAL_GetTick();
+	int num_of_err = benchmark();
+	t_end = HAL_GetTick();
+    t = t_end - t_start;
+
+#if 0
 	printf("Start running benchmark. Time: %u\r\n", t0);
-	int error_no = benchmark();
-	uint32_t t1 = HAL_GetTick();
-	int result = verify_benchmark(error_no);
-	if (result){
-		printf("Finished successfully: %d, time: %u\r\n", result, t1);
-	} else{
-		printf("Error running benchmark. Result: %d\r\n", result);
+#endif 
+
+	int result = verify_benchmark(num_of_err);
+	if (result == 1){
+		printf("Finished successfully: in %u ms.\r\n\n", t);
+	} else if (result == -1) {
+        printf("Finished in %u ms, but no verify_benchmark() run.\r\n\n", t);
+    } else{
+		printf("Finished in %u ms, but verify_benchmark() found errors.\r\n\n", t);
 	}
 	return 0;
 }
