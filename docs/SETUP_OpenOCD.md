@@ -5,8 +5,9 @@ This documentation describes how to flash, run, and debug program to STM32L475 b
 1. Install OpenOCD. Ubuntu users can install it through apt-get: `sudo apt-get install openocd`.
 2. In System WorkBench, build project.
 3. Open a terminal and go to the project directory. 
-4. In the terminal, run OpenOCD to flash the compiled .elf file: `openocd -f <ProjectName Run>.cfg -c "program <Path/to/elf/file> verify reset exit"`.
+4. Make a copy of `<ProjectName Run>.cfg`. Change `source [find interface/stlink.cfg]` to `source [find interface/stlink-v2-1.cfg]`
     - NOTE: Change `<ProjectName Run>.cfg` to the filename of the config file generated in your project directory. For example, in my project named "Test" with only Debug run configuration, the config file is `Test Run.cfg`. If your project directory contains more than one cfg file, they should more or less be identical unless you have different settings for different run configuration (Debug/Release). 
+5. In the terminal, run OpenOCD to flash the compiled .elf file: `openocd -f <Modified Project Run>.cfg -c "program <Path/to/elf/file> verify reset exit"`.
     - NOTE: Change `<Path/to/elf/file>` to the path to your project's elf file. For example, in my project named "Test" with Debug run configuration, this path is `Debug/Test.elf`. 
 
 ## Debug Program Using OpenOCD and GDB
