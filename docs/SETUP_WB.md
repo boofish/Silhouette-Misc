@@ -25,7 +25,7 @@ You can try to build project now by right-clicking your Project in 'Project Expl
 2. (May cause unknown side effects) When compiling, if you see error `error: unknown register name 'vfpcc' in asm`, open `CMSIS/core/cmsis_gcc.h` inside your project, search `vfpcc`, comment out surrounding codes. 
     - NOTE: This modification may cause unknown side effects for instructions using vfpcc register. We are still checking if it is safe to do so. 
 
-## Using Minicom to Connect to STM32 Board's COM Terminal (Obselete, see 'Set up PUTTY' section below instead)
+## Using Minicom to Connect to STM32 Board's COM Terminal 
 1. Connect STM32 board to computer. 
 2. Install minicom.
 3. Use `dmesg | grep tty` to find which tty device STM32 is. 
@@ -35,6 +35,10 @@ You can try to build project now by right-clicking your Project in 'Project Expl
 7. Press 'F' to change 'Hardware Flow Control' to 'No'. Then press Enter to return to main configuration menu. 
 8. (Optional) If you want to save this configuration as default so that you don't need to do it every time when launching Minicom, select 'Save setup as dfl'. 
 9. Select 'Exit'. It should be connected to the board. 
+
+### Save outputs from minicom to a file
+Add the `-C` option. For example,
+    `minicom -C file.txt`
 
 ## Get output from minicom (Obselete)
 To see outputs from minicom, include the util.h file to your project, and use
