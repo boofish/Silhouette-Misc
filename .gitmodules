@@ -1,0 +1,3 @@
+[submodule "programs/beebs/beebs"]
+	path = programs/beebs/beebs
+	url = git@github.com:mageec/beebs.git
