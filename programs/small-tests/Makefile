@@ -32,7 +32,7 @@ CFLAGS += $(ARM_FLAGS)
 
 # 
 # passes
-STR2STRT = -Xclang -backend-option -Xclang -enable-arm-silhouette-str2strt
+STR2STRT = -Xclang -backend-option -Xclang -enable-arm-silhouette-str2strt -save-stats
 MEM_OVERHEAD = -Xclang -backend-option -Xclang -enable-arm-silhouette-mem-overhead \
 			   -save-stats
 

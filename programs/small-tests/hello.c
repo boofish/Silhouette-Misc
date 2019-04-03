@@ -1,21 +1,36 @@
 #include <stdio.h>
-#include "hello.h"
 
+#include "lib.h"
 
 #define BASE(i) &base[(i)*width]
 
-int foo(int num) {
-    int i = 0;
-    int total = 1;
+/* int foo(int num) { */
+/*     int i = 0; */
+/*     int total = 1; */
 
-    for (i = 10; i > 0; i--) {
-        total += i;
-    }
+/*     for (i = 10; i > 0; i--) { */
+/*         total += i; */
+/*     } */
+/*     return total + num; */
+/* } */
 
-
-    return total + num;
+int add(int a, int b) {
+    return a + b;
 }
 
+
+int sub(int a, int b) {
+    return a - b;
+}
+
+int foo(int a, int b) {
+    int (*func[2])(int, int) = {
+        add, sub
+    };
+
+    static unsigned int i = 0;
+    return func[i++ % 2](a, b);
+}
 
 void
 qsort(base, nel, width, compar)
@@ -61,6 +76,19 @@ int main() {
     volatile char *str = "Hello from hello\n";
 
     printf("str = %s\n", str);
+
+    /* int i = 10; */
+    /* float f = 10.5; */
+    /* i = f; */
+    /* printf("i = %d\n", i); */
+    /* float f2 = i; */
+    /* printf("f2 = %f\n", f2); */
+
+    /* double d0 = 1587; */
+    /* int arr[3]; */
+    /* arr[0] = d0; */
+    /* printf("%d, %d\n", arr[0], arr[1]); */
+
 
     return 0;
 }
