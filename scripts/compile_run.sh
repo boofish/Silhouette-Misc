@@ -34,9 +34,9 @@ fac"
 
 #
 # Compile a test program, meanwhile keep the build log and copy the generated 
-# elf to a debug directory for debugging purpose. It assumes there is a "debug"
-# directory located in ~/projects/silhouette/. If not, make one.
-#
+# elf to a debug directory for debugging purpose. It also moves the generated
+# stats files to the data/meme direcotory.
+# 
 function compile() {
     if [ ! -d $BEEBS_SRC/$1 ]; then
         echo "There is no $1 in beebs benchmark suite."
@@ -73,6 +73,17 @@ function compile() {
     cp $BEEBS_PROJ/Debug/beebs.elf $DEBUG_DIR/$1.elf
     cd $DEBUG_DIR
     $OBJDUMP -d $1.elf > $1.s
+
+    # Move the stats files to the data directory.
+    echo "Moving stats files to the data/mem directory."
+    MEM_DATA_DIR=$SILHOUETTE/silhouette-misc/data/mem
+    if [ ! -d $MEM_DATA_DIR/$1 ]; then
+        mkdir -p $MEM_DATA_DIR/$1
+    fi
+    stat_files=`ls $BEEBS_PROJ/Debug/*.stats 2>/dev/null`
+    for stat_file in $stat_files; do
+        mv $stat_file $MEM_DATA_DIR/$1
+    done
 }
 
 
