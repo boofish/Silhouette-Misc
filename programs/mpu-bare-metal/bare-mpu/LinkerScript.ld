@@ -37,8 +37,8 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 MEMORY
 {
 FLASH (rx)     : ORIGIN = 0x8000000,  LENGTH = 1024K
-RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 96K
-RAM_STACK (xrw)      : ORIGIN = 0x10000000, LENGTH = 32K
+RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 96K /* stack base: 0x2001,8000 */
+RAM_SS (xrw)      : ORIGIN = 0x10000000, LENGTH = 32K /* sstack base: 0x1000,8000 = stack_base - 0x1001,0000*/
 }
 
 /* Define output sections */
@@ -145,7 +145,7 @@ SECTIONS
     *(.shadow_stack)
     . = ALIGN(0x20);
     _shadow_stack_end = .;
-  } >RAM_STACK
+  } >RAM_SS
 
   /* Uninitialized data section */
   . = ALIGN(4);
@@ -191,5 +191,6 @@ _FLASH_segment_end = _FLASH_segment_start + LENGTH( FLASH );
 
 _RAM_start = ORIGIN( RAM );
 _RAM_end = _RAM_start + LENGTH( RAM );
+
 
 
