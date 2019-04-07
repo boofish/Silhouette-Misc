@@ -20,6 +20,8 @@ int main(void)
 
 	Console_UART_Init();
 
+	initMPU();
+
 	mpuTest(); // a simple test for mpu functionality
 
 	for(;;);

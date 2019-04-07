@@ -102,7 +102,7 @@ Based on [Amazon-freertos-1.4.7](https://github.com/aws/amazon-freertos/tree/v1.
 
 After learning from the ARM manual and FreeRTOS source code, now let's start hacking on real board. This section and [next section](#3-build-freertos-with-mpu-on-cortex-m4-board) will discuss how to compose MPU code on a bare metal machine as well as how to enable the existing MPU code in FreeRTOS for Cortext-M4 board.
 
-## 2.1 Create a new project with FreeRTOS code from IDE
+## 2.1 Create a new project from IDE
 From Eclipse IDE (System Workbench for STM32) menu, Select 'File' -> 'New' -> 'C Project', in the dialog:
 
 - set the *Project name*
@@ -117,7 +117,7 @@ Click 'Next', we have the *Target configuration* dialog. In *Board* tab, find an
 
 <img src="images/mpu-2-target-config.png" alt="drawing" width="874px"/>
 
-Click 'Next', goes to *Project Firmware configuration* dialog, select **Hardware Abstraction Layer (Cube HAL)** (default is **No firmware**); in the bottom white box, named *Additional utilities and third-party utilities*, select **FreeRTOS**. Leave else as default. An exmple shown as below:
+Click 'Next', goes to *Project Firmware configuration* dialog, select **Hardware Abstraction Layer (Cube HAL)** (default is **No firmware**); in the bottom white box, named *Additional utilities and third-party utilities*, select **FreeRTOS** (optional). Leave else as default. An exmple shown as below:
 
 <img src="images/mpu-3-firmware.png" alt="drawing" width="877px"/>
 
@@ -129,7 +129,7 @@ Finally, click 'Finish'. You will get a project with the following folder/file h
   |- HAL_Driver
   |- Middlewares
     |- Third_Party
-      |- FreeRTOS      // this is the FreeRTOS code
+      |- FreeRTOS      // this is the FreeRTOS code (optional)
   |- Utilities
   |- src
      |- main.c          // this has the entry function
@@ -240,7 +240,54 @@ No other changes needed since the function name of `MemManage_Handler` already g
 Supervisor Calls (SVC) are used by application code to request a service from the underlying operating system. Using the SVC instruction, the application can instigate a Supervisor Call for a service requiring privileged access to the system. The is how the unprivileged process **indirectly** using the privileged operations on the system.
 
 Once we drop the CPU privilege into user mode, we can use a specially designed SVC handler to change the privilege back. The following code will allow a user space code to change to privileged via `svc #2` instruction. Number 2 can be replaced by any other unused number by current SVC handlers.
- 
+
+### 2.5.1 SVC Handler with no FreeRTOS
+First, add the handler definition `SVC_Handler` in `src/stm32l4xx_it.c`:
+```C
+// file: src/stm32l4xx_it.c
+
+static void prvSVCHandler( uint32_t *pulRegisters );
+
+void SVC_Handler( void )
+{
+ /* Assumes psp was in use. */
+ __asm volatile
+ (
+   " tst lr, #4      \n"
+   " ite eq       \n"
+   " mrseq r0, msp     \n" /* lele: this branch taken */
+   " mrsne r0, psp     \n"
+   " b %0       \n"
+   ::"i"(prvSVCHandler):"r0", "memory"
+ );
+}
+
+static void prvSVCHandler( uint32_t *pulParam) {
+uint8_t ucSVCNumber;
+
+/* The stack contains: r0, r1, r2, r3, r12, r14, the return address and
+xPSR.  The first argument (r0) is pulParam[ 0 ]. */
+
+ucSVCNumber =  ( ( uint8_t * ) pulParam[ 6 ] )[ -2 ];
+switch( ucSVCNumber )
+{
+  case 2 : 
+    __asm volatile
+    (
+      " mrs r1, control  \n" /* Obtain current control value. */
+      " bic r1, #1   \n" /* Set privilege bit. */
+      " msr control, r1  \n" /* Write back new control value. */
+      ::: "r1", "memory"
+    );
+    break;
+  default: /* Unknown SVC call. */
+    break;
+  }
+}
+
+```
+
+### 2.5.2 SVC Handler with FreeRTOS (optional)
 First, change `vPortSVCHandler` to
 ```C
 // file: Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c
@@ -289,6 +336,8 @@ switch( ucSVCNumber )
 
 ```
 
+### 2.5.3 To Raise Privilege
+
 Now, we can define the function of `raisePrivilege()` as:
 
 ```C
@@ -311,6 +360,8 @@ In user space, calling `raisePrivilege()` will switch CPU mode to privileged and
 From [1.3.1 MPU On ARMv7-M](#131-on-armv7-m), we know each MPU region is configured by a set of registers. Here is an example code to do it:
 
 ```C
+// file: inc/mpu.h
+
 #define portPRIVILEGED_RAM_REGION   ( 3UL )
 #define portNVIC_SYS_CTRL_STATE_REG    ( * ( ( volatile uint32_t * ) 0xe000ed24 ) )
 #define portNVIC_MEM_FAULT_ENABLE    ( 1UL << 16UL )
@@ -325,6 +376,7 @@ From [1.3.1 MPU On ARMv7-M](#131-on-armv7-m), we know each MPU region is configu
 
 #define portMPU_REGION_PRIVILEGED_READ_WRITE ( 0x01UL << 24UL )
 
+// file: src/mpu.c
 void init_mpu_shadow_stack(void){
 
  extern uint32_t _shadow_stack_start[];

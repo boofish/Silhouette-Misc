@@ -33,6 +33,8 @@ _estack = 0x20018000;    /* end of RAM */
 /* Highest address of the shadow stack */
 _esstack = 0x10008000; /* end of RAM_SS */
 
+_offset_sstack = _estack - _esstack; /* constant offset between normal stack and shadow stack, should be 0x1001,0000 */
+
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size  = 0x200; /* required amount of heap  */
 _Min_Stack_Size = 0x400; /* required amount of stack */

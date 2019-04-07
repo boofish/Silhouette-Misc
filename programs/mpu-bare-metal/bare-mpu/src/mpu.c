@@ -329,8 +329,6 @@ void mpuTest(){
     	  ::"m"(shadow_stack_data): "r0","memory"
     	); // 0x0
 
-	initMPU();
-
 	// read shadow
 
     __asm volatile
