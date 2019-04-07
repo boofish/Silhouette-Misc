@@ -74,16 +74,14 @@ function compile() {
     cd $DEBUG_DIR
     $OBJDUMP -d $1.elf > $1.s
 
-    # Move the stats files to the data directory.
-    echo "Moving stats files to the data/mem directory."
+    # Move the code size stat file to the data directory.
+    echo "Moving code_size.stat to the data/mem directory."
     MEM_DATA_DIR=$SILHOUETTE/silhouette-misc/data/mem
     if [ ! -d $MEM_DATA_DIR/$1 ]; then
         mkdir -p $MEM_DATA_DIR/$1
     fi
-    stat_files=`ls $BEEBS_PROJ/Debug/*.stats 2>/dev/null`
-    for stat_file in $stat_files; do
-        mv $stat_file $MEM_DATA_DIR/$1
-    done
+    rm $MEM_DATA_DIR/$1/* 2>/dev/null
+    mv $BEEBS_PROJ/Debug/code_size.stat ./
 }
 
 
