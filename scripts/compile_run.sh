@@ -75,7 +75,7 @@ function compile() {
     $OBJDUMP -d $1.elf > $1.s
 
     # Move the code size stat file to the data directory.
-    echo "Moving code_size.stat to the data/mem directory."
+    echo "Moving code_size.stat to both the debug and the data/mem directory."
     MEM_DATA_DIR=$SILHOUETTE/silhouette-misc/data/mem
     if [ ! -d $MEM_DATA_DIR/$1 ]; then
         mkdir -p $MEM_DATA_DIR/$1
@@ -100,8 +100,11 @@ function run() {
 if [ ! $1 == "" ]; then
     if [ $1 == "run" ]; then
         run $1
-    else 
+    elif [ $# == 2] && [ $2 == "run" ]; then
         compile $1 && run $1
+    else
+        compile $1 
+        $SCRIPTS_DIR/mem-overhead.py $1
     fi
 else
     for prog in $TEST_FILES; do
