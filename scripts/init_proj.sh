@@ -72,7 +72,7 @@ function init() {
     # Step 3 (only for BEEBS benchmark), use our own main.c file and the support.h.
     echo "Copying main.c and support.h to $1's source directory."
     cp $BEEBS_DIR/beebs-common-main/main.c $PROJ_DIR/src
-    cp $BEEBS_SRC/include/support.h $PROJ_DIR/src
+    cp $BEEBS_SRC/support/support.h $PROJ_DIR/src
 
     # Step 4, copy the source code of the test case to the src directory.
     if [ ! $1 == "beebs" ]; then
