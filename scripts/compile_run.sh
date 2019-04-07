@@ -82,6 +82,7 @@ function compile() {
     fi
     rm $MEM_DATA_DIR/$1/* 2>/dev/null
     mv $BEEBS_PROJ/Debug/code_size.stat ./
+    cp ./code_size.stat $MEM_DATA_DIR/$1
 }
 
 
