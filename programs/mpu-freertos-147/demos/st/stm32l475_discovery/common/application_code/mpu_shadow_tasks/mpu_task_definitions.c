@@ -13,9 +13,11 @@
 //#include "FreeRTOS.h"
 //#include "task.h"
 
-void taskPrint(void){
+void taskPrint(void * parameter){
 
 	unsigned long iters = 0;
+
+	 (void *)parameter; // not used
 
 	unsigned long delay = 10000;
 
@@ -27,7 +29,7 @@ void taskPrint(void){
 			j=i*i + iters; // do something, for the delay
 		}
 
-		printf("%s:\titers=%ld, j=%ld\r\n", __FUNCTION__, iters, j);
+		printf("print task: iters=%lu, j=%lu\r\n", iters, j);
 
 		iters ++ ;
 
@@ -66,7 +68,7 @@ void taskFibStatic(void * parameter){
 
 		int res = fibonacci(fib_n);
 
-		printf("%s:\titers=%ld, j=%ld, fibonacci(%d)=%d\r\n", __FUNCTION__, iters, j, fib_n, res);
+		printf("FibStatic: iters=%ld, j=%ld, fibonacci(%d)=%d\r\n", iters, j, fib_n, res);
 
 		iters ++ ;
 
@@ -92,7 +94,7 @@ void taskFibDynamic(void * parameter){
 
 		int res = fibonacci(fib_n);
 
-		printf("%s:\titers=%ld, j=%ld, fibonacci(%d)=%d\r\n", __FUNCTION__, iters, j, fib_n, res);
+		printf("FibDynamic: iters=%ld, j=%ld, fibonacci(%d)=%d\r\n", iters, j, fib_n, res);
 
 		iters ++ ;
 

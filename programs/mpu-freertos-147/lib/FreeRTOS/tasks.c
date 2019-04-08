@@ -871,7 +871,7 @@ UBaseType_t x;
 		/* Fill the stack with a known value to assist debugging. */
 		( void ) memset( pxNewTCB->pxStack, ( int ) tskSTACK_FILL_BYTE, ( size_t ) ulStackDepth * sizeof( StackType_t ) );
 		// fill the shadow stack
-		( void ) memset( pxNewTCB->pxStack + ulStackDepth, ( int ) tskSTACK_FILL_BYTE, ( size_t ) ulStackDepth * sizeof( StackType_t ) );
+		//( void ) memset( pxNewTCB->pxStack + ulStackDepth, ( int ) tskSTACK_FILL_BYTE, ( size_t ) ulStackDepth * sizeof( StackType_t ) );
 	}
 	#endif /* tskSET_NEW_STACKS_TO_KNOWN_VALUE */
 
@@ -1959,20 +1959,51 @@ BaseType_t xReturn;
 	/* Add the idle task at the lowest priority. */
 	#if( configSUPPORT_STATIC_ALLOCATION == 1 )
 	{
-		StaticTask_t *pxIdleTaskTCBBuffer = NULL;
-		StackType_t *pxIdleTaskStackBuffer = NULL;
-		uint32_t ulIdleTaskStackSize;
 
-		/* The Idle task is created using user provided RAM - obtain the
-		address of the RAM then create the idle task. */
-		vApplicationGetIdleTaskMemory( &pxIdleTaskTCBBuffer, &pxIdleTaskStackBuffer, &ulIdleTaskStackSize );
-		xIdleTaskHandle = xTaskCreateStatic(	prvIdleTask,
-												configIDLE_TASK_NAME,
-												ulIdleTaskStackSize,
-												( void * ) NULL, /*lint !e961.  The cast is not redundant for all compilers. */
-												portPRIVILEGE_BIT, /* In effect ( tskIDLE_PRIORITY | portPRIVILEGE_BIT ), but tskIDLE_PRIORITY is zero. */
-												pxIdleTaskStackBuffer,
-												pxIdleTaskTCBBuffer ); /*lint !e961 MISRA exception, justified as it is not a redundant explicit cast to all supported compilers. */
+	    #if 0 //( portUSING_MPU_WRAPPERS == 1 )
+
+			static StaticTask_t pxIdleTaskTCBBuffer;
+			static StackType_t pxIdleTaskStackBuffer[ configMINIMAL_STACK_SIZE ]; //[ configMINIMAL_STACK_SIZE ]//Lele: should we *2 for shadow stack?;
+			static const TaskParameters_t pxIdleTaskDefinition =
+			{
+				prvIdleTask,		// pvTaskCode - the function that implements the task.
+				configIDLE_TASK_NAME,	// pcName - just a text name for the task to assist debugging.
+				configMINIMAL_STACK_SIZE,		// usStackDepth	- the stack size DEFINED IN WORDS.
+				(void *)NULL,		// pvParameters - passed into the task function as the function parameters.
+				( 1UL | portPRIVILEGE_BIT ),// uxPriority - task priority, set the portPRIVILEGE_BIT if the task should run in a privileged state.
+				pxIdleTaskStackBuffer,// puxStackBuffer - the buffer to be used as the task stack.
+
+				// xRegions - Allocate up to three separate memory regions for access by
+				// the task, with appropriate access permissions.  Different processors have
+				// different memory alignment requirements - refer to the FreeRTOS documentation
+				// for full information.
+				// for full information.
+				NULL,
+
+				// The StaticTask_t variable is only included in the structure when configSUPPORT_STATIC_ALLOCATION is set to 1.
+				&pxIdleTaskTCBBuffer // Holds the task's data structure.
+			};
+
+			xTaskCreateRestrictedStatic(&pxIdleTaskDefinition, &xIdleTaskHandle);
+
+		#else // ( portUSING_MPU_WRAPPERS == 1 )
+			StaticTask_t *pxIdleTaskTCBBuffer = NULL;
+			StackType_t *pxIdleTaskStackBuffer = NULL;
+			uint32_t ulIdleTaskStackSize;
+
+			/* The Idle task is created using user provided RAM - obtain the
+			address of the RAM then create the idle task. */
+			vApplicationGetIdleTaskMemory( &pxIdleTaskTCBBuffer, &pxIdleTaskStackBuffer, &ulIdleTaskStackSize );
+
+			xIdleTaskHandle = xTaskCreateStatic(	prvIdleTask,
+													configIDLE_TASK_NAME,
+													ulIdleTaskStackSize,
+													( void * ) NULL, /*lint !e961.  The cast is not redundant for all compilers. */
+													portPRIVILEGE_BIT, /* In effect ( tskIDLE_PRIORITY | portPRIVILEGE_BIT ), but tskIDLE_PRIORITY is zero. */
+													pxIdleTaskStackBuffer,
+													pxIdleTaskTCBBuffer ); /*lint !e961 MISRA exception, justified as it is not a redundant explicit cast to all supported compilers. */
+
+		#endif //( portUSING_MPU_WRAPPERS == 1 )
 
 		if( xIdleTaskHandle != NULL )
 		{

@@ -17,13 +17,13 @@
  *     There is no input for it, just printing related to internal state.
  * */
 
-void taskPrint(void);
+void taskPrint(void * parameter);
 
 /**
  * Define Structures to create print task
  */
 
-#define printTaskParameter NULL
+#define printTaskParameter (void *)NULL
 
 /** This is a dynamic task definition example **/
 
