@@ -7,6 +7,9 @@
 # Command line arguments:
 #   $1 - the name of the program to compile and run. or just run a program if 
 #        $1 == "run". This is optional.
+#   $2 - if $1 is a test program's name, $2 is optional: it can only be "run",
+#   indicating we want to run the program after compiling it, or empty if we
+#   just want to compile and compute the code size overhead.
 #
 
 SILHOUETTE=~/projects/silhouette
@@ -44,7 +47,7 @@ function compile() {
     fi
 
     # Update source file in the beebs project source tree.
-    ./init_proj.sh $1
+    $SCRIPTS_DIR/init_proj.sh $1
 
     # Check if there is a directory for the current program in silhouette/debug.
     # Put the build log and copy the generated binary there.
@@ -74,16 +77,15 @@ function compile() {
     cd $DEBUG_DIR
     $OBJDUMP -d $1.elf > $1.s
 
-    # Move the stats files to the data directory.
-    echo "Moving stats files to the data/mem directory."
+    # Move the code size stat file to the data directory.
+    echo "Moving code_size.stat to both the debug and the data/mem directory."
     MEM_DATA_DIR=$SILHOUETTE/silhouette-misc/data/mem
     if [ ! -d $MEM_DATA_DIR/$1 ]; then
         mkdir -p $MEM_DATA_DIR/$1
     fi
-    stat_files=`ls $BEEBS_PROJ/Debug/*.stats 2>/dev/null`
-    for stat_file in $stat_files; do
-        mv $stat_file $MEM_DATA_DIR/$1
-    done
+    rm $MEM_DATA_DIR/$1/* 2>/dev/null
+    mv $BEEBS_PROJ/Debug/code_size.stat ./
+    cp ./code_size.stat $MEM_DATA_DIR/$1
 }
 
 
@@ -101,12 +103,21 @@ function run() {
 if [ ! $1 == "" ]; then
     if [ $1 == "run" ]; then
         run $1
-    else 
-        compile $1 && run $1
+    else
+        compile $1 
+        $SCRIPTS_DIR/mem-overhead.py $1
+
+        if [ $# == 2 ] && [ $2 == "run" ]; then
+            run $1 
+        fi
     fi
 else
-    for prog in $TEST_FILES; do
-        echo "Compile and Run $prog"
-        compile $prog && run $prog
+    for prog in $SRC_WHITELIST; do
+        echo "Compile $prog"
+        compile $prog 
+        echo "Compute code size overhead of $prog"
+        $SCRIPTS_DIR/mem-overhead.py $prog
+        echo ""
+        # && run $prog
     done
 fi
