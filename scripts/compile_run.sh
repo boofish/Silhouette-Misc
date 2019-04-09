@@ -84,8 +84,10 @@ function compile() {
         mkdir -p $MEM_DATA_DIR/$1
     fi
     rm $MEM_DATA_DIR/$1/* 2>/dev/null
-    mv $BEEBS_PROJ/Debug/code_size.stat ./
-    cp ./code_size.stat $MEM_DATA_DIR/$1
+    if [ -f $BEEBS_PROJ/Debug/code_size.stat ]
+        mv $BEEBS_PROJ/Debug/code_size.stat ./
+        cp ./code_size.stat $MEM_DATA_DIR/$1
+    fi
 }
 
 
@@ -115,9 +117,9 @@ else
     for prog in $SRC_WHITELIST; do
         echo "Compile $prog"
         compile $prog 
-        echo "Compute code size overhead of $prog"
-        $SCRIPTS_DIR/mem-overhead.py $prog
+        # echo "Compute code size overhead of $prog"
+        # $SCRIPTS_DIR/mem-overhead.py $prog
         echo ""
-        # && run $prog
+        run $prog
     done
 fi
