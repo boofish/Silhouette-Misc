@@ -21,7 +21,7 @@ BEEBS_RUN_CFG="$BEEBS_PROJ/beebs Run.cfg"
 BEEBS_SRC=$SILHOUETTE/silhouette-misc/programs/beebs/beebs/src
 
 # GNU ARM toolchain
-OBJDUMP=/home/jie/local/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-objdump
+OBJDUMP=~/local/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-objdump
 
 SRC_BLACKLIST="crc32 ctl ctl-stack ctl-vector fdct"
 SRC_WHITELIST="aha-compress aha-mont64 bs bubblesort cnt compress cover crc    \
