@@ -114,7 +114,7 @@ if [ ! $1 == "" ]; then
         fi
     fi
 else
-    for prog in $SRC_WHITELIST; do
+    for prog in $TEST_FILES; do
         echo "Compile $prog"
         compile $prog 
         # echo "Compute code size overhead of $prog"
