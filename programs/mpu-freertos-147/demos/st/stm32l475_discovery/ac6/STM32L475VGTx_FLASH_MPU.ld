@@ -34,6 +34,7 @@ ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
 _estack = 0x20018000;    /* end of RAM 96k*/
+
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size = 0x0000;     /* required amount of heap */  
 _Min_Stack_Size = 0x800; /* 0x758, 0x800 required amount of stack 2K */ /* reduced due to overflow 168 bytes in RAM2 */
@@ -154,19 +155,20 @@ SECTIONS
   {
   	. = ALIGN(0x20);
   	__privileged_data_start__ = .;
-  	_sdata = .;
+	_sdata = .;
   	*(privileged_data);
   	. = ALIGN(0x20);
   	__privileged_data_end__ = .;
   } > RAM2 AT>FLASH
+
   /* Initialized data sections goes into RAM, load LMA copy after code */
   .data : 
   {
     . = ALIGN(8);
-    /* _sdata = .;   */     /* create a global symbol at data start */
+    /* _sdata = .;  */      /* create a global symbol at data start */
     *(.data)           /* .data sections */
     *(.data*)          /* .data* sections */
-    *(.freertos_heap2)
+    /* *(.freertos_heap2)*/
     . = ALIGN(8);
     _edata = .;        /* define a global symbol at data end */
   } >RAM2 AT> FLASH 
@@ -185,6 +187,8 @@ SECTIONS
     *(.bss*)
     *(COMMON)
 
+    *(.freertos_heap2)
+    
     . = ALIGN(4);
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
@@ -199,7 +203,7 @@ SECTIONS
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(8);
-  } >RAM
+  } >RAM2
   /* >RAM2 */
 
   
@@ -226,7 +230,8 @@ __FLASH_segment_end__ = __FLASH_segment_start__ + LENGTH( FLASH );
 __privileged_functions_start__ = ORIGIN( FLASH );
 __privileged_functions_end__ = __privileged_functions_start__ + _Privileged_Functions_Region_Size;
 __SRAM_segment_start__ = ORIGIN( RAM2 );
-__SRAM_segment_end__ = __SRAM_segment_start__ + LENGTH( RAM2 );
+/* __SRAM_segment_end__ = __SRAM_segment_start__ + LENGTH( RAM2 ); */
+__SRAM_segment_end__ = ORIGIN( RAM ) + LENGTH( RAM ); /* regard RAM as a single region, with a hole in it. */
 
 _Privileged_Data_Region_Size = __privileged_data_end__ - __privileged_data_start__;
 

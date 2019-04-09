@@ -56,7 +56,7 @@
 #define configTICK_RATE_HZ                           ( ( TickType_t ) 1000 )
 #define configMAX_PRIORITIES                         ( 7 )
 #define configMINIMAL_STACK_SIZE                     ( ( uint16_t ) 90 )
-#define configTOTAL_HEAP_SIZE                        ( ( size_t ) ( 60 * 1024 ) )
+#define configTOTAL_HEAP_SIZE                        ( ( size_t ) ( 4 * 1024 ) ) //( ( size_t ) ( 60 * 1024 ) )
 #define configMAX_TASK_NAME_LEN                      ( 16 )
 #define configUSE_TRACE_FACILITY                     1
 #define configUSE_16_BIT_TICKS                       0
@@ -77,7 +77,7 @@
 #define configMAX_CO_ROUTINE_PRIORITIES              ( 2 )
 
 /* Software timer definitions. */
-#define configUSE_TIMERS                             1
+#define configUSE_TIMERS                             0 // 1. lele: disable timer task for testing.
 #define configTIMER_TASK_PRIORITY                    ( configMAX_PRIORITIES - 2 )
 #define configTIMER_QUEUE_LENGTH                     10
 #define configTIMER_TASK_STACK_DEPTH                 ( configMINIMAL_STACK_SIZE * 6 )
