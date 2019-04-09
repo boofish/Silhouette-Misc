@@ -32,7 +32,8 @@
  * C portion of the SVC handler.  The SVC handler is split between an asm entry
  * and a C wrapper for simplicity of coding and maintenance.
  */
-static void prvSVCHandler( uint32_t *pulRegisters );
+
+static void prvSVCHandler(	uint32_t *pulParam ) __attribute__(( noinline ));
 
 void SVC_Handler( void )
 {
@@ -55,7 +56,7 @@ uint8_t ucSVCNumber;
 
 	/* The stack contains: r0, r1, r2, r3, r12, r14, the return address and
 	xPSR.  The first argument (r0) is pulParam[ 0 ]. */
-	ucSVCNumber =  ( ( uint8_t * ) pulParam[ 6 ] )[ -2 ];
+	ucSVCNumber =  2;//( ( uint8_t * ) pulParam[ 6 ] )[ -2 ];
 	switch( ucSVCNumber )
 	{
 //		case portSVC_START_SCHEDULER	:	portNVIC_SYSPRI1_REG |= portNVIC_SVC_PRI;

@@ -143,15 +143,16 @@ void initMPU(void){
 }
 
 
-int raisePrivilege(){
+int raisePrivilege(void){
 	/* TODO: need to switch the stack */
 	__asm volatile
 	(
 		"	mrs r0, control						\n"
 		"	tst r0, #1							\n" /* Is the task running privileged? */
-		"	itt ne								\n"
+		"	itte ne								\n"
 		"	movne r0, #0						\n" /* CONTROL[0]!=0, return false. */
 		"	svcne %0							\n" /* Switch to privileged. */
+		"	moveq r0, #1						\n" /* CONTROL[0]==0, (lele) already privileged, do nothing, and return true. */
 		"	bx lr								\n"
 		:: "i" (portSVC_RAISE_PRIVILEGE) : "r0", "memory"
 	);
@@ -324,12 +325,6 @@ void mpuTest(){
 
 	printRegs();
 
-    __asm volatile
-    	( "ldrt r0, %0\n"
-    	  ::"m"(shadow_stack_data): "r0","memory"
-    	); // 0x0
-
-	// read shadow
 
     __asm volatile
     	( "ldr r0, %0\n"

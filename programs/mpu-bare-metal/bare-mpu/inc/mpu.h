@@ -56,7 +56,7 @@ extern char pub_stack_data[];
 
 void initMPU(void);
 
-int raisePrivilege(void);
+int raisePrivilege(void) __attribute__(( naked ));
 
 void dropPrivilege(void);
 
