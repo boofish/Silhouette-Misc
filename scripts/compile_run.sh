@@ -84,7 +84,7 @@ function compile() {
         mkdir -p $MEM_DATA_DIR/$1
     fi
     rm $MEM_DATA_DIR/$1/* 2>/dev/null
-    if [ -f $BEEBS_PROJ/Debug/code_size.stat ]
+    if [ -f $BEEBS_PROJ/Debug/code_size.stat ]; then
         mv $BEEBS_PROJ/Debug/code_size.stat ./
         cp ./code_size.stat $MEM_DATA_DIR/$1
     fi
