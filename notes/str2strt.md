@@ -8,9 +8,10 @@
   ~~- Encoding 1~~
   ~~- Encoding 2~~
 
-- push (?)
+~~- push (?)~~
+~~- store multiple words~~
 - inline asm (?)
-- store multiple words
+- VSTMSIA_UPD
 
 
 
