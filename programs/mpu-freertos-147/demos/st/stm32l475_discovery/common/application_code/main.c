@@ -48,6 +48,28 @@ void vApplicationGetIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer,
 }
 /*-----------------------------------------------------------*/
 
+void vApplicationIdleHook( void )
+{
+}
+/*-----------------------------------------------------------*/
+
+/**
+ * @brief Warn user if pvPortMalloc fails.
+ *
+ * Called if a call to pvPortMalloc() fails because there is insufficient
+ * free memory available in the FreeRTOS heap.  pvPortMalloc() is called
+ * internally by FreeRTOS API functions that create tasks, queues, software
+ * timers, and semaphores.  The size of the FreeRTOS heap is set by the
+ * configTOTAL_HEAP_SIZE configuration constant in FreeRTOSConfig.h.
+ *
+ */
+void vApplicationMallocFailedHook()
+{
+    taskDISABLE_INTERRUPTS();
+    for( ;; );
+}
+/*-----------------------------------------------------------*/
+
 
 /**
  * @brief Loop forever if stack overflow is detected.

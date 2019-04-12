@@ -112,6 +112,7 @@ static const TaskParameters_t fibTaskDynamicParameters =
 	STACK_SIZE,		// usStackDepth	- the stack size DEFINED IN WORDS.
 	fibTaskParameter,		// pvParameters - passed into the task function as the function parameters.
 	( 1UL | portPRIVILEGE_BIT ),// uxPriority - task priority, set the portPRIVILEGE_BIT if the task should run in a privileged state.
+	//( 1UL ),// uxPriority - task priority, set the portPRIVILEGE_BIT if the task should run in a privileged state.
 	fibDynamicStackBuffer,// puxStackBuffer - the buffer to be used as the task stack.
 
 	// xRegions - Allocate up to three separate memory regions for access by
