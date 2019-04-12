@@ -19,17 +19,26 @@ void taskPrint(void * parameter){
 
 	 (void *)parameter; // not used
 
-	unsigned long delay = 10000;
+	unsigned long delay = 1000;
 
 	for (;;){
 
 		unsigned int i = 0;
 		unsigned long j;
-		for (;i<delay; i++){
+
+		printf("print task\r\n");
+		for (i=0 ;i< delay * (iters%delay) ; i++){
 			j=i*i + iters; // do something, for the delay
 		}
 
-		printf("print task: iters=%lu, j=%lu\r\n", iters, j);
+		printf("nice...\r\n"); // once any of '\r\n' is ignored, all the following prints will be lost. Why?
+		//printf("print task: iters=%lu, j=%lu\r\n", iters, j);
+		for (i = 0; i< iters%10; i++) printf("nice:-)\r\n");
+		printf("\r\n");
+
+//		printf("print task j=%ld\r\n", j);
+
+//		printf("print task iters=%ld\r\n", iters);
 
 		iters ++ ;
 

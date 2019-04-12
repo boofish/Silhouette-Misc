@@ -19,37 +19,6 @@
 
 void taskPrint(void * parameter);
 
-/**
- * Define Structures to create print task
- */
-
-#define printTaskParameter (void *)NULL
-
-/** This is a dynamic task definition example **/
-
-static StackType_t printTaskStackBuffer[STACK_SIZE * 2] __attribute__ ((aligned (32)));
-// Create an TaskParameters_t structure that defines the task to be created.
-static const TaskParameters_t printTaskParameters =
-{
-	taskPrint,		// pvTaskCode - the function that implements the task.
-	"task_print",	// pcName - just a text name for the task to assist debugging.
-	STACK_SIZE,		// usStackDepth	- the stack size DEFINED IN WORDS.
-	printTaskParameter,		// pvParameters - passed into the task function as the function parameters.
-	( 1UL | portPRIVILEGE_BIT ),// uxPriority - task priority, set the portPRIVILEGE_BIT if the task should run in a privileged state.
-	printTaskStackBuffer,// puxStackBuffer - the buffer to be used as the task stack.
-
-	// xRegions - Allocate up to three separate memory regions for access by
-	// the task, with appropriate access permissions.  Different processors have
-	// different memory alignment requirements - refer to the FreeRTOS documentation
-	// for full information.
-	{
-		// {Base address,	Length,	Parameters}
-		{ &printTaskStackBuffer[STACK_SIZE],	STACK_SIZE_IN_BYTES, portMPU_REGION_PRIVILEGED_READ_WRITE }, // shadow stack.
-		{ 0,0,0 }, // the other two region left unused.
-		{ 0,0,0 }
-	}
-};
-
 
 /******************* Example task Fibonacci ************************/
 
@@ -94,15 +63,46 @@ void taskFibDynamic(void * parameter);
 
 
 /**
- * Define Structures to create fibonacci tasks
+ * Define Structures to create tasks
  */
 
+
+// structure for print task
+
+#define printTaskParameter (void *)NULL
+
+//This is a dynamic task definition
+
+static StackType_t printTaskStackBuffer[STACK_SIZE * 2] __attribute__ ((aligned (32)));
+// Create an TaskParameters_t structure that defines the task to be created.
+static const TaskParameters_t printTaskParameters =
+{
+	taskPrint,		// pvTaskCode - the function that implements the task.
+	"task_print",	// pcName - just a text name for the task to assist debugging.
+	STACK_SIZE,		// usStackDepth	- the stack size DEFINED IN WORDS.
+	printTaskParameter,		// pvParameters - passed into the task function as the function parameters.
+	( 1UL | portPRIVILEGE_BIT ),// uxPriority - task priority, set the portPRIVILEGE_BIT if the task should run in a privileged state.
+	printTaskStackBuffer,// puxStackBuffer - the buffer to be used as the task stack.
+
+	// xRegions - Allocate up to three separate memory regions for access by
+	// the task
+	{
+		// {Base address,	Length,	Parameters}
+		{ &printTaskStackBuffer[STACK_SIZE],	STACK_SIZE_IN_BYTES, portMPU_REGION_PRIVILEGED_READ_WRITE }, // shadow stack.
+		{ 0,0,0 }, // the other two region left unused.
+		{ 0,0,0 }
+	}
+};
+
+
+/**
+ * structure for fibDynamic task
+ */
 static int fib_n = 4;
 
 #define fibTaskParameter (void *)&fib_n
 
-/** This is a dynamic task definition example **/
-
+/// This is a dynamic task definition
 static StackType_t fibDynamicStackBuffer[STACK_SIZE * 2] __attribute__ ((aligned (32)));
 // Create an TaskParameters_t structure that defines the task to be created.
 static const TaskParameters_t fibTaskDynamicParameters =
@@ -116,9 +116,7 @@ static const TaskParameters_t fibTaskDynamicParameters =
 	fibDynamicStackBuffer,// puxStackBuffer - the buffer to be used as the task stack.
 
 	// xRegions - Allocate up to three separate memory regions for access by
-	// the task, with appropriate access permissions.  Different processors have
-	// different memory alignment requirements - refer to the FreeRTOS documentation
-	// for full information.
+	// the task, with appropriate access permissions.
 	{
 		// {Base address,	Length,	Parameters}
 		{ &fibDynamicStackBuffer[STACK_SIZE],	STACK_SIZE_IN_BYTES, portMPU_REGION_PRIVILEGED_READ_WRITE }, // shadow stack.
@@ -127,13 +125,8 @@ static const TaskParameters_t fibTaskDynamicParameters =
 	}
 };
 
-/**
- * Create an TaskParameters_t structure that defines the task to be created.
- *
- * This is a static task definition example.
- */
+// This is a static task definition.
 
-//
 static StaticTask_t fibStaticTaskBuffer;
 
 static StackType_t fibStaticStackBuffer[STACK_SIZE * 2] __attribute__ ((aligned (32)));
@@ -148,10 +141,7 @@ static const TaskParameters_t fibTaskStaticParameters =
 	fibStaticStackBuffer,// puxStackBuffer - the buffer to be used as the task stack.
 
 	// xRegions - Allocate up to three separate memory regions for access by
-	// the task, with appropriate access permissions.  Different processors have
-	// different memory alignment requirements - refer to the FreeRTOS documentation
-	// for full information.
-	// for full information.
+	// the task, with appropriate access permissions.
 	{
 		// {Base address,	Length,	Parameters}
 		{ &fibStaticStackBuffer[STACK_SIZE],	STACK_SIZE_IN_BYTES, portMPU_REGION_PRIVILEGED_READ_WRITE }, // shadow stack.

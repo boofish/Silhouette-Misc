@@ -161,10 +161,10 @@ int main(void)
 
 	TaskHandle_t xHandlePrint, xHandleFibStatic, xHandleFibDynamic;
 
-//	xTaskCreateRestricted( &printTaskParameters, &xHandlePrint );
+	xTaskCreateRestricted( &printTaskParameters, &xHandlePrint );
 	// set up shadow stack permissions after dynamic allocation
 
-	xTaskCreateRestricted( &fibTaskDynamicParameters, &xHandleFibDynamic );
+//	xTaskCreateRestricted( &fibTaskDynamicParameters, &xHandleFibDynamic );
 	// set up shadow stack permissions after dynamic allocation
 
 //	xTaskCreateRestrictedStatic( &fibTaskStaticParameters, &xHandleFibStatic );
