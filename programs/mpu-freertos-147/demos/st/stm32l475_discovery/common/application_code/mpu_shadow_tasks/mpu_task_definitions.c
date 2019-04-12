@@ -36,7 +36,7 @@ void taskPrint(void * parameter){
 		for (i = 0; i< iters%10; i++) printf("nice:-)\r\n");
 		printf("\r\n");
 
-//		printf("print task j=%ld\r\n", j);
+//		printf("print task j=%ld\r\n", j); // TODO: need debugging.
 
 //		printf("print task iters=%ld\r\n", iters);
 

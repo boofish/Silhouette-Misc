@@ -53,7 +53,7 @@ extern "C" {
 #define portBASE_TYPE	long
 
 //Lele: Use a constant stack size for all apps, for easiness of shadow stack setup
-#define portSTACK_SIZE  128
+#define portSTACK_SIZE  256 //128: overflow for fibDyn & print
 #define STACK_SIZE		portSTACK_SIZE
 #define STACK_SIZE_IN_BYTES (STACK_SIZE * sizeof (StackType_t))
 
