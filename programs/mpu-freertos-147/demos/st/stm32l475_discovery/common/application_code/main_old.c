@@ -33,6 +33,8 @@
  *    'Software System Reset' is selected.
  */
 
+#if 0
+
 #include "main.h"
 #include "stdint.h"
 #include "stdarg.h"
@@ -935,3 +937,5 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     }
 }
 /*-----------------------------------------------------------*/
+
+#endif //0
