@@ -91,6 +91,7 @@ int verify_benchmark(int unused)
 
 int main(void)
 {
+
     // Initialize the printer.
 	Console_UART_Init();
 
@@ -99,6 +100,8 @@ int main(void)
     uint32_t t_start, t_end, t;
 
     // Record running time.
+    printf("Start to run bs.");
+    printf("\r\n");
 	HAL_Init();
 	t_start = HAL_GetTick();
 	int num_of_err = benchmark();
@@ -117,5 +120,6 @@ int main(void)
     } else{
 		printf("Finished in %u ms, but verify_benchmark() found errors.\r\n\n", t);
 	}
+
 	return 0;
 }
