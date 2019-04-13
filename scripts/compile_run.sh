@@ -24,9 +24,11 @@ BEEBS_SRC=$SILHOUETTE/silhouette-misc/programs/beebs/beebs/src
 OBJDUMP=~/local/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-objdump
 
 SRC_BLACKLIST="crc32 ctl ctl-stack ctl-vector fdct"
-SRC_WHITELIST="aha-compress aha-mont64 bs bubblesort cnt compress cover crc    \
-               ctl-string cubic dijkstra dtoa duff edn expint fac fasta        \
-               fibcall fir frac huffbench"
+SRC_WHITELIST="
+aha-compress aha-mont64 bs bubblesort cnt compress cover crc    \
+ctl-string cubic dijkstra dtoa duff edn expint fac fasta        \
+fibcall fir frac huffbench insertsort janne_complex jdfctint lcdnum levenshtein \
+ludcmp miniz minver nbody ndes nettle-arcfour nettle-cast128 nettle-des"
 
 TEST_FILES="cubic
 aha-compress
@@ -59,7 +61,7 @@ function compile() {
     DEBUG_DIR=$SILHOUETTE/debug/$1
 
     # cleanup the debug directory for the program
-    rm -f $DEBUG_DIR/* 
+    rm -f `ls -I $DEBUG_DIR/baseline.s $DEBUG_DIR/*`
 
     # compile
     cd $SCRIPTS_DIR
@@ -108,17 +110,17 @@ if [ ! $1 == "" ]; then
     else
         compile $1 
         $SCRIPTS_DIR/mem-overhead.py $1
-
+        # weather to run the program is optional
         if [ $# == 2 ] && [ $2 == "run" ]; then
             run $1 
         fi
     fi
 else
-    for prog in $TEST_FILES; do
+    for prog in $SRC_WHITELIST; do
         echo "Compile $prog"
         compile $prog 
-        # echo "Compute code size overhead of $prog"
-        # $SCRIPTS_DIR/mem-overhead.py $prog
+        echo "Compute code size overhead of $prog"
+        $SCRIPTS_DIR/mem-overhead.py $prog
         echo ""
         run $prog
     done
