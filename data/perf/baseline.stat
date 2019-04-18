@@ -1,0 +1,107 @@
+Start to run aha-compress.
+Finished successfully: in 3 ms.
+
+Start to run aha-mont64.
+Finished successfully: in 3 ms.
+
+Start to run bs.
+Finished in 0 ms, but no verify_benchmark() run.
+
+Start to run bubblesort.
+Finished successfully: in 25 ms.
+
+Start to run cnt.
+Finished successfully: in 0 ms.
+
+Start to run compress.
+Finished in 1 ms, but no verify_benchmark() run.
+
+Start to run cover.
+Finished successfully: in 0 ms.
+
+Start to run crc.
+len = 40
+len = 42
+Finished in 7 ms, but no verify_benchmark() run.
+
+Start to run ctl-string.
+Finished successfully: in 5 ms.
+
+Start to run cubic.
+Finished in 114 ms, but no verify_benchmark() run.
+
+Start to run dijkstra.
+Finished successfully: in 257 ms.
+
+Start to run dtoa.
+Finished successfully: in 2 ms.
+
+Start to run duff.
+Finished successfully: in 0 ms.
+
+Start to run edn.
+Finished successfully: in 13 ms.
+
+Start to run expint.
+Finished successfully: in 0 ms.
+
+Start to run fac.
+Finished successfully: in 0 ms.
+
+Start to run fasta.
+Finished in 104 ms, but no verify_benchmark() run.
+
+Start to run fibcall.
+Finished successfully: in 0 ms.
+
+Start to run fir.
+Finished in 50 ms, but no verify_benchmark() run.
+
+Start to run frac.
+Finished successfully: in 32 ms.
+
+Start to run huffbench.
+Finished in 80 ms, but no verify_benchmark() run.
+
+Start to run insertsort.
+Finished successfully: in 0 ms.
+
+Start to run janne_complex.
+Finished successfully: in 0 ms.
+
+Start to run jfdctint.
+Finished successfully: in 0 ms.
+
+Start to run lcdnum.
+Finished in 0 ms, but no verify_benchmark() run.
+
+Start to run levenshtein.
+Finished successfully: in 11 ms.
+
+Start to run ludcmp.
+Finished successfully: in 0 ms.
+
+Start to run miniz.
+Finished in 0 ms, but no verify_benchmark() run.
+
+Start to run minver.
+Finished in 0 ms, but no verify_benchmark() run.
+
+Start to run nbody.
+Finished successfully: in 735 ms.
+
+Start to run ndes.
+Finished successfully: in 10 ms.
+
+Start to run nettle-arcfour.
+Finished successfully: in 3 ms.
+
+Start to run nettle-cast128.
+Finished successfully: in 0 ms.
+
+Start to run nettle-des.
+Finished successfully: in 0 ms.
+
+Start to run fasta.
+Finished in 103 ms, but no verify_benchmark() run.
+
