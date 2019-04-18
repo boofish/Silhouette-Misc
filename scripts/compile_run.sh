@@ -27,8 +27,8 @@ SRC_BLACKLIST="crc32 ctl ctl-stack ctl-vector fdct"
 SRC_WHITELIST="
 aha-compress aha-mont64 bs bubblesort cnt compress cover crc    \
 ctl-string cubic dijkstra dtoa duff edn expint fac fasta        \
-fibcall fir frac huffbench insertsort janne_complex jdfctint lcdnum levenshtein \
-ludcmp miniz minver nbody ndes nettle-arcfour nettle-cast128 nettle-des"
+fibcall fir frac huffbench insertsort janne_complex jfdctint lcdnum levenshtein \
+ludcmp miniz minver nbody ndes nettle-arcfour nettle-cast128 nettle-des nettle-md5"
 
 TEST_FILES="cubic
 aha-compress
