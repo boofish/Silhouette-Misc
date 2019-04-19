@@ -5,3 +5,6 @@
 
 *.ll
 *.bc
+
+# Vim intermediate file
+*.swp
