@@ -120,6 +120,12 @@ function update_prog() {
         echo "Copying $src_file to $BEEBS_PROJ."
         cp $src_file $BEEBS_PROJ/src
     done
+
+    # Update main.c to print the name of the test program when run it.
+    echo "Updating the message printed in main.c"
+    new_printf="\ \ \ \ printf(\"Start to run $1.\");"
+    sed -i '103d' $BEEBS_PROJ/src/main.c
+    sed -i "102a$new_printf" $BEEBS_PROJ/src/main.c
 }
 
 
