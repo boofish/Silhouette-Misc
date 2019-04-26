@@ -30,6 +30,14 @@ ctl-string cubic dijkstra dtoa duff edn expint fac fasta        \
 fibcall fir frac huffbench insertsort janne_complex jfdctint lcdnum levenshtein \
 ludcmp miniz minver nbody ndes nettle-arcfour nettle-cast128 nettle-des nettle-md5"
 
+SRC_WHITELIST2="
+newlib-exp newlib-log newlib-mod newlib-sqrt ns nsichneu picojpeg prime qrduino
+qsort qurt recursion rijndael select sglib-arraybinsearch sglib-arraysort
+sglib-dllist sglib-hashtable sglib-listinsertsort sglib-listsort sglib-queue
+sglib-rbtree slre sqrt st statemate stb_perlin stringsearch1 strstr tarai ud whetstone"
+
+SRC_ALL="$SRC_WHITELIST $SRC_WHITELIST2"
+
 TEST_FILES="cubic
 aha-compress
 aha-mont64
@@ -116,7 +124,7 @@ if [ ! $1 == "" ]; then
         fi
     fi
 else
-    for prog in $SRC_WHITELIST; do
+    for prog in $SRC_ALL; do
         echo "Compile $prog"
         compile $prog 
         echo "Compute code size overhead of $prog"
