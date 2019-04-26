@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>bare-mpu-nortos</name>
+	<name>bare-mpu-nortos-clang</name>
 	<comment></comment>
 	<projects>
 	</projects>

@@ -653,7 +653,7 @@ BaseType_t xPortRaisePrivilege( void )
 		:: "i" (portSVC_RAISE_PRIVILEGE) : "r0", "memory"
 	);
 
-	return 0; /* Lele: never reached here. */
+	//return 0; /* Lele: never reached here. */
 }
 /*-----------------------------------------------------------*/
 

@@ -156,7 +156,7 @@ int raisePrivilege(void){
 		"	bx lr								\n"
 		:: "i" (portSVC_RAISE_PRIVILEGE) : "r0", "memory"
 	);
-	return 0; // never reached.
+	//return 0; // never reached.
 }
 
 
