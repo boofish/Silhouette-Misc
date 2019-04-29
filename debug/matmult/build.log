@@ -1,0 +1,421 @@
+eclipse -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ~/projects/silhouette/projs -cleanBuild beebs 
+/home/jie/projects/silhouette/silhouette-misc/scripts
+18:05:04 **** Clean-only build of configuration Debug for project beebs ****
+make -j8 clean 
+make[1]: Entering directory '/home/jie/projects/silhouette/projs/beebs/Debug'
+rm -rf *
+ 
+make[1]: Leaving directory '/home/jie/projects/silhouette/projs/beebs/Debug'
+
+18:05:04 Build Finished (took 62ms)
+
+18:05:05 **** Clean-only build of configuration Debug for project beebs ****
+make -j8 clean 
+make[1]: *** No rule to make target 'clean'.  Stop.
+make[1]: Entering directory '/home/jie/projects/silhouette/projs/beebs/Debug'
+make[1]: Leaving directory '/home/jie/projects/silhouette/projs/beebs/Debug'
+
+18:05:05 Build Finished (took 56ms)
+
+RXTX fhs_lock() Error: opening lock file: /var/lock/LCK..ttyACM0: File exists.
+p² testRead() Lock file failed
+RXTX fhs_lock() Error: opening lock file: /var/lock/LCK..ttyACM0: File exists.
+P² testRead() Lock file failed
+RXTX fhs_lock() Error: opening lock file: /var/lock/LCK..ttyACM0: File exists.
+ testRead() Lock file failed
+18:05:07 **** Build of configuration Debug for project beebs ****
+make -j8 all 
+make[1]: Entering directory '/home/jie/projects/silhouette/projs/beebs/Debug'
+Building file: ../startup/startup_stm32l475xx.s
+Building file: ../src/main.c
+Building file: ../src/matmult.c
+Invoking: MCU GCC Assembler
+Invoking: MCU GCC Compiler
+Building file: ../src/stm32l4xx_it.c
+Invoking: MCU GCC Compiler
+/home/jie/projects/silhouette/projs/beebs/Debug
+/home/jie/projects/silhouette/projs/beebs/Debug
+Invoking: MCU GCC Compiler
+/home/jie/projects/silhouette/projs/beebs/Debug
+arm-none-eabi-as -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -g -o "startup/startup_stm32l475xx.o" "../startup/startup_stm32l475xx.s"
+Building file: ../src/syscalls.c
+/home/jie/projects/silhouette/build/bin/clang -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DDEBUG -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I/home/jie/Applications/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/arm-none-eabi/include -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O2 -g3 -Wall -fmessage-length=0 --target=arm-none-eabi -Xclang -backend-option -Xclang -enable-arm-silhouette-str2strt -ffunction-sections -c -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+/home/jie/projects/silhouette/build/bin/clang -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DDEBUG -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I/home/jie/Applications/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/arm-none-eabi/include -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O2 -g3 -Wall -fmessage-length=0 --target=arm-none-eabi -Xclang -backend-option -Xclang -enable-arm-silhouette-str2strt -ffunction-sections -c -MMD -MP -MF"src/matmult.d" -MT"src/matmult.o" -o "src/matmult.o" "../src/matmult.c"
+/home/jie/projects/silhouette/projs/beebs/Debug
+Invoking: MCU GCC Compiler
+/home/jie/projects/silhouette/build/bin/clang -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DDEBUG -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I/home/jie/Applications/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/arm-none-eabi/include -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O2 -g3 -Wall -fmessage-length=0 --target=arm-none-eabi -Xclang -backend-option -Xclang -enable-arm-silhouette-str2strt -ffunction-sections -c -MMD -MP -MF"src/stm32l4xx_it.d" -MT"src/stm32l4xx_it.o" -o "src/stm32l4xx_it.o" "../src/stm32l4xx_it.c"
+Building file: ../src/system_stm32l4xx.c
+Invoking: MCU GCC Compiler
+Building file: ../Utilities/Components/wm8994/wm8994.c
+/home/jie/projects/silhouette/projs/beebs/Debug
+Building file: ../Utilities/Components/stmpe811/stmpe811.c
+/home/jie/projects/silhouette/build/bin/clang -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DDEBUG -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I/home/jie/Applications/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/arm-none-eabi/include -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O2 -g3 -Wall -fmessage-length=0 --target=arm-none-eabi -Xclang -backend-option -Xclang -enable-arm-silhouette-str2strt -ffunction-sections -c -MMD -MP -MF"src/syscalls.d" -MT"src/syscalls.o" -o "src/syscalls.o" "../src/syscalls.c"
+/home/jie/projects/silhouette/projs/beebs/Debug
+/home/jie/projects/silhouette/build/bin/clang -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DDEBUG -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I/home/jie/Applications/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/arm-none-eabi/include -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O2 -g3 -Wall -fmessage-length=0 --target=arm-none-eabi -Xclang -backend-option -Xclang -enable-arm-silhouette-str2strt -ffunction-sections -c -MMD -MP -MF"src/system_stm32l4xx.d" -MT"src/system_stm32l4xx.o" -o "src/system_stm32l4xx.o" "../src/system_stm32l4xx.c"
+Invoking: MCU GCC Compiler
+Invoking: MCU GCC Compiler
+/home/jie/projects/silhouette/projs/beebs/Debug
+/home/jie/projects/silhouette/build/bin/clang -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DDEBUG -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I/home/jie/Applications/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/arm-none-eabi/include -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O2 -g3 -Wall -fmessage-length=0 --target=arm-none-eabi -Xclang -backend-option -Xclang -enable-arm-silhouette-str2strt -ffunction-sections -c -MMD -MP -MF"Utilities/Components/stmpe811/stmpe811.d" -MT"Utilities/Components/stmpe811/stmpe811.o" -o "Utilities/Components/stmpe811/stmpe811.o" "../Utilities/Components/stmpe811/stmpe811.c"
+/home/jie/projects/silhouette/projs/beebs/Debug
+/home/jie/projects/silhouette/build/bin/clang -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DDEBUG -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I/home/jie/Applications/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/arm-none-eabi/include -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O2 -g3 -Wall -fmessage-length=0 --target=arm-none-eabi -Xclang -backend-option -Xclang -enable-arm-silhouette-str2strt -ffunction-sections -c -MMD -MP -MF"Utilities/Components/wm8994/wm8994.d" -MT"Utilities/Components/wm8994/wm8994.o" -o "Utilities/Components/wm8994/wm8994.o" "../Utilities/Components/wm8994/wm8994.c"
+Finished building: ../startup/startup_stm32l475xx.s
+ 
+../src/matmult.c:97:2: error: "No SCALE_FACTOR defined"
+#error "No SCALE_FACTOR defined"
+ ^
+../src/matmult.c:111:1: error: unknown type name 'matrix'
+matrix ArrayA, ArrayB, ResultArray;
+^
+../src/matmult.c:113:15: error: unknown type name 'matrix'
+void Multiply(matrix A, matrix B, matrix Res);
+              ^
+../src/matmult.c:113:25: error: unknown type name 'matrix'
+void Multiply(matrix A, matrix B, matrix Res);
+                        ^
+../src/matmult.c:113:35: error: unknown type name 'matrix'
+void Multiply(matrix A, matrix B, matrix Res);
+                                  ^
+../src/matmult.c:115:11: error: unknown type name 'matrix'
+void Test(matrix A, matrix B, matrix Res);
+          ^
+../src/matmult.c:115:21: error: unknown type name 'matrix'
+void Test(matrix A, matrix B, matrix Res);
+                    ^
+../src/matmult.c:115:31: error: unknown type name 'matrix'
+void Test(matrix A, matrix B, matrix Res);
+                              ^
+../src/matmult.c:116:17: error: unknown type name 'matrix'
+void Initialize(matrix Array);
+                ^
+../src/matmult.c:121:17: error: use of undeclared identifier 'ArrayB'
+Building file: ../Utilities/Components/stmpe1600/stmpe1600.c
+   Test(ArrayA, ArrayB, ResultArray);
+                ^
+../src/matmult.c:121:25: error: use of undeclared identifier 'ResultArray'
+   Test(ArrayA, ArrayB, ResultArray);
+                        ^
+../src/matmult.c:139:11: error: unknown type name 'matrix'
+void Test(matrix A, matrix B, matrix Res)
+          ^
+../src/matmult.c:139:21: error: unknown type name 'matrix'
+void Test(matrix A, matrix B, matrix Res)
+                    ^
+../src/matmult.c:139:31: error: unknown type name 'matrix'
+void Test(matrix A, matrix B, matrix Res)
+                              ^
+../src/matmult.c:149:33: error: use of undeclared identifier 'MOD_SIZE'
+   Seed = ((Seed * 133) + 81) % MOD_SIZE;
+                                ^
+../src/matmult.c:156:15: error: unknown type name 'matrix'
+void Multiply(matrix A, matrix B, matrix Res)
+              ^
+../src/matmult.c:156:25: error: unknown type name 'matrix'
+void Multiply(matrix A, matrix B, matrix Res)
+                        ^
+../src/matmult.c:156:35: error: unknown type name 'matrix'
+void Multiply(matrix A, matrix B, matrix Res)
+                                  ^
+../src/matmult.c:160:28: error: use of undeclared identifier 'UPPERLIMIT'
+   for (Outer = 0; Outer < UPPERLIMIT; Outer++)
+                           ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+src/subdir.mk:30: recipe for target 'src/matmult.o' failed
+make[1]: *** [src/matmult.o] Error 1
+make[1]: *** Waiting for unfinished jobs....
+Invoking: MCU GCC Compiler
+/home/jie/projects/silhouette/projs/beebs/Debug
+/home/jie/projects/silhouette/build/bin/clang -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DDEBUG -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I/home/jie/Applications/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/arm-none-eabi/include -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O2 -g3 -Wall -fmessage-length=0 --target=arm-none-eabi -Xclang -backend-option -Xclang -enable-arm-silhouette-str2strt -ffunction-sections -c -MMD -MP -MF"Utilities/Components/stmpe1600/stmpe1600.d" -MT"Utilities/Components/stmpe1600/stmpe1600.o" -o "Utilities/Components/stmpe1600/stmpe1600.o" "../Utilities/Components/stmpe1600/stmpe1600.c"
+Silhouette: hello from function: initialise_monitor_handles
+Silhouette: hello from function: _getpid
+Silhouette: hello from function: _kill
+Silhouette: hello from function: _exit
+Silhouette: hello from function: _read
+Silhouette: hello from function: _write
+Silhouette: hello from function: _sbrk
+Silhouette: hello from function: _close
+Silhouette: hello from function: _fstat
+Silhouette: hello from function: _isatty
+Silhouette: hello from function: _lseek
+Silhouette: hello from function: _open
+Silhouette: hello from function: _wait
+Silhouette: hello from function: _unlink
+Silhouette: hello from function: _times
+Silhouette: hello from function: _stat
+Silhouette: hello from function: _link
+Silhouette: hello from function: _fork
+Silhouette: hello from function: _execve
+Finished building: ../src/syscalls.c
+ 
+Silhouette: hello from function: wm8994_Init
+Silhouette: hello from function: wm8994_DeInit
+Silhouette: hello from function: wm8994_ReadID
+Silhouette: hello from function: wm8994_Play
+Silhouette: hello from function: wm8994_Pause
+Silhouette: hello from function: wm8994_Resume
+Silhouette: hello from function: wm8994_Stop
+Silhouette: hello from function: stmpe811_Init
+Silhouette: hello from function: stmpe811_ReadID
+Silhouette: hello from function: wm8994_SetFrequency
+Silhouette: hello from function: stmpe811_Reset
+Silhouette: hello from function: Silhouette: hello from function: wm8994_SetVolumestmpe811_TS_Start
+
+Silhouette: hello from function: stmpe1600_Init
+Silhouette: hello from function: stmpe1600_ReadID
+Silhouette: hello from function: wm8994_SetMute
+Silhouette: hello from function: stmpe811_TS_DetectTouch
+Silhouette: hello from function: stmpe1600_Reset
+Silhouette: hello from function: stmpe1600_Start
+Silhouette: hello from function: stmpe811_TS_GetXY
+Silhouette: hello from function: wm8994_SetOutputMode
+Silhouette: hello from function: stmpe811_TS_EnableIT
+Silhouette: hello from function: wm8994_Reset
+Silhouette: hello from function: stmpe811_TS_ClearIT
+Silhouette: hello from function: stmpe811_TS_ITStatus
+Silhouette: hello from function: stmpe811_TS_DisableIT
+Finished building: ../Utilities/Components/wm8994/wm8994.c
+Silhouette: hello from function: stmpe811_IO_Start
+ 
+Silhouette: hello from function: stmpe1600_IO_Config
+Silhouette: hello from function: stmpe1600_IO_WritePin
+Silhouette: hello from function: stmpe1600_IO_ReadPin
+Silhouette: hello from function: stmpe1600_IO_ITStatus
+Silhouette: hello from function: stmpe811_IO_Config
+Silhouette: hello from function: stmpe1600_IO_ClearIT
+Silhouette: hello from function: stmpe1600_SetITPolarity
+Silhouette: hello from function: stmpe811_IO_WritePin
+../src/main.c:45:24: warning: implicitly declaring library function 'strlen' with type 'unsigned int (const char *)' [-Wimplicit-function-declaration]
+                       strlen( pcString ),
+                       ^
+../src/main.c:45:24: note: include the header <string.h> or explicitly provide a declaration for 'strlen'
+Silhouette: hello from function: stmpe1600_EnableGlobalIT
+Silhouette: hello from function: stmpe811_IO_ReadPin
+../src/main.c:103:5: warning: implicitly declaring library function 'printf' with type 'int (const char *, ...)' [-Wimplicit-function-declaration]
+    printf("Initiating HAL...\r\n");
+    ^
+../src/main.c:103:5: note: include the header <stdio.h> or explicitly provide a declaration for 'printf'
+Silhouette: hello from function: stmpe1600_DisableGlobalIT
+Silhouette: hello from function: stmpe811_IO_EnableIT
+Silhouette: hello from function: stmpe811_IO_DisableIT
+Silhouette: hello from function: stmpe1600_IO_InitPin
+Silhouette: hello from function: stmpe811_IO_ITStatus
+Silhouette: hello from function: stmpe1600_IO_DisablePinIT
+Silhouette: hello from function: stmpe811_IO_ClearIT
+Silhouette: hello from function: stmpe811_EnableGlobalIT
+Silhouette: hello from function: stmpe1600_IO_EnablePinIT
+Silhouette: hello from function: stmpe811_DisableGlobalIT
+Silhouette: hello from function: stmpe1600_IO_PolarityInv_Enable
+Silhouette: hello from function: stmpe811_EnableITSource
+Silhouette: hello from function: stmpe811_DisableITSource
+Silhouette: hello from function: stmpe1600_IO_PolarityInv_Disable
+Silhouette: hello from function: stmpe811_SetITPolarity
+Silhouette: hello from function: stmpe1600_IO_ReadIT
+Silhouette: hello from function: stmpe811_SetITType
+Silhouette: hello from function: SysTick_Handler
+Silhouette: hello from function: vMainUARTPrintString
+Silhouette: hello from function: stmpe811_GlobalITStatus
+Silhouette: hello from function: __io_putchar
+Silhouette: hello from function: initialise_benchmark
+Silhouette: hello from function: stmpe811_ReadGITStatus
+Silhouette: hello from function: verify_benchmark
+Silhouette: hello from function: stmpe811_ClearGlobalIT
+Silhouette: hello from function: main
+Silhouette: hello from function: stmpe811_IO_DisableAF
+Finished building: ../Utilities/Components/stmpe1600/stmpe1600.c
+Finished building: ../src/stm32l4xx_it.c
+ 
+ 
+2 warnings generated.
+Silhouette: hello from function: stmpe811_IO_InitPin
+Silhouette: hello from function: stmpe811_IO_EnablePinIT
+Finished building: ../src/main.c
+ 
+Silhouette: hello from function: stmpe811_IO_SetEdgeMode
+Silhouette: hello from function: stmpe811_IO_EnableAF
+Silhouette: hello from function: stmpe811_IO_DisablePinIT
+Silhouette: hello from function: SystemCoreClockUpdate
+Finished building: ../Utilities/Components/stmpe811/stmpe811.c
+Finished building: ../src/system_stm32l4xx.c
+ 
+ 
+make[1]: Leaving directory '/home/jie/projects/silhouette/projs/beebs/Debug'
+
+18:05:07 Build Finished (took 257ms)
+
+18:05:07 **** Clean-only build of configuration Release for project beebs ****
+make -j8 clean 
+make[1]: Entering directory '/home/jie/projects/silhouette/projs/beebs/Release'
+rm -rf *
+ 
+make[1]: Leaving directory '/home/jie/projects/silhouette/projs/beebs/Release'
+
+18:05:07 Build Finished (took 57ms)
+
+18:05:08 **** Build of configuration Release for project beebs ****
+make -j8 all 
+make[1]: Entering directory '/home/jie/projects/silhouette/projs/beebs/Release'
+Building file: ../startup/startup_stm32l475xx.s
+Building file: ../src/main.c
+Building file: ../src/matmult.c
+Invoking: MCU GCC Assembler
+Invoking: MCU GCC Compiler
+Building file: ../src/stm32l4xx_it.c
+Invoking: MCU GCC Compiler
+/home/jie/projects/silhouette/projs/beebs/Release
+/home/jie/projects/silhouette/projs/beebs/Release
+Building file: ../src/syscalls.c
+arm-none-eabi-as -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -o "startup/startup_stm32l475xx.o" "../startup/startup_stm32l475xx.s"
+Invoking: MCU GCC Compiler
+/home/jie/projects/silhouette/projs/beebs/Release
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/matmult.d" -MT"src/matmult.o" -o "src/matmult.o" "../src/matmult.c"
+Invoking: MCU GCC Compiler
+/home/jie/projects/silhouette/projs/beebs/Release
+Building file: ../src/system_stm32l4xx.c
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32l4xx_it.d" -MT"src/stm32l4xx_it.o" -o "src/stm32l4xx_it.o" "../src/stm32l4xx_it.c"
+/home/jie/projects/silhouette/projs/beebs/Release
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/syscalls.d" -MT"src/syscalls.o" -o "src/syscalls.o" "../src/syscalls.c"
+Building file: ../Utilities/Components/wm8994/wm8994.c
+Invoking: MCU GCC Compiler
+Building file: ../Utilities/Components/stmpe811/stmpe811.c
+/home/jie/projects/silhouette/projs/beebs/Release
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/system_stm32l4xx.d" -MT"src/system_stm32l4xx.o" -o "src/system_stm32l4xx.o" "../src/system_stm32l4xx.c"
+Invoking: MCU GCC Compiler
+Invoking: MCU GCC Compiler
+/home/jie/projects/silhouette/projs/beebs/Release
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"Utilities/Components/wm8994/wm8994.d" -MT"Utilities/Components/wm8994/wm8994.o" -o "Utilities/Components/wm8994/wm8994.o" "../Utilities/Components/wm8994/wm8994.c"
+/home/jie/projects/silhouette/projs/beebs/Release
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"Utilities/Components/stmpe811/stmpe811.d" -MT"Utilities/Components/stmpe811/stmpe811.o" -o "Utilities/Components/stmpe811/stmpe811.o" "../Utilities/Components/stmpe811/stmpe811.c"
+Finished building: ../startup/startup_stm32l475xx.s
+ 
+Building file: ../Utilities/Components/stmpe1600/stmpe1600.c
+Invoking: MCU GCC Compiler
+/home/jie/projects/silhouette/projs/beebs/Release
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32L4 -DSTM32L475VGTx -DB_L475E_IOT01A1 -DSTM32L475xx -DUSE_HAL_DRIVER -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/m24sr" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs43l22" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25lm51245g" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mfxstm32l152" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/device" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q128a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/cs42l51" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7735" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft3x67" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/rk043fn48h" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hx8347g" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc/Legacy" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ov9655" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe1600" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/Common" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/l3gd20" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm6dsl" -I"/home/jie/projects/silhouette/projs/beebs/HAL_Driver/Inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/stmpe811" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/wm8994" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/B-L475E-IOT01" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft5336" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/n25q256a" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/hts221" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ls016b8uy" -I"/home/jie/projects/silhouette/projs/beebs/inc" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/ft6x06" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lis3mdl" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lps22hb" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/st7789h2" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303c" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/iss66wvh8m8" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/lsm303dlhc" -I"/home/jie/projects/silhouette/projs/beebs/CMSIS/core" -I"/home/jie/projects/silhouette/projs/beebs/Utilities/Components/mx25r6435f" -O3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"Utilities/Components/stmpe1600/stmpe1600.d" -MT"Utilities/Components/stmpe1600/stmpe1600.o" -o "Utilities/Components/stmpe1600/stmpe1600.o" "../Utilities/Components/stmpe1600/stmpe1600.c"
+../src/matmult.c:97:2: error: #error "No SCALE_FACTOR defined"
+ #error "No SCALE_FACTOR defined"
+  ^~~~~
+../src/matmult.c:111:1: error: unknown type name 'matrix'
+ matrix ArrayA, ArrayB, ResultArray;
+ ^~~~~~
+../src/matmult.c:113:15: error: unknown type name 'matrix'
+ void Multiply(matrix A, matrix B, matrix Res);
+               ^~~~~~
+../src/matmult.c:113:25: error: unknown type name 'matrix'
+ void Multiply(matrix A, matrix B, matrix Res);
+                         ^~~~~~
+../src/matmult.c:113:35: error: unknown type name 'matrix'
+ void Multiply(matrix A, matrix B, matrix Res);
+                                   ^~~~~~
+../src/matmult.c:115:11: error: unknown type name 'matrix'
+ void Test(matrix A, matrix B, matrix Res);
+           ^~~~~~
+../src/matmult.c:115:21: error: unknown type name 'matrix'
+ void Test(matrix A, matrix B, matrix Res);
+                     ^~~~~~
+../src/matmult.c:115:31: error: unknown type name 'matrix'
+ void Test(matrix A, matrix B, matrix Res);
+                               ^~~~~~
+../src/matmult.c:116:17: error: unknown type name 'matrix'
+ void Initialize(matrix Array);
+                 ^~~~~~
+../src/matmult.c: In function 'benchmark':
+../src/matmult.c:121:4: warning: implicit declaration of function 'Test' [-Wimplicit-function-declaration]
+    Test(ArrayA, ArrayB, ResultArray);
+    ^~~~
+../src/matmult.c: At top level:
+../src/matmult.c:139:11: error: unknown type name 'matrix'
+ void Test(matrix A, matrix B, matrix Res)
+           ^~~~~~
+../src/matmult.c:139:21: error: unknown type name 'matrix'
+ void Test(matrix A, matrix B, matrix Res)
+                     ^~~~~~
+../src/matmult.c:139:31: error: unknown type name 'matrix'
+ void Test(matrix A, matrix B, matrix Res)
+                               ^~~~~~
+../src/matmult.c: In function 'RandomInteger':
+../src/matmult.c:149:33: error: 'MOD_SIZE' undeclared (first use in this function)
+    Seed = ((Seed * 133) + 81) % MOD_SIZE;
+                                 ^~~~~~~~
+../src/matmult.c:149:33: note: each undeclared identifier is reported only once for each function it appears in
+../src/matmult.c: At top level:
+../src/matmult.c:156:15: error: unknown type name 'matrix'
+ void Multiply(matrix A, matrix B, matrix Res)
+               ^~~~~~
+../src/matmult.c:156:25: error: unknown type name 'matrix'
+ void Multiply(matrix A, matrix B, matrix Res)
+                         ^~~~~~
+../src/matmult.c:156:35: error: unknown type name 'matrix'
+ void Multiply(matrix A, matrix B, matrix Res)
+                                   ^~~~~~
+../src/matmult.c: In function 'initialise_benchmark':
+../src/matmult.c:173:38: error: 'UPPERLIMIT' undeclared (first use in this function)
+    for (OuterIndex = 0; OuterIndex < UPPERLIMIT; OuterIndex++)
+                                      ^~~~~~~~~~
+../src/matmult.c:175:16: error: subscripted value is neither array nor pointer nor vector
+          ArrayA[OuterIndex][InnerIndex] = RANDOM_VALUE;
+                ^
+../src/matmult.c:175:43: error: 'RANDOM_VALUE' undeclared (first use in this function)
+          ArrayA[OuterIndex][InnerIndex] = RANDOM_VALUE;
+                                           ^~~~~~~~~~~~
+../src/matmult.c:178:16: error: subscripted value is neither array nor pointer nor vector
+          ArrayB[OuterIndex][InnerIndex] = RANDOM_VALUE;
+                ^
+../src/matmult.c: In function 'verify_benchmark':
+../src/matmult.c:221:15: error: 'UPPERLIMIT' undeclared (first use in this function)
+   for (i=0; i<UPPERLIMIT; i++)
+               ^~~~~~~~~~
+../src/matmult.c:223:22: error: subscripted value is neither array nor pointer nor vector
+       if (ResultArray[i][j] != exp[i][j])
+                      ^
+../src/matmult.c:223:32: error: 'exp' undeclared (first use in this function)
+       if (ResultArray[i][j] != exp[i][j])
+                                ^~~
+src/subdir.mk:30: recipe for target 'src/matmult.o' failed
+make[1]: *** [src/matmult.o] Error 1
+make[1]: *** Waiting for unfinished jobs....
+Finished building: ../src/syscalls.c
+ 
+../src/main.c: In function 'vMainUARTPrintString':
+../src/main.c:45:24: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+                        strlen( pcString ),
+                        ^~~~~~
+../src/main.c:45:24: warning: incompatible implicit declaration of built-in function 'strlen'
+../src/main.c:45:24: note: include '<string.h>' or provide a declaration of 'strlen'
+../src/main.c: In function 'main':
+../src/main.c:103:5: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
+     printf("Initiating HAL...\r\n");
+     ^~~~~~
+../src/main.c:103:5: warning: incompatible implicit declaration of built-in function 'printf'
+../src/main.c:103:5: note: include '<stdio.h>' or provide a declaration of 'printf'
+../src/main.c:116:38: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32_t {aka long unsigned int}' [-Wformat=]
+   printf("Finished successfully: in %u ms.\r\n\n", t);
+                                     ~^
+                                     %lu
+../src/main.c:118:30: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32_t {aka long unsigned int}' [-Wformat=]
+         printf("Finished in %u ms, but no verify_benchmark() run.\r\n\n", t);
+                             ~^
+                             %lu
+../src/main.c:120:24: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32_t {aka long unsigned int}' [-Wformat=]
+   printf("Finished in %u ms, but verify_benchmark() found errors.\r\n\n", t);
+                       ~^
+                       %lu
+Finished building: ../Utilities/Components/stmpe1600/stmpe1600.c
+ 
+Finished building: ../src/stm32l4xx_it.c
+ 
+Finished building: ../src/main.c
+ 
+Finished building: ../src/system_stm32l4xx.c
+ 
+Finished building: ../Utilities/Components/wm8994/wm8994.c
+ 
+Finished building: ../Utilities/Components/stmpe811/stmpe811.c
+ 
+make[1]: Leaving directory '/home/jie/projects/silhouette/projs/beebs/Release'
+
+18:05:08 Build Finished (took 209ms)
+
+Gtk-Message: 18:05:09.127: Failed to load module "canberra-gtk-module"
+Makefile:19: recipe for target 'build' failed
+make: *** [build] Error 1
