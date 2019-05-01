@@ -345,7 +345,7 @@ void mpuTest(){
 	printf("%s\r\n", pub_stack_data);
 
 	/* drop privilege */
-	dropPrivilege();
+	//dropPrivilege();
 
 	printf("user mode switch done.\r\n");
 
