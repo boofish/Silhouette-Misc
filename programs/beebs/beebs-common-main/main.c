@@ -100,7 +100,7 @@ int main(void)
     uint32_t t_start, t_end, t;
 
     // Record running time.
-    printf("Start to run bs.");
+    printf("Start to run bubblesort.");
     printf("\r\n");
 	HAL_Init();
 	t_start = HAL_GetTick();
