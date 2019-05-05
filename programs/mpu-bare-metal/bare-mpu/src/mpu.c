@@ -300,6 +300,45 @@ void printRegs(void){
 }
 
 
+/**
+ * privilegeTestMPUReg()
+ *  A simple test to verify the MPU registers are privileged access only.
+ */
+
+void privilegeTestMPUReg(){
+
+    __asm volatile
+    	( "ldr r0, %0\n"
+    	  ::"m"(portMPU_REGION_BASE_ADDRESS_REG): "r0","memory"
+    	); // 0x0
+
+    __asm volatile
+    	( "ldr r0, %0\n"
+    	  "str r0, %0\n"
+    	  ::"m"(portMPU_REGION_BASE_ADDRESS_REG): "r0","memory"
+    	); // 0x0
+
+#if 1
+    // here should get memory fault
+    __asm volatile
+    	( "ldrt r0, %0\n"
+    	  "strt r0, %0\n"
+    	   ::"m"(portMPU_REGION_BASE_ADDRESS_REG): "r0","memory"
+    	); // 0x0
+#endif
+
+
+}
+
+/**
+ * privilegeTestIVTable()
+ *  A simple test to verify interrupt vector tables are privileged access only.
+ */
+
+void privilegeTestIVTable(){
+
+}
+
 
 /* mpu_test:
  *  a simple test for mpu functionality
@@ -369,7 +408,7 @@ void mpuTest(){
 	printf("%s\r\n", shadow_stack_data);
 #endif
 
-    raisePrivilege();
+    //raisePrivilege();
 
 	printf("privilege raised.\r\n");
 

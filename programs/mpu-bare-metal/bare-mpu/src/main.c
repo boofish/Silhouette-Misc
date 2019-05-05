@@ -24,5 +24,7 @@ int main(void)
 
 	mpuTest(); // a simple test for mpu functionality
 
+	privilegeTestMPUReg();
+
 	for(;;);
 }
