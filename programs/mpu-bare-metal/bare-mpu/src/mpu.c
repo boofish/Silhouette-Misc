@@ -318,7 +318,7 @@ void privilegeTestMPUReg(){
     	  ::"m"(portMPU_REGION_BASE_ADDRESS_REG): "r0","memory"
     	); // 0x0
 
-#if 1
+#if 0
     // here should get memory fault
     __asm volatile
     	( "ldrt r0, %0\n"
@@ -334,8 +334,39 @@ void privilegeTestMPUReg(){
  * privilegeTestIVTable()
  *  A simple test to verify interrupt vector tables are privileged access only.
  */
+// vector table offset register
+#define VTOR_REG_VALUE ( * ( ( volatile uint32_t * ) 0xE000ED08 ) )
 
 void privilegeTestIVTable(){
+
+	uint32_t * IVTable_addr = VTOR_REG_VALUE;
+
+
+    __asm volatile
+    	( "ldr r0, %0\n"    // load Vector table offset
+    	  "ldr r1, [r0]\n"  // read first 4 bytes of vector table, should be msp
+    	  ::"m"(IVTable_addr): "r0","r1","memory"
+    	); // 0x0
+
+#if 0
+    // To verify: the read only property of IVTable
+
+    // Privileged read is allowed, and privileged write to vector table will get mem fault
+    __asm volatile
+    	( "ldr r0, %0\n"    // load Vector table offset
+    	  "ldr r1, [r0]\n"  // read first 4 bytes of vector table, should be msp
+    	  "str r1, [r0]\n"  // store will get mem fault since the IVTable is read only.
+    	  ::"m"(IVTable_addr): "r0","r1","memory"
+    	); // 0x0
+
+    // Unprivileged read is allowed, and unprivileged write should get memory fault
+    __asm volatile
+    	( "ldr r0, %0\n"    // load Vector table offset
+    	  "ldrt r1, [r0]\n"  // read first 4 bytes of vector table, should get fault
+    	  "strt r1, [r0]\n"
+    	   ::"m"(IVTable_addr): "r0","r1","memory"
+    	); // 0x0
+#endif
 
 }
 

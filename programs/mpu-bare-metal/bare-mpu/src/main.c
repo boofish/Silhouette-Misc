@@ -26,5 +26,7 @@ int main(void)
 
 	privilegeTestMPUReg();
 
+	privilegeTestIVTable();
+
 	for(;;);
 }
