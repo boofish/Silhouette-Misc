@@ -27,4 +27,22 @@ With GUI of Eclipse:
 	
 	2. In ‘Miscellaneous' inside 'MCU GCC Compiler' settings, add options. For example, `--target=arm-none-eabi`, `-Xclang -backend-option -Xclang -enable-arm-silhouette-shadowstack`
 
+
+- Enable STORE pass:
+
+	-Xclang -backend-option -Xclang -enable-arm-silhouette-str2strt
+
+- Enable memory overhead pass
+
+	-Xclang -backend-option -Xclang -enable-arm-silhouette-mem-overhead
+
+- Enable shadow stack pass: 
+
+	-Xclang -backend-option -Xclang -enable-arm-silhouette-shadowstack
+
+- Enable instruction scanner 
+
+    -Xclang -backend-option -Xclang -enable-arm-silhouette-instr-scanner
+    
+
 With command line: [Compile System WorkBench Project in Command-line Mode](https://github.com/jzhou76/silhouette-misc/blob/master/docs/Compile_No_GUI.md)
