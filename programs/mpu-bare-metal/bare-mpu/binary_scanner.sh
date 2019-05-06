@@ -14,8 +14,8 @@ echo "instr and sigs: ${instr_and_sigs[@]}"
 
 output_file_name="./binary_scanner_output.csv"
 
-#arm_objdump=arm-none-eabi-objdump
-arm_objdump=/home/smeller/extdisks/work/lab/iot-arm/ide/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/arm-none-eabi-objdump
+arm_objdump=arm-none-eabi-objdump
+#arm_objdump=/home/smeller/extdisks/work/lab/iot-arm/ide/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/arm-none-eabi-objdump
 
 #####################################
 #### utiliti var and functions ######
