@@ -206,3 +206,5 @@ echo -e "$all_results"
 echo -e "$all_results" > $output_file_name
 
 echo "binary scanner: all done; scanned results written into $output_file_name"
+
+
