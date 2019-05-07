@@ -41,6 +41,21 @@ arm_objdump=arm-none-eabi-objdump
 #####################################
 #### utiliti var and functions ######
 
+
+# get_instruction_lines 
+#
+# Search one file for privileged instructions, 
+# instructions recognized by two parts: <instr, instr_sig>
+# return (via echo) a list of line numbers where matches occur.
+# 
+# - Input: 
+#     $1 filename,  the file to search
+#     $2 instr, the instruction name
+#     $3 instr_sig, an operands of the instruction as an additional signature
+#
+# - Output:
+#     echo $all_lines, a list of line numbers matched the condition
+#
 function get_instruction_lines(){
 	filename=$1
 	instr=$2 		# the instruction name, e.g. msr
@@ -50,6 +65,25 @@ function get_instruction_lines(){
 	echo $all_lines
 }
 
+
+# report_one_line 
+# 
+# Generate a line of report given a line of code in the assembly file.
+# It will search for the function name that contains a given line of code. 
+# function names recognized by regular expression pattern '<.*>:'
+#
+# A record of report for each line has format of:
+# <instr, instr_sig> file_name line_number <function_name> assembly_line_code
+# 
+# - Input: 
+#     $1 filename,  the file to search
+#     $2 instr, the instruction name
+#     $3 instr_sig, an operands of the instruction as an additional signature
+#     $4 line_num, the line number of the code contain <instr, instr_sig>
+#
+# - Output:
+#     $all_results, one line of record will be added to this global variable. 
+#
 function report_one_line(){
 	filename=$1
 	instr=$2 		# the instruction name, e.g. msr
@@ -74,6 +108,9 @@ function report_one_line(){
 	
 }
 
+#
+# iterate all lines and report it via report_one_line(...)
+#
 function report_all_lines(){
 	filename=$1
 	instr=$2 		# the instruction name, e.g. msr
@@ -88,6 +125,17 @@ function report_all_lines(){
 	
 }
 
+#
+# convert_o_to_s
+#
+# convert object file into assembly file
+#
+# NOTE: 
+#   Not all object file will be linked into the final executable elf file. Thus
+# a report of privileged instruction does not mean the final executable has the
+# instruction. However, here we still scan the object file as reference for easier
+# locating the privileged instruction's source code.
+#
 function convert_o_to_s(){
 	
   all_o_files=$(find  $binary_dir/ -name "*.o")
@@ -102,6 +150,17 @@ function convert_o_to_s(){
   done
 }
 
+# 
+# convert_elf_to_s
+#
+# convert elf file into assembly file
+#
+# NOTE: 
+#   This is the final executable elf file. Thus a report of privileged instruction does
+# mean this binary is a potentially dangerous. To locate the source code contain the 
+# privileged instruction, we can find the same occurance of the function from the *.o
+# files.
+#
 function convert_elf_to_s(){
 	
   all_elf_files=$(find  $binary_dir/ -name "*.elf")
