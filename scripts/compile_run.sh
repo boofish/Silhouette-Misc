@@ -104,17 +104,30 @@ function compile() {
 # 
 # Run a program.
 #
-function run() {
+function run_minicom() {
     openocd -f "$BEEBS_RUN_CFG" -c "program $BEEBS_ELF verify reset exit"
 }
 
+function run() {
+    rm -f screenlog.0
+    perf_dat=$SILHOUETTE/silhouette-misc/data/perf/$1.stat
+    screen -dm -L -fn -Logfile $perf_dat /dev/ttyACM0 115200
+    screen -X logfile flush 0
+    openocd -f "$BEEBS_RUN_CFG" -c "program $BEEBS_ELF verify reset exit"
+    grep Finished $perf_dat >& /dev/null
+    while (( $? != 0 )); do
+        sleep 1
+        grep Finished $perf_dat >& /dev/null
+    done
+    screen -X 'kill'
+}
 
 # 
 # Entrance of the script.
 #
 if [ ! $1 == "" ]; then
     if [ $1 == "run" ]; then
-        run $1
+        run_minicom
     else
         compile $1 
         $SCRIPTS_DIR/mem-overhead.py $1
@@ -130,6 +143,6 @@ else
         echo "Compute code size overhead of $prog"
         $SCRIPTS_DIR/mem-overhead.py $prog
         echo ""
-        run $prog
+        run_minicom $prog
     done
 fi
