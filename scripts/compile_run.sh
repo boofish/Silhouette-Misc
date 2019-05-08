@@ -61,7 +61,10 @@ function compile() {
 
     # Check if there is a directory for the current program in silhouette/debug.
     # Put the build log and copy the generated binary there.
-    cd $SILHOUETTE/debug
+    if [ ! -d $SILHOUETTE/debug ]; then
+        mkdir $SILHOUETTE/debug
+    fi
+    cd $SILHOUETTE/debug 
     if [ ! -d $1 ]; then
         echo "Creating a $1 directory in silhouette/debug"
         mkdir -p $1
@@ -143,6 +146,6 @@ else
         echo "Compute code size overhead of $prog"
         $SCRIPTS_DIR/mem-overhead.py $prog
         echo ""
-        run_minicom $prog
+        run $prog
     done
 fi
