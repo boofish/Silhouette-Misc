@@ -42,28 +42,25 @@ def compute(prog_name):
     gdb_cmd = GDB_FUNC_INFO_CMD + " " + prog_name + ".elf"
     func_info = os.popen(gdb_cmd).read().split('\n')
 
-    # A list of the function names compiled our compiler.
+    # A list of the function names compiled by our compiler.
     func_list = set()
-
-    i = 0
+    
+    # Get all function names.
+    i = 3
     while i < len(func_info):
         line = func_info[i]
-        if line.startswith("File "):
-            # start to collect function name(s) in this file
-            i += 1
-            line = func_info[i]
-            while line != '':
-                # the format of a function's signature from gdb looks like this:
-                # 117:	int verify_benchmark(int);
-                func_name = line.split('\t')[1].split()[1].split('(')[0]
-                func_list.add(func_name)
-                i += 1
-                line = func_info[i]
-        else:
-            i += 1
+        if line != '':
+            # The format is "address func_name".
+            func_list.add(line.split()[1])
+        i += 1
 
     # cd to the stats data directory of the test program.
     os.chdir(DATA_DIR + prog_name)
+
+    # Check if the code_size.stat exists.
+    if os.path.isfile("code_size.stat") == False:
+        print("code_szie file doesn't exit.")
+        return
 
     stat_file = open("code_size.stat", "r")
     original_code_size, new_code_size, increased_code_size = 0, 0, 0
