@@ -28,7 +28,7 @@ def readFile(csvPath, perfDir):
             re_time = re.search('(\d+) ms', outputStr)
             if re_time is not None and re_time.lastindex is not None:
                 time = re_time.group(1)
-                name = perfFilename
+                name = perfFilename.replace('.stat', '')
                 writeData(csvPath, name, time)
 
 args = parser.parse_args()
