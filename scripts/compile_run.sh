@@ -32,7 +32,7 @@ ludcmp miniz minver nbody ndes nettle-arcfour nettle-cast128 nettle-des nettle-m
 
 SRC_WHITELIST2="
 newlib-exp newlib-log newlib-mod newlib-sqrt ns nsichneu picojpeg prime qrduino
-qsort qurt recursion rijndael select sglib-arraybinsearch sglib-arraysort
+qsort qurt recursion rijndael select sglib-arraybinsearch 
 sglib-dllist sglib-hashtable sglib-listinsertsort sglib-listsort sglib-queue
 sglib-rbtree slre sqrt st statemate stb_perlin stringsearch1 strstr tarai ud whetstone"
 
@@ -123,6 +123,7 @@ function run() {
         grep Finished $perf_dat >& /dev/null
     done
     screen -X 'kill'
+    pkill screen
 }
 
 # 
@@ -140,7 +141,7 @@ if [ ! $1 == "" ]; then
         fi
     fi
 else
-    for prog in $SRC_ALL; do
+    for prog in $SRC_WHITELIST2; do
         echo "Compile $prog"
         compile $prog 
         echo "Compute code size overhead of $prog"
