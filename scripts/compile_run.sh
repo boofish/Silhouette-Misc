@@ -112,8 +112,8 @@ function run_minicom() {
 }
 
 function run() {
-    rm -f screenlog.0
     perf_dat=$SILHOUETTE/silhouette-misc/data/perf/$1.stat
+    rm -f $perf_dat
     screen -dm -L -fn -Logfile $perf_dat /dev/ttyACM0 115200
     screen -X logfile flush 0
     openocd -f "$BEEBS_RUN_CFG" -c "program $BEEBS_ELF verify reset exit"
