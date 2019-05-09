@@ -102,9 +102,13 @@ int main(void)
     // Record running time.
     printf("Start to run bubblesort.");
     printf("\r\n");
+    int num_of_err;
 	HAL_Init();
 	t_start = HAL_GetTick();
-	int num_of_err = benchmark();
+    for (int i = 0; i < REPEAT_FACTOR; i++) {
+        initialise_benchmark();
+        num_of_err = benchmark();
+    }
 	t_end = HAL_GetTick();
     t = t_end - t_start;
 
