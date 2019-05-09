@@ -16,7 +16,7 @@ SILHOUETTE=~/projects/silhouette
 SCRIPTS_DIR=`pwd`
 
 BEEBS_PROJ=$SILHOUETTE/projs/beebs
-BEEBS_ELF=$BEEBS_PROJ/Debug/beebs.elf
+BEEBS_ELF=$BEEBS_PROJ/Release/beebs.elf
 BEEBS_RUN_CFG="$BEEBS_PROJ/beebs Run.cfg"
 BEEBS_SRC=$SILHOUETTE/silhouette-misc/programs/beebs/beebs/src
 
@@ -86,7 +86,7 @@ function compile() {
     # Copy the elf to the debug directory and change the name from beebs.efl
     # to prog_name.elf. Also generate the asm code.
     echo -e "Copying $1.elf to debug/$1\n"
-    cp $BEEBS_PROJ/Debug/beebs.elf $DEBUG_DIR/$1.elf
+    cp $BEEBS_PROJ/Release/beebs.elf $DEBUG_DIR/$1.elf
     cd $DEBUG_DIR
     $OBJDUMP -d $1.elf > $1.s
 
@@ -97,8 +97,8 @@ function compile() {
         mkdir -p $MEM_DATA_DIR/$1
     fi
     rm $MEM_DATA_DIR/$1/* 2>/dev/null
-    if [ -f $BEEBS_PROJ/Debug/code_size.stat ]; then
-        mv $BEEBS_PROJ/Debug/code_size.stat ./
+    if [ -f $BEEBS_PROJ/Release/code_size.stat ]; then
+        mv $BEEBS_PROJ/Release/code_size.stat ./
         cp ./code_size.stat $MEM_DATA_DIR/$1
     fi
 }
