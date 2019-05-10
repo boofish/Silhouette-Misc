@@ -27,7 +27,7 @@ BEEBS_CODE_SIZE_STAT="$BEEBS_PROJ/Release/code_size.stat"
 BEEBS_SRC=$SILHOUETTE/silhouette-misc/programs/beebs/beebs/src
 
 # GNU ARM toolchain
-OBJDUMP=~/local/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-objdump
+OBJDUMP=`which arm-none-eabi-objdump`
 
 SRC_BLACKLIST="crc32 ctl ctl-stack ctl-vector fdct"
 SRC_WHITELIST="
@@ -172,8 +172,11 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
         # Only compile and run one program.
         compile $2
         $SCRIPTS_DIR/mem-overhead.py $1 $2
-    elif [[ $# == 3 ]] && [[ $3 == "run" ]]; then
         run $2
+
+        if [[ $1 != "baseline" ]] && [[ $1 != "cfi" ]]; then
+            $SCRIPTS_DIR/mem-overhead.py $1 $2
+        fi
     fi
 else
     echo "The first argument can only be \"ss\", \"sp\", or \"cfi\"."
