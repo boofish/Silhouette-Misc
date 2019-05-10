@@ -152,10 +152,11 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
             run $prog
         done
 
-        echo "Compute code size overhead of all programs."
         if [[ $1 == "ss" ]] || [[ $1 == "sp" ]]; then
+            echo "Compute code size overhead of all programs."
             $SCRIPTS_DIR/mem-overhead.py $1
         elif [[ $# == 0 ]]; then
+            echo "Compute code size overhead of all programs."
             $SCRIPTS_DIR/mem-overhead.py "silhouette"
         fi
 
@@ -163,7 +164,7 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
         data_dir=$SILHOUETTE/silhouette-misc/data
         if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
             [[ $1 == "baseline" ]]; then
-        mv $data_dir/perf/*.stat $data_dir/perf/$1
+            mv $data_dir/perf/*.stat $data_dir/perf/$1
         else
             # We just ran tests with all passed turned on.
             mv $data_dir/perf/*.stat $data_dir/perf/silhouette
