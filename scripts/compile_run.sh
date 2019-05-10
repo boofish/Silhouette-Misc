@@ -10,11 +10,11 @@
 #   $1 - The first argument can be 
 #         "ss" for "shadow stack", or
 #         "sp" for "store promotion", or
-#         "cfi" for "control-flow integrity", or 
-#         the name of a BEEBS program to compile.
-#   $2 - if $1 is a test program's name, $2 is optional: it can only be "run",
-#   indicating we want to run the program after compiling it, or empty if we
-#   just want to compile and compute the code size overhead.
+#         "cfi" for "control-flow integrity"
+#   $2 - This is optional. It can only be the name of a BEEBS program. When 
+#        present, the script only compiles this single program.
+#   $3 - Optional. Can only be run. When present, it runs the just compiled 
+#        program.
 #
 
 SILHOUETTE=~/projects/silhouette
@@ -23,6 +23,7 @@ SCRIPTS_DIR=`pwd`
 BEEBS_PROJ=$SILHOUETTE/projs/beebs
 BEEBS_ELF=$BEEBS_PROJ/Release/beebs.elf
 BEEBS_RUN_CFG="$BEEBS_PROJ/beebs Run.cfg"
+BEEBS_CODE_SIZE_STAT="$BEEBS_PROJ/Release/code_size.stat"
 BEEBS_SRC=$SILHOUETTE/silhouette-misc/programs/beebs/beebs/src
 
 # GNU ARM toolchain
@@ -44,9 +45,9 @@ sglib-rbtree slre sqrt st statemate stb_perlin stringsearch1 strstr tarai ud whe
 SRC_ALL="$SRC_WHITELIST $SRC_WHITELIST2"
 
 TEST_FILES="
-cover
 bs
-fir"
+fibcall
+"
 
 
 #
@@ -85,25 +86,26 @@ function compile() {
     echo -e "Done compiling $1"
     
     # update the Run.cfg file
-    sed -i 's/.*stlink.*/source \[find interface\/stlink-v2-1.cfg]/' $BEEBS_PROJ/beebs\ Run.cfg
+    sed -i 's/.*stlink.*/source \[find interface\/stlink-v2-1.cfg]/' "$BEEBS_RUN_CFG"
 
-    # Copy the elf to the debug directory and change the name from beebs.efl
+    # Copy the elf to the debug directory and change the name from beebs.elf
     # to prog_name.elf. Also generate the asm code.
     echo -e "Copying $1.elf to debug/$1\n"
-    cp $BEEBS_PROJ/Release/beebs.elf $DEBUG_DIR/$1.elf
+    cp $BEEBS_ELF $DEBUG_DIR/$1.elf
     cd $DEBUG_DIR
     $OBJDUMP -d $1.elf > $1.s
 
     # Move the code size stat file to the data directory.
-    echo "Moving code_size.stat to both the debug and the data/mem directory."
-    MEM_DATA_DIR=$SILHOUETTE/silhouette-misc/data/mem
-    if [ ! -d $MEM_DATA_DIR/$1 ]; then
-        mkdir -p $MEM_DATA_DIR/$1
-    fi
-    rm $MEM_DATA_DIR/$1/* 2>/dev/null
-    if [ -f $BEEBS_PROJ/Release/code_size.stat ]; then
-        mv $BEEBS_PROJ/Release/code_size.stat ./
-        cp ./code_size.stat $MEM_DATA_DIR/$1
+    if [[ $# == 2 ]] && [[ $2 != "cfi" ]] && [[ $2 != "baseline" ]]; then
+        echo "Moving code_size.stat to both the debug and the data/mem directory."
+        mem_data_dir=$SILHOUETTE/silhouette-misc/data/mem/$2
+        if [ ! -d $mem_data_dir ]; then
+            mkdir -p $mem_data_dir
+        fi
+        if [ -f $BEEBS_CODE_SIZE_STAT ]; then
+            mv $BEEBS_CODE_SIZE_STAT ./
+            cp ./code_size.stat $mem_data_dir/$1.stat
+        fi
     fi
 }
 
@@ -134,40 +136,45 @@ function run() {
 # Entrance of the script.
 #
 if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
-    [[ $# == 0 ]]; then
-    # Compile all test programs.
-    for prog in $TEST_FILES; do
-        echo "Compile $prog"
-        compile $prog 
+    [[ $1 == "baseline" ]] || [[ $# == 0 ]]; then
+    if [[ $# == 1 ]] || [[ $2 == 0 ]]; then
+        # Compile and run all test programs.
+        for prog in $SRC_ALL; do
+            echo "Compile $prog"
+            if [[ $# == 0 ]]; then
+                compile $prog "silhouette"
+            else
+                compile $prog $1
+            fi
+             
+            echo ""
+            # run_minicom $prog
+            run $prog
+        done
 
-        if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $# == 0 ]]; then
-            echo "Compute code size overhead of $prog"
-            $SCRIPTS_DIR/mem-overhead.py $prog
+        echo "Compute code size overhead of all programs."
+        if [[ $1 == "ss" ]] || [[ $1 == "sp" ]]; then
+            $SCRIPTS_DIR/mem-overhead.py $1
+        elif [[ $# == 0 ]]; then
+            $SCRIPTS_DIR/mem-overhead.py "silhouette"
         fi
 
-        echo ""
-
-        # run_minicom $prog
-        run $prog
-    done
-
-    # Collect the peformance data
-    data_dir=$SILHOUETTE/silhouette-misc/data
-    if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]]; then
+        # Collect the peformance data
+        data_dir=$SILHOUETTE/silhouette-misc/data
+        if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
+            [[ $1 == "baseline" ]]; then
         mv $data_dir/perf/*.stat $data_dir/perf/$1
-    else
-        # We just ran tests with all passed turned on.
-        mv $data_dir/perf/*.stat $data_dir/perf/silhouette
+        else
+            # We just ran tests with all passed turned on.
+            mv $data_dir/perf/*.stat $data_dir/perf/silhouette
+        fi
+    elif [[ $# > 1 ]]; then
+        # Only compile and run one program.
+        compile $2
+        $SCRIPTS_DIR/mem-overhead.py $1 $2
+    elif [[ $# == 3 ]] && [[ $3 == "run" ]]; then
+        run $2
     fi
-
 else
-    if [ $# == 1 ]; then
-        # Compile a single test program.
-        compile $1
-    fi
-
-    # Run the just compiled programs.
-    if [ $# == 2 ] && [ $2 == "run" ]; then
-        run $1
-    fi
+    echo "The first argument can only be \"ss\", \"sp\", or \"cfi\"."
 fi
