@@ -162,6 +162,9 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
 
         # Collect the peformance data
         data_dir=$SILHOUETTE/silhouette-misc/data
+        if [ -d $data_dir/perf ]; then
+            mkdir -p $data_dir/perf
+        fi
         if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
             [[ $1 == "baseline" ]]; then
             mv $data_dir/perf/*.stat $data_dir/perf/$1
