@@ -5,8 +5,13 @@
 # that failed to compile or run even with original Clang 4.0.
 #
 # Command line arguments:
-#   $1 - the name of the program to compile and run. or just run a program if 
-#        $1 == "run". This is optional.
+#   no arugment - Compile and run all programs based on the assumption that 
+#                 all passes are turned on.
+#   $1 - The first argument can be 
+#         "ss" for "shadow stack", or
+#         "sp" for "store promotion", or
+#         "cfi" for "control-flow integrity", or 
+#         the name of a BEEBS program to compile.
 #   $2 - if $1 is a test program's name, $2 is optional: it can only be "run",
 #   indicating we want to run the program after compiling it, or empty if we
 #   just want to compile and compute the code size overhead.
@@ -38,11 +43,10 @@ sglib-rbtree slre sqrt st statemate stb_perlin stringsearch1 strstr tarai ud whe
 
 SRC_ALL="$SRC_WHITELIST $SRC_WHITELIST2"
 
-TEST_FILES="cubic
-aha-compress
-aha-mont64
+TEST_FILES="
+cover
 bs
-fac"
+fir"
 
 
 #
@@ -77,7 +81,7 @@ function compile() {
     # compile
     cd $SCRIPTS_DIR
     echo "Compiling $1 ......"
-    make build >& $DEBUG_DIR/build.log
+    make build >& $DEBUG_DIR/build.log 
     echo -e "Done compiling $1"
     
     # update the Run.cfg file
@@ -123,30 +127,47 @@ function run() {
         grep Finished $perf_dat >& /dev/null
     done
     screen -X 'kill'
-    pkill screen
 }
+
 
 # 
 # Entrance of the script.
 #
-if [ ! $1 == "" ]; then
-    if [ $1 == "run" ]; then
-        run_minicom
-    else
-        compile $1 
-        $SCRIPTS_DIR/mem-overhead.py $1
-        # weather to run the program is optional
-        if [ $# == 2 ] && [ $2 == "run" ]; then
-            run $1 
-        fi
-    fi
-else
-    for prog in $SRC_WHITELIST2; do
+if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
+    [[ $# == 0 ]]; then
+    # Compile all test programs.
+    for prog in $TEST_FILES; do
         echo "Compile $prog"
         compile $prog 
-        echo "Compute code size overhead of $prog"
-        $SCRIPTS_DIR/mem-overhead.py $prog
+
+        if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $# == 0 ]]; then
+            echo "Compute code size overhead of $prog"
+            $SCRIPTS_DIR/mem-overhead.py $prog
+        fi
+
         echo ""
+
+        # run_minicom $prog
         run $prog
     done
+
+    # Collect the peformance data
+    data_dir=$SILHOUETTE/silhouette-misc/data
+    if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]]; then
+        mv $data_dir/perf/*.stat $data_dir/perf/$1
+    else
+        # We just ran tests with all passed turned on.
+        mv $data_dir/perf/*.stat $data_dir/perf/silhouette
+    fi
+
+else
+    if [ $# == 1 ]; then
+        # Compile a single test program.
+        compile $1
+    fi
+
+    # Run the just compiled programs.
+    if [ $# == 2 ] && [ $2 == "run" ]; then
+        run $1
+    fi
 fi
