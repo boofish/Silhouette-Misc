@@ -20,6 +20,7 @@
 #   cd $WORK_DIR
 #   bash $PATH_TO_THIS_SCRIPT
 #
+# counting source code line: cat binary_scanner.sh | sed '/^\s*#.*$/d;/^\s*$/d' | wc -l
 
 ##############################
 ####### configurations #######
