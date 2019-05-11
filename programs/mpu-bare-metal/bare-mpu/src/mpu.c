@@ -68,7 +68,7 @@ void initMPU(void){
 												( portUNPRIVILEGED_FLASH_REGION );
 
 			portMPU_REGION_ATTRIBUTE_REG =	( portMPU_REGION_READ_ONLY ) |
-												( portMPU_REGION_CACHEABLE_BUFFERABLE ) |
+												( portMPU_REGION_CACHEABLE_BUFFERABLE ) |  /* noMPU: portMPU_REGION_CACHEABLE_WT */
 												(prvGetMPURegionSizeSetting( ( uint32_t ) _FLASH_segment_end - ( uint32_t ) _FLASH_segment_start ) ) |
 												( portMPU_REGION_ENABLE );
 			uint32_t type, ctrl, rnr, rbar, rasr;
@@ -84,7 +84,7 @@ void initMPU(void){
 					( portALL_RAM_REGION );
 
 			portMPU_REGION_ATTRIBUTE_REG =	( portMPU_REGION_READ_WRITE ) |
-											( portMPU_REGION_CACHEABLE_BUFFERABLE ) |
+											( portMPU_REGION_CACHEABLE_BUFFERABLE ) | /* noMPU: portMPU_REGION_CACHEABLE_WBWA */
 											(prvGetMPURegionSizeSetting( ( uint32_t ) _RAM_end - ( uint32_t ) _RAM_start ) ) |
 											( portMPU_REGION_ENABLE );
 
@@ -100,7 +100,7 @@ void initMPU(void){
 					( portPRIVILEGED_RAM_REGION );
 
 			portMPU_REGION_ATTRIBUTE_REG =	( portMPU_REGION_PRIVILEGED_READ_WRITE ) |
-											( portMPU_REGION_CACHEABLE_BUFFERABLE ) |
+											( portMPU_REGION_CACHEABLE_BUFFERABLE ) | /* noMPU: portMPU_REGION_CACHEABLE_WBWA */
 											(prvGetMPURegionSizeSetting( ( uint32_t ) _shadow_stack_end - ( uint32_t ) _shadow_stack_start ) ) |
 											( portMPU_REGION_ENABLE );
 

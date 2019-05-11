@@ -52,7 +52,9 @@ extern char pub_stack_data[];
 #define portMPU_REGION_PRIVILEGED_READ_ONLY		( 0x05UL << 24UL )
 #define portMPU_REGION_READ_ONLY				( 0x06UL << 24UL )
 #define portMPU_REGION_PRIVILEGED_READ_WRITE	( 0x01UL << 24UL )
-#define portMPU_REGION_CACHEABLE_BUFFERABLE		( 0x07UL << 16UL )
+#define portMPU_REGION_CACHEABLE_WT   	    	( 0x06UL << 16UL )  //normal cachable, bufferable, write through, no write allocate
+#define portMPU_REGION_CACHEABLE_BUFFERABLE		( 0x07UL << 16UL )  //normal, cacheable, bufferable, write back, no write allocate
+#define portMPU_REGION_CACHEABLE_WBWA   		( 0x0fUL << 16UL )  //normal cachable, bufferable, write back, write allocate
 #define portMPU_REGION_EXECUTE_NEVER			( 0x01UL << 28UL )
 
 void initMPU(void);
