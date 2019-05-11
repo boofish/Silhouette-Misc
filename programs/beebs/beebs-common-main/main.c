@@ -91,21 +91,22 @@ int verify_benchmark(int unused)
 
 int main(void)
 {
-
+    
     // Initialize the printer.
 	Console_UART_Init();
 
 
-	initialise_benchmark();
+	/* initialise_benchmark(); */
     uint32_t t_start, t_end, t;
 
     // Record running time.
-    printf("Start to run bubblesort.");
+    printf("Start to run slre.");
     printf("\r\n");
     int num_of_err;
+initMPU();
 	HAL_Init();
 	t_start = HAL_GetTick();
-    for (int i = 0; i < REPEAT_FACTOR; i++) {
+    for (int i = 0; i < 1024; i++) {
         initialise_benchmark();
         num_of_err = benchmark();
     }
