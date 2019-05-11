@@ -66,8 +66,8 @@ function init() {
     # Step 2, comment out the vfpcc asm.
     # They're from line 335 to line 343
     echo "Commenting out the \"vfpcc\" assembly code."
-    cd $PROJ_DIR/CMSIS/core
-    sed -i -e '335,343s/^/\/\/ /' cmsis_gcc.h
+    # cd $PROJ_DIR/CMSIS/core
+    # sed -i -e '335,343s/^/\/\/ /' cmsis_gcc.h
 
     # Step 3 (only for BEEBS benchmark), use our own main.c file and the support.h.
     echo "Copying main.c and support.h to $1's source directory."
