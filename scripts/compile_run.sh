@@ -32,7 +32,7 @@ OBJDUMP=`which arm-none-eabi-objdump`
 SRC_BLACKLIST="crc32 ctl ctl-stack ctl-vector fdct"
 SRC_WHITELIST="
 aha-compress aha-mont64 bs bubblesort cnt compress cover crc    \
-ctl-string ctl-stack ctl-vector cubic dijkstra dtoa duff edn expint fac fasta  \
+ctl-string cubic dijkstra dtoa duff edn expint fac fasta  \
 fibcall fir frac huffbench insertsort janne_complex jfdctint lcdnum levenshtein \
 ludcmp matmult-float matmult-int miniz minver nbody ndes nettle-aes 
 nettle-arcfour nettle-cast128 nettle-des nettle-md5 nettle-sha256"
@@ -138,7 +138,7 @@ function run() {
 #
 if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
     [[ $1 == "baseline" ]] || [[ $# == 0 ]]; then
-    if [[ $# == 1 ]] || [[ $2 == 0 ]]; then
+    if [[ $# == 1 ]] || [[ $# == 0 ]]; then
         # Compile and run all test programs.
         for prog in $SRC_ALL; do
             echo "Compile $prog"

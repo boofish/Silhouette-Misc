@@ -43,7 +43,7 @@ BEEBS_DIR=$SILHOUETTE/silhouette-misc/programs/beebs
 BEEBS_SRC=$BEEBS_DIR/beebs
 
 # A list of functions we don't need change when updating src code of test programs.
-SRC_WHITELIST="main.c syscalls.c support.h stm32l4xx_it.c system_stm32l4xx.c"
+SRC_WHITELIST="main.c syscalls.c support.h stm32l4xx_it.c system_stm32l4xx.c mpu.c mpu.h"
 
 
 #
