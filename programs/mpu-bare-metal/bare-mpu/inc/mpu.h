@@ -40,6 +40,7 @@ extern char pub_stack_data[];
 #define portMPU_REGION_ATTRIBUTE_REG			( * ( ( volatile uint32_t * ) 0xe000edA0 ) )
 #define portEXPECTED_MPU_TYPE_VALUE				( 8UL << 8UL ) /* 8 regions, unified. */
 #define portMPU_ENABLE							( 0x01UL )
+#define portMPU_HFNMIENA_ENABLE				    ( 1UL << 1UL )
 #define portMPU_BACKGROUND_ENABLE				( 1UL << 2UL )
 #define portPRIVILEGED_EXECUTION_START_ADDRESS	( 0UL )
 #define portMPU_REGION_VALID					( 0x10UL )

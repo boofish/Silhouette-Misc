@@ -128,7 +128,7 @@ void initMPU(void){
 			portNVIC_SYS_CTRL_STATE_REG |= portNVIC_MEM_FAULT_ENABLE;
 
 			/* Enable the MPU with the background region configured. */
-			portMPU_CTRL_REG |= ( portMPU_ENABLE | portMPU_BACKGROUND_ENABLE );
+			portMPU_CTRL_REG |= ( portMPU_ENABLE | portMPU_BACKGROUND_ENABLE | portMPU_HFNMIENA_ENABLE );
 
 			type = portMPU_TYPE_REG;
 			rnr = portMPU_REGION_NUMBER_REG;
@@ -142,7 +142,7 @@ void initMPU(void){
 
 }
 
-
+#if 0
 int raisePrivilege(void){
 	/* TODO: need to switch the stack */
 	__asm volatile
@@ -169,6 +169,7 @@ void dropPrivilege(){
 
 }
 
+#endif //
 
 void printRegs(void){
 
@@ -187,6 +188,7 @@ void printRegs(void){
     		:"=r"(cpuid)::"memory"
     	); // cpuid 0x410fc241
 
+#if 0 // avoid binary scanner warning
     __asm volatile
     	( 	"mrs %0, control\n"
     		:"=r"(control)::"memory"
@@ -206,6 +208,7 @@ void printRegs(void){
     		:"=r"(epsr)::"memory"
     	);  // epsr 0x0
 
+#endif
 
     __asm volatile
     	(
