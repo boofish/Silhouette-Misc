@@ -32,9 +32,10 @@ OBJDUMP=`which arm-none-eabi-objdump`
 SRC_BLACKLIST="crc32 ctl ctl-stack ctl-vector fdct"
 SRC_WHITELIST="
 aha-compress aha-mont64 bs bubblesort cnt compress cover crc    \
-ctl-string cubic dijkstra dtoa duff edn expint fac fasta        \
+ctl-string ctl-stack ctl-vector cubic dijkstra dtoa duff edn expint fac fasta  \
 fibcall fir frac huffbench insertsort janne_complex jfdctint lcdnum levenshtein \
-ludcmp miniz minver nbody ndes nettle-arcfour nettle-cast128 nettle-des nettle-md5"
+ludcmp matmult-float matmult-int miniz minver nbody ndes nettle-aes 
+nettle-arcfour nettle-cast128 nettle-des nettle-md5 nettle-sha256"
 
 SRC_WHITELIST2="
 newlib-exp newlib-log newlib-mod newlib-sqrt ns nsichneu picojpeg prime qrduino
