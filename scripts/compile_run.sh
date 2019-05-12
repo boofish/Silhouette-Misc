@@ -138,7 +138,7 @@ function run() {
 # Entrance of the script.
 #
 if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
-    [[ $1 == "baseline" ]] || [[ $# == 0 ]]; then
+    [[ $1 == "baseline" ]] || [[ $1 == "silhouette" ]] || [[ $# == 0 ]]; then
     if [[ $# == 1 ]] || [[ $# == 0 ]]; then
         # Compile and run all test programs.
         for prog in $SRC_ALL; do
@@ -176,7 +176,7 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
         fi
     elif [[ $# > 1 ]]; then
         # Only compile and run one program.
-        compile $2
+        compile $2 $1
         $SCRIPTS_DIR/mem-overhead.py $1 $2
         run $2
 
@@ -185,5 +185,5 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
         fi
     fi
 else
-    echo "The first argument can only be \"ss\", \"sp\", or \"cfi\"."
+    echo "The first argument can only be \"ss\", \"sp\", \"cfi\", or \"silhouette\"."
 fi
