@@ -4,6 +4,7 @@
 #
 ECLIPSE = eclipse
 ECLIPSE_OPTIONS = -nosplash \
+				  --launcher.suppressErrors \
                   -application  \
 				   org.eclipse.cdt.managedbuilder.core.headlessbuild \
                   -data

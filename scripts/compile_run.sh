@@ -39,7 +39,8 @@ nettle-arcfour nettle-cast128 nettle-des nettle-md5 nettle-sha256"
 
 SRC_WHITELIST2="
 newlib-exp newlib-log newlib-mod newlib-sqrt ns nsichneu picojpeg prime qrduino
-qsort qurt recursion rijndael select sglib-arraybinsearch 
+qsort qurt recursion rijndael select sglib-arraybinsearch sglib-arrayheapsort
+sglib-arrayquicksort
 sglib-dllist sglib-hashtable sglib-listinsertsort sglib-listsort sglib-queue
 sglib-rbtree slre sqrt st statemate stb_perlin stringsearch1 strstr tarai ud whetstone"
 
