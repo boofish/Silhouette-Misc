@@ -31,8 +31,8 @@ OBJDUMP=`which arm-none-eabi-objdump`
 
 SRC_BLACKLIST="crc32 ctl ctl-stack ctl-vector fdct"
 SRC_WHITELIST="
-aha-compress aha-mont64 bs bubblesort cnt compress cover crc    \
-ctl-string cubic dijkstra dtoa duff edn expint fac fasta  \
+aha-compress aha-mont64 bs bubblesort cnt compress cover crc crc32   \
+ctl-string cubic dijkstra dtoa duff edn expint fac fasta fdct  \
 fibcall fir frac huffbench insertsort janne_complex jfdctint lcdnum levenshtein \
 ludcmp matmult-float matmult-int miniz minver nbody ndes nettle-aes 
 nettle-arcfour nettle-cast128 nettle-des nettle-md5 nettle-sha256"
@@ -183,6 +183,8 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
         if [[ $1 != "baseline" ]] && [[ $1 != "cfi" ]]; then
             $SCRIPTS_DIR/mem-overhead.py $1 $2
         fi
+        perf_dat=$SILHOUETTE/silhouette-misc/data/perf/$2.stat
+        cat $perf_dat
     fi
 else
     echo "The first argument can only be \"ss\", \"sp\", \"cfi\", or \"silhouette\"."
