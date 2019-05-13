@@ -12,12 +12,13 @@
 #include "stm32l4xx.h"
 #include "stm32l475e_iot01.h"
 #include "support.h"
+#include "mpu.h"
+#include "cycle_counter.h"
 			
 /* The printf's may be removed to isolate just the math calculations */
 
 // From main.c in FreeRTOS Repository
 static UART_HandleTypeDef xConsoleUart;
-
 
 /**
  * @brief UART console initialization function.
@@ -88,36 +89,46 @@ int verify_benchmark(int unused)
 }
 // End of code from BEEBS's main.c
 
-
 int main(void)
 {
-    
+
     // Initialize the printer.
 	Console_UART_Init();
 
-
-	/* initialise_benchmark(); */
+    // setup memory permissions
+    initMPU();
+    
+	initialise_benchmark();
     uint32_t t_start, t_end, t;
-
+    uint32_t t2; /* to hold cycle counter */
+    
     // Record running time.
-    printf("Start to run slre.");
+    printf("Start to run bubblesort.");
     printf("\r\n");
     int num_of_err;
-initMPU();
 	HAL_Init();
+	
+	KIN1_InitCycleCounter(); /* enable DWT hardware */
+	KIN1_ResetCycleCounter(); /* reset cycle counter */
+	KIN1_EnableCycleCounter(); /* start counting */
+	
 	t_start = HAL_GetTick();
-    for (int i = 0; i < 1024; i++) {
+    for (int i = 0; i < REPEAT_FACTOR; i++) {
         initialise_benchmark();
         num_of_err = benchmark();
     }
 	t_end = HAL_GetTick();
     t = t_end - t_start;
+	t2 = KIN1_GetCycleCounter(); /* get cycle counter */
 
 #if 0
 	printf("Start running benchmark. Time: %u\r\n", t0);
 #endif 
 
 	int result = verify_benchmark(num_of_err);
+	
+	printf ("Cycle count: %u\r\n", t2);
+	
 	if (result == 1){
 		printf("Finished successfully: in %u ms.\r\n\n", t);
 	} else if (result == -1) {
@@ -128,3 +139,4 @@ initMPU();
 
 	return 0;
 }
+
