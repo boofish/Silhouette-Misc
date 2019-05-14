@@ -47,8 +47,9 @@ sglib-rbtree slre sqrt st statemate stb_perlin stringsearch1 strstr tarai ud whe
 SRC_ALL="$SRC_WHITELIST $SRC_WHITELIST2"
 
 TEST_FILES="
-bs
+aha-compress
 fibcall
+fir
 "
 
 
@@ -140,8 +141,11 @@ function run() {
 if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
     [[ $1 == "baseline" ]] || [[ $1 == "silhouette" ]] || [[ $# == 0 ]]; then
     if [[ $# == 1 ]] || [[ $# == 0 ]]; then
+        # Clean the old data.
+        data_dir=$SILHOUETTE/silhouette-misc/data
+        rm -f $data_dir/perf/*.stat
         # Compile and run all test programs.
-        for prog in $SRC_ALL; do
+        for prog in $TEST_FILES; do
             echo "Compile $prog"
             if [[ $# == 0 ]]; then
                 compile $prog "silhouette"
@@ -163,16 +167,19 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
         fi
 
         # Collect the peformance data
-        data_dir=$SILHOUETTE/silhouette-misc/data
         if [ -d $data_dir/perf ]; then
             mkdir -p $data_dir/perf
         fi
         if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
             [[ $1 == "baseline" ]]; then
             mv $data_dir/perf/*.stat $data_dir/perf/$1
+            # generate cvs file
+            $SCRIPTS_DIR/build_csv.py $data_dir/perf/$1/perf.csv $data_dir/perf/$1
         else
             # We just ran tests with all passed turned on.
             mv $data_dir/perf/*.stat $data_dir/perf/silhouette
+            # generate cvs file
+            $SCRIPTS_DIR/build_csv.py $data_dir/perf/silhouette/perf.csv $data_dir/perf/silhouette
         fi
     elif [[ $# > 1 ]]; then
         # Only compile and run one program.
