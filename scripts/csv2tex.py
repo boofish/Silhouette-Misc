@@ -92,6 +92,9 @@ def write_tex(tex_path, configs, data, csv_type):
                 # Generate comma-separated numbers for baseline
                 if config == 'baseline':
                     number = '{:,}'.format(int(number))
+                else
+                    baseline = float(data[benchmark]['baseline'])
+                    number = '{0:.2f}'.format((float(number) - baseline) / baseline)
                 f.write(' & ' + number)
             f.write(' \\\\\n')
         # Write footer
