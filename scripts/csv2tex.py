@@ -104,41 +104,43 @@ def write_tex(tex_path, configs, data, csv_type):
 def main():
     # Parse command-line arguments
     opt = argparse.ArgumentParser(description='CSV to LaTeX generator')
-    opt.add_argument('-b', '--baseline', required=True, metavar='FILE',
-                     help='Path to the baseline CSV file')
-    opt.add_argument('-S', '--shadow-stack', required=True, metavar='FILE',
-                     help='Path to the shadow stack CSV file')
-    opt.add_argument('-s', '--store-promotion', required=True, metavar='FILE',
-                     help='Path to the store promotion CSV file')
-    opt.add_argument('-c', '--cfi', required=True, metavar='FILE',
-                     help='Path to the CFI CSV file')
-    opt.add_argument('-O', '--overall', required=True, metavar='FILE',
-                     help='Path to the overall CSV file')
     opt.add_argument('-o', '--output', required=True, metavar='TEX',
                      help='Path to the output LaTeX file')
-    opt.add_argument('-t', '--type', choices=['mem', 'perf'],
-                     default='perf', help='Type of input CSV files')
+    opt.add_argument('-t', '--type', choices=['mem', 'perf'], default='perf',
+                     help='Type of input CSV files')
     args = opt.parse_args()
-    csvs = {
-        'baseline': args.baseline,
-        'ss': args.shadow_stack,
-        'sp': args.store_promotion,
-        'cfi': args.cfi,
-        'overall': args.overall,
-    }
     csv_type = args.type
     tex_path = args.output
 
-    # Sanity check on inputs
-    for config in csvs:
-        csv_path = csvs[config]
+    # Hard-coded CSV paths
+    prefix = '../data'
+    csvs = {
+        'mem': {
+            'baseline': prefix + '/mem/baseline/code_size.csv',
+            'ss': prefix + '/mem/ss/code_size.csv',
+            'sp': prefix + '/mem/sp/code_size.csv',
+            'cfi': prefix + '/mem/cfi/code_size.csv',
+            'silhouette': prefix + '/mem/silhouette/code_size.csv',
+        },
+        'perf': {
+            'baseline': prefix + '/perf/baseline/code_size.csv',
+            'ss': prefix + '/perf/ss/code_size.csv',
+            'sp': prefix + '/perf/sp/code_size.csv',
+            'cfi': prefix + '/perf/cfi/code_size.csv',
+            'silhouette': prefix + '/perf/silhouette/code_size.csv',
+        },
+    }
+
+    # Sanity check on CSV files
+    for config in csvs[csv_type]:
+        csv_path = csvs[csv_type][config]
         if not os.path.exists(csv_path):
             opt.error(csv_path + ' not exist')
 
     # Read data from CSV files
     data = {}
-    for config in csvs:
-        csv_path = csvs[config]
+    for config in csvs[csv_type]:
+        csv_path = csvs[csv_type][config]
         with open(csv_path) as csv_file:
             csv_reader = csv.reader(csv_file)
             for row in csv_reader:
@@ -149,7 +151,7 @@ def main():
                 data[row[0]][config] = row[1]
 
     # Write to LaTeX file
-    write_tex(tex_path, csvs.keys(), data, csv_type)
+    write_tex(tex_path, csvs[csv_type].keys(), data, csv_type)
 
 if __name__ == '__main__':
     main()
