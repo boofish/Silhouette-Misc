@@ -123,11 +123,11 @@ def main():
             'silhouette': prefix + '/mem/silhouette/code_size.csv',
         },
         'perf': {
-            'baseline': prefix + '/perf/baseline/code_size.csv',
-            'ss': prefix + '/perf/ss/code_size.csv',
-            'sp': prefix + '/perf/sp/code_size.csv',
-            'cfi': prefix + '/perf/cfi/code_size.csv',
-            'silhouette': prefix + '/perf/silhouette/code_size.csv',
+            'baseline': prefix + '/perf/baseline/perf.csv',
+            'ss': prefix + '/perf/ss/perf.csv',
+            'sp': prefix + '/perf/sp/perf.csv',
+            'cfi': prefix + '/perf/cfi/perf.csv',
+            'silhouette': prefix + '/perf/silhouette/perf.csv',
         },
     }
 
