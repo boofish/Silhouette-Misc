@@ -23,7 +23,9 @@ SCRIPTS_DIR=`pwd`
 BEEBS_PROJ=$SILHOUETTE/projs/beebs
 BEEBS_ELF=$BEEBS_PROJ/Release/beebs.elf
 BEEBS_RUN_CFG="$BEEBS_PROJ/beebs Run.cfg"
-BEEBS_CODE_SIZE_STAT="$BEEBS_PROJ/Release/code_size.stat"
+BEEBS_CODE_SIZE_SS_STAT="$BEEBS_PROJ/Release/code_size_ss.stat"
+BEEBS_CODE_SIZE_SP_STAT="$BEEBS_PROJ/Release/code_size_sp.stat"
+BEEBS_CODE_SIZE_CFI_STAT="$BEEBS_PROJ/Release/code_size_cfi.stat"
 BEEBS_SRC=$SILHOUETTE/silhouette-misc/programs/beebs/beebs/src
 
 # GNU ARM toolchain
@@ -99,15 +101,23 @@ function compile() {
     $OBJDUMP -d $1.elf > $1.s
 
     # Move the code size stat file to the data directory.
-    if [[ $# == 2 ]] && [[ $2 != "cfi" ]] && [[ $2 != "baseline" ]]; then
+    if [[ $# == 2 ]] && [[ $2 != "baseline" ]]; then
         echo "Moving code_size.stat to both the debug and the data/mem directory."
         mem_data_dir=$SILHOUETTE/silhouette-misc/data/mem/$2
         if [ ! -d $mem_data_dir ]; then
             mkdir -p $mem_data_dir
         fi
-        if [ -f $BEEBS_CODE_SIZE_STAT ]; then
-            mv $BEEBS_CODE_SIZE_STAT ./
-            cp ./code_size.stat $mem_data_dir/$1.stat
+        mem_data_file=""
+        if [[ $2 == "ss" ]]; then
+            mem_data_file=$BEEBS_CODE_SIZE_SS_STAT
+        elif [[ $2 == "sp" ]]; then
+            mem_data_file=$BEEBS_CODE_SIZE_SP_STAT
+        elif [[ $2 == "cfi" ]] || [[ $2 == "silhouette" ]]; then
+            mem_data_file=$BEEBS_CODE_SIZE_CFI_STAT
+        fi
+        if [ -f $mem_data_file ]; then  
+            cp $mem_data_file ./    # move the data file to the debug directory
+            cp $mem_data_file $mem_data_dir/$1.stat
         fi
     fi
 }
