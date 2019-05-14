@@ -26,6 +26,7 @@ BEEBS_RUN_CFG="$BEEBS_PROJ/beebs Run.cfg"
 BEEBS_CODE_SIZE_SS_STAT="$BEEBS_PROJ/Release/code_size_ss.stat"
 BEEBS_CODE_SIZE_SP_STAT="$BEEBS_PROJ/Release/code_size_sp.stat"
 BEEBS_CODE_SIZE_CFI_STAT="$BEEBS_PROJ/Release/code_size_cfi.stat"
+BEEBS_JMP_TBL_STAT="$BEEBS_PROJ/Release/jump_table_jump.stat"
 BEEBS_SRC=$SILHOUETTE/silhouette-misc/programs/beebs/beebs/src
 
 # GNU ARM toolchain
@@ -118,6 +119,11 @@ function compile() {
         if [ -f $mem_data_file ]; then  
             cp $mem_data_file ./    # move the data file to the debug directory
             cp $mem_data_file $mem_data_dir/$1.stat
+        fi
+
+        if [[ $2 == "cfi" ]]; then
+            # for CFI, also move the jump_table_jump.stat file to data file.
+            cp $BEEBS_JMP_TBL_STAT ./ 2>/dev/null
         fi
     fi
 }
