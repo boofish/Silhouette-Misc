@@ -147,7 +147,7 @@ def main():
         with open(csv_path) as csv_file:
             csv_reader = csv.reader(csv_file)
             for row in csv_reader:
-                if row[0] == 'Benchmark' or row[0] == '#Benchmark':
+                if row[0] == 'Benchmark' or row[0] == '#Benchmark' or row[0] == "benchmark":
                     continue
                 if row[0] not in data:
                     data[row[0]] = {}

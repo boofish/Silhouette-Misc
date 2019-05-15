@@ -55,6 +55,8 @@ fibcall
 fir
 "
 
+SRC_TO_RUN=$SRC_ALL
+
 
 #
 # Compile a test program, meanwhile keep the build log and copy the generated 
@@ -108,12 +110,16 @@ function compile() {
         if [ ! -d $mem_data_dir ]; then
             mkdir -p $mem_data_dir
         fi
+
         mem_data_file=""
         if [[ $2 == "ss" ]]; then
             mem_data_file=$BEEBS_CODE_SIZE_SS_STAT
         elif [[ $2 == "sp" ]]; then
             mem_data_file=$BEEBS_CODE_SIZE_SP_STAT
         elif [[ $2 == "cfi" ]] || [[ $2 == "silhouette" ]]; then
+            mem_data_file=$BEEBS_CODE_SIZE_CFI_STAT
+        else 
+            # CFI is the pass to run; so it has the data of silhouette.
             mem_data_file=$BEEBS_CODE_SIZE_CFI_STAT
         fi
         if [ -f $mem_data_file ]; then  
@@ -161,7 +167,7 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
         data_dir=$SILHOUETTE/silhouette-misc/data
         rm -f $data_dir/perf/*.stat
         # Compile and run all test programs.
-        for prog in $TEST_FILES; do
+        for prog in $SRC_TO_RUN; do
             echo "Compile $prog"
             if [[ $# == 0 ]]; then
                 compile $prog "silhouette"
@@ -171,7 +177,7 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
              
             echo ""
             # run_minicom $prog
-            run $prog
+            # run $prog
         done
 
         if [[ $1 == "ss" ]] || [[ $1 == "sp" ]]; then

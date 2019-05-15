@@ -4,7 +4,7 @@
 This scripts computes the memory overhead of test programs.
 
 Command line arguments:
-    $1 - Can be "ss", "sp", or "silhouette"   
+    $1 - Can be "ss", "sp", "cfi", or "silhouette"   
     $2 - This is optional. If present, it is the name of a BEEBS program.
 '''
 
@@ -14,11 +14,14 @@ import os
 # command line arguments
 argv = sys.argv
 
+# pass type
+PASS = argv[1]
+
 # paths
 HOME_DIR = os.path.expanduser("~")
 SILHOUETTE = HOME_DIR + "/projects/silhouette"
 DEBUG_DIR = SILHOUETTE + "/debug"
-DATA_DIR = SILHOUETTE + "/silhouette-misc/data/mem/" + argv[1] + "/"
+DATA_DIR = SILHOUETTE + "/silhouette-misc/data/mem/"
 
 # gdb command to get the list of functions in a binary
 GDB_FUNC_INFO_CMD = "arm-none-eabi-gdb -batch -ex \"i function\""
@@ -37,7 +40,7 @@ def compute(prog_name):
     if os.path.isdir(prog_debug_dir) == False:
         print(prog_name + " does not exist!")
         return
-
+    # Binary exists, start to get the list of functions.
     os.chdir(prog_debug_dir)
     gdb_cmd = GDB_FUNC_INFO_CMD + " " + prog_name + ".elf"
     func_info = os.popen(gdb_cmd).read().split('\n')
@@ -55,14 +58,18 @@ def compute(prog_name):
         i += 1
 
     # cd to the stats data directory of the test program.
-    os.chdir(DATA_DIR)
-    stat_file_name = DATA_DIR + prog_name + ".stat"
-    print(stat_file_name)
-
-    # Check if the code_size.stat exists.
-    if os.path.isfile(stat_file_name) == False:
-        print("code_szie file doesn't exit.")
-        return
+    if PASS != "baseline":
+        data_dir = DATA_DIR + PASS + "/"
+        stat_file_name = data_dir + prog_name + ".stat"
+        print(stat_file_name)
+        # Check if the code_size.stat exists.
+        if os.path.isfile(stat_file_name) == False:
+            print("code_size file doesn't exit.")
+            return
+    else:
+        # For baseline, just use shadow stack file.
+        data_dir =  DATA_DIR + "ss/"
+        stat_file_name = data_dir + prog_name + ".stat"
 
     stat_file = open(stat_file_name, "r")
     original_code_size, new_code_size, increased_code_size = 0, 0, 0
@@ -75,21 +82,24 @@ def compute(prog_name):
         original_code_size += int(func_stat[1])
         new_code_size += int(func_stat[2])
 
+    if PASS == "baseline":
+        result = prog_name + "," + str(original_code_size) + "\n"
+        return result
+    else:
+        print("new code size = " + str(new_code_size))
+        result = prog_name + "," + str(new_code_size) + "\n"
+
     # summerize results
     increased_code_size = new_code_size - original_code_size
     overhead = increased_code_size / original_code_size
     overhead_str = "%.2f" % (overhead * 100) + "%"
 
-    # write results to file.
-    result = str(original_code_size) + "," + str(new_code_size) \
-            + "," +  overhead_str + "\n"
-    
-    # print results
-    print("Program: " + prog_name)
-    print("Original code size: " + str(original_code_size))
-    print("New code size: " + str(new_code_size))
-    print("Overhead (bytes): " + str(increased_code_size))
-    print("Overhead (%): " + overhead_str)
+    # # print results
+    # print("Program: " + prog_name)
+    # print("Original code size: " + str(original_code_size))
+    # print("New code size: " + str(new_code_size))
+    # print("Overhead (bytes): " + str(increased_code_size))
+    # print("Overhead (%): " + overhead_str)
 
     return result
 
@@ -97,12 +107,16 @@ def compute(prog_name):
 This function computes the code size overhead for all test programs
 '''
 def compute_all():
-    os.chdir(DATA_DIR)
-
-    mem_overhead_file = open("mem_overhead.csv", "w")
-    mem_overhead_file.write("original_code_size,new_code_size,overhead (%)\n")
+    os.chdir(DATA_DIR + PASS)
+    code_size_data_dir = "./" if PASS != "baseline" else "../ss/"
+    os.chdir(code_size_data_dir)
 
     mem_files = os.popen("ls *.stat").read().split('\n')[:-1]
+    
+    if PASS == "baseline":
+        os.chdir("../baseline")
+    mem_overhead_file = open("code_size.csv", "w")
+    mem_overhead_file.write("benchmark,code_size\n")
     for prog in mem_files:
         prog = prog[:-5]  # remove the suffix.
         mem_overhead_file.write(compute(prog))
