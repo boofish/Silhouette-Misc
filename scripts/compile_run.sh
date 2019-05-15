@@ -34,14 +34,14 @@ OBJDUMP=`which arm-none-eabi-objdump`
 
 SRC_BLACKLIST="crc32 ctl ctl-stack ctl-vector fdct"
 SRC_WHITELIST="
-aha-compress aha-mont64 bubblesort cnt compress cover crc crc32   \
+aha-compress aha-mont64 bubblesort cnt compress crc crc32   \
 ctl-string cubic dijkstra dtoa duff edn expint fac fasta fdct  \
 fir frac huffbench insertsort  jfdctint lcdnum levenshtein \
 ludcmp matmult-float matmult-int miniz minver nbody ndes nettle-aes 
 nettle-arcfour nettle-cast128 nettle-des nettle-md5 nettle-sha256"
 
 SRC_WHITELIST2="
-newlib-exp newlib-log newlib-mod newlib-sqrt nsichneu picojpeg prime qrduino
+newlib-log  newlib-sqrt nsichneu picojpeg prime qrduino
 qsort qurt recursion rijndael select sglib-arraybinsearch sglib-arrayheapsort
 sglib-arrayquicksort
 sglib-dllist sglib-hashtable sglib-listinsertsort sglib-listsort sglib-queue
@@ -177,7 +177,7 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
              
             echo ""
             # run_minicom $prog
-            # run $prog
+            run $prog
         done
 
         if [[ $1 == "ss" ]] || [[ $1 == "sp" ]]; then
