@@ -55,7 +55,13 @@ fibcall
 fir
 "
 
-SRC_TO_RUN=$SRC_ALL
+SRC_NO_CACHE="
+aha-compress aha-mont64 bubblesort crc32 ctl-string dtoa duff fir huffbench
+ndes nettle-aes qrduino rijndael select sglib-arrayquicksort sglib-queue
+st whetstone	
+"
+
+SRC_TO_RUN=$SRC_NO_CACHE
 
 
 #
@@ -177,10 +183,10 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
              
             echo ""
             # run_minicom $prog
-            run $prog
+            # run $prog
         done
 
-        if [[ $1 == "ss" ]] || [[ $1 == "sp" ]]; then
+        if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]]; then
             echo "Compute code size overhead of all programs."
             $SCRIPTS_DIR/mem-overhead.py $1
         elif [[ $# == 0 ]]; then
