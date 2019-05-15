@@ -4,7 +4,6 @@ aha-mont64,3656
 bubblesort,27340
 cnt,547
 compress,1320
-cover,8
 crc,310
 crc32,3279
 ctl-string,5711
@@ -37,9 +36,7 @@ nettle-cast128,906
 nettle-des,899
 nettle-md5,276
 nettle-sha256,1877
-newlib-exp,8
 newlib-log,147
-newlib-mod,8
 newlib-sqrt,523
 nsichneu,1675
 picojpeg,181247
