@@ -8,3 +8,6 @@
 
 # Vim intermediate file
 *.swp
+
+# temp file for overheads
+*.stat

@@ -183,7 +183,7 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
              
             echo ""
             # run_minicom $prog
-            # run $prog
+            run $prog
         done
 
         if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]]; then
