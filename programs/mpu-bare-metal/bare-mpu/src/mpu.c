@@ -460,3 +460,51 @@ void mpuTest(){
 #endif // MPU_TESTING
 
 }
+
+
+/**
+ * Code to have a stack overflowing
+ *
+ */
+
+int foo (void) __attribute__ ((noinline));
+
+int foo_leaf (int a) __attribute__ ((noinline));
+
+void hacked (void);
+
+int foo_leaf(int x){
+	if (x<0){
+		return 1;
+	}
+	return -1;
+}
+int foo (void) {
+   /* Buffer to overflow */
+   void * buffer[16];
+
+   foo_leaf(0);
+
+   /* overflow the return address, 2nd on top */
+   buffer[17] = &hacked;
+
+   return -1;
+}
+
+void hacked (void) {
+   printf ("I have been hacked\r\n");
+   return;
+}
+
+int stackoverflowing_test(){
+
+	int size;
+	if ((size = foo ()) == -1) {
+	 printf ( "hack failed! Shadow stack works!\r\n");
+	 return -1;
+	}
+
+	printf ("Read %d bytes\n", size);
+	return 0;
+}
+

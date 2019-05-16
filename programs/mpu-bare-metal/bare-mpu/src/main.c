@@ -22,6 +22,8 @@ int main(void)
 
 	initMPU();
 
+        stackoverflowing_test(); //simple stack overflow attack.
+
 	mpuTest(); // a simple test for mpu functionality
 
 	privilegeTestMPUReg();

@@ -67,5 +67,7 @@ void printRegs(void);
 
 void mpuTest(void);
 
+void stackoverflowing_test(void);
+
 #endif // _MPU_H_
 
