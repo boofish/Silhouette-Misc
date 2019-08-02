@@ -114,7 +114,7 @@ void initMPU(void){
 
 
 #ifdef SS_FLIP_USER_KERNEL_PERM
-		    /* setup shadow stack with privilege access only. */
+		    /* setup shadow stack with user access only. */
 			portMPU_REGION_BASE_ADDRESS_REG =	( ( uint32_t ) _shadow_stack_start ) | /* Base address. */
 					( portMPU_REGION_VALID ) |
 					( portPRIVILEGED_RAM_REGION );
