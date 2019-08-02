@@ -21,6 +21,8 @@ char pub_stack_data[StackSize] = "public";
 
 #endif // MPU_TESTING
 
+
+
 /*-----------------------------------------------------------*/
 
 static uint32_t prvGetMPURegionSizeSetting( uint32_t ulActualSizeInBytes )
@@ -78,7 +80,12 @@ void initMPU(void){
 			rbar = portMPU_REGION_BASE_ADDRESS_REG;
 			rasr = portMPU_REGION_ATTRIBUTE_REG;
 
-			/* setup RAM with all access. */
+
+			/* setup RAM with all access, or kernel only access if flipped. */
+
+#ifdef SS_FLIP_USER_KERNEL_PERM 
+
+			/* kernel only access to all RAM */
 			portMPU_REGION_BASE_ADDRESS_REG =	( ( uint32_t ) _RAM_start ) | /* Base address. */
 					( portMPU_REGION_VALID ) |
 					( portALL_RAM_REGION );
@@ -87,12 +94,37 @@ void initMPU(void){
 											( portMPU_REGION_CACHEABLE_BUFFERABLE ) | /* noMPU: portMPU_REGION_CACHEABLE_WBWA */
 											(prvGetMPURegionSizeSetting( ( uint32_t ) _RAM_end - ( uint32_t ) _RAM_start ) ) |
 											( portMPU_REGION_ENABLE );
+#else // no SS_FLIP_USER_KERNEL_PERM
+
+			/* user & kernel access to all RAM */
+			portMPU_REGION_BASE_ADDRESS_REG =	( ( uint32_t ) _RAM_start ) | /* Base address. */
+					( portMPU_REGION_VALID ) |
+					( portALL_RAM_REGION );
+
+			portMPU_REGION_ATTRIBUTE_REG =	( portMPU_REGION_READ_WRITE ) | (portMPU_REGION_EXECUTE_NEVER) |
+											( portMPU_REGION_CACHEABLE_BUFFERABLE ) | /* noMPU: portMPU_REGION_CACHEABLE_WBWA */
+											(prvGetMPURegionSizeSetting( ( uint32_t ) _RAM_end - ( uint32_t ) _RAM_start ) ) |
+											( portMPU_REGION_ENABLE );
+#endif // SS_FLIP_USER_KERNEL_PERM
 
 			type = portMPU_TYPE_REG;
 			rnr = portMPU_REGION_NUMBER_REG;
 			rbar = portMPU_REGION_BASE_ADDRESS_REG;
 			rasr = portMPU_REGION_ATTRIBUTE_REG;
 
+
+#ifdef SS_FLIP_USER_KERNEL_PERM
+		    /* setup shadow stack with privilege access only. */
+			portMPU_REGION_BASE_ADDRESS_REG =	( ( uint32_t ) _shadow_stack_start ) | /* Base address. */
+					( portMPU_REGION_VALID ) |
+					( portPRIVILEGED_RAM_REGION );
+
+			portMPU_REGION_ATTRIBUTE_REG =	( portMPU_REGION_READ_WRITE ) | (portMPU_REGION_EXECUTE_NEVER) |
+											( portMPU_REGION_CACHEABLE_BUFFERABLE ) | /* noMPU: portMPU_REGION_CACHEABLE_WBWA */
+											(prvGetMPURegionSizeSetting( ( uint32_t ) _shadow_stack_end - ( uint32_t ) _shadow_stack_start ) ) |
+											( portMPU_REGION_ENABLE );
+
+#else // no SS_FLIP_USER_KERNEL_PERM
 
 			/* setup shadow stack with privilege access only. */
 			portMPU_REGION_BASE_ADDRESS_REG =	( ( uint32_t ) _shadow_stack_start ) | /* Base address. */
@@ -104,10 +136,14 @@ void initMPU(void){
 											(prvGetMPURegionSizeSetting( ( uint32_t ) _shadow_stack_end - ( uint32_t ) _shadow_stack_start ) ) |
 											( portMPU_REGION_ENABLE );
 
+#endif // SS_FLIP_USER_KERNEL_PERM
+
 			type = portMPU_TYPE_REG;
 			rnr = portMPU_REGION_NUMBER_REG;
 			rbar = portMPU_REGION_BASE_ADDRESS_REG;
 			rasr = portMPU_REGION_ATTRIBUTE_REG;
+
+
 
 			/* By default allow everything to access the general peripherals.  The
 					system peripherals and registers are protected. */

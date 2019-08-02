@@ -9,6 +9,13 @@
 
 #define MPU_TESTING //enable a simple test of MPU functions
 
+
+/* To flip user and kernel permission on stack & shadow stack */
+#ifndef SS_FLIP_USER_KERNEL_PERM
+#define SS_FLIP_USER_KERNEL_PERM
+#endif
+
+
 #ifdef MPU_TESTING
 #define StackSize 6
 extern char shadow_stack_data[];
