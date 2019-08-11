@@ -90,7 +90,7 @@ void initMPU(void){
 					( portMPU_REGION_VALID ) |
 					( portALL_RAM_REGION );
 
-			portMPU_REGION_ATTRIBUTE_REG =	( portMPU_REGION_READ_WRITE ) | (portMPU_REGION_EXECUTE_NEVER) |
+			portMPU_REGION_ATTRIBUTE_REG =	( portMPU_REGION_PRIVILEGED_READ_WRITE ) | (portMPU_REGION_EXECUTE_NEVER) |
 											( portMPU_REGION_CACHEABLE_BUFFERABLE ) | /* noMPU: portMPU_REGION_CACHEABLE_WBWA */
 											(prvGetMPURegionSizeSetting( ( uint32_t ) _RAM_end - ( uint32_t ) _RAM_start ) ) |
 											( portMPU_REGION_ENABLE );
