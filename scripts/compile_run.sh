@@ -34,7 +34,7 @@ OBJDUMP=`which arm-none-eabi-objdump`
 
 SRC_BLACKLIST="crc32 ctl ctl-stack ctl-vector fdct"
 SRC_WHITELIST="
-aha-compress aha-mont64 bubblesort cnt compress crc crc32   \
+aha-compress aha-mont64 bubblesort cnt compress crc   \
 ctl-string cubic dijkstra dtoa duff edn expint fac fasta fdct  \
 fir frac huffbench insertsort  jfdctint lcdnum levenshtein \
 ludcmp matmult-float matmult-int miniz minver nbody ndes nettle-aes 
@@ -61,7 +61,7 @@ ndes nettle-aes qrduino rijndael select sglib-arrayquicksort sglib-queue
 st whetstone	
 "
 
-SRC_TO_RUN=$SRC_NO_CACHE
+SRC_TO_RUN=$SRC_ALL
 
 
 #
@@ -167,7 +167,8 @@ function run() {
 # Entrance of the script.
 #
 if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
-    [[ $1 == "baseline" ]] || [[ $1 == "silhouette" ]] || [[ $# == 0 ]]; then
+    [[ $1 == "baseline" ]] || [[ $1 == "silhouette" ]] || [[ $# == 0 ]] || 
+    [[ $1 == "invert" ]]; then
     if [[ $# == 1 ]] || [[ $# == 0 ]]; then
         # Clean the old data.
         data_dir=$SILHOUETTE/silhouette-misc/data
@@ -186,7 +187,8 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
             run $prog
         done
 
-        if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]]; then
+        if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
+            [[ $1 == "invert" ]]; then
             echo "Compute code size overhead of all programs."
             $SCRIPTS_DIR/mem-overhead.py $1
         elif [[ $# == 0 ]]; then
@@ -199,7 +201,7 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
             mkdir -p $data_dir/perf
         fi
         if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
-            [[ $1 == "baseline" ]]; then
+            [[ $1 == "baseline" ]] || [[ $1 == "invert" ]]; then
             mv $data_dir/perf/*.stat $data_dir/perf/$1
             # generate cvs file
             $SCRIPTS_DIR/build_csv.py $data_dir/perf/$1/perf.csv $data_dir/perf/$1
