@@ -43,7 +43,7 @@ BEEBS_DIR=$SILHOUETTE/silhouette-misc/programs/beebs
 BEEBS_SRC=$BEEBS_DIR/beebs
 
 # A list of functions we don't need change when updating src code of test programs.
-SRC_WHITELIST="main.c syscalls.c support.h stm32l4xx_it.c system_stm32l4xx.c mpu.c mpu.h"
+SRC_WHITELIST="main.c syscalls.c support.h stm32l4xx_it.c system_stm32l4xx.c mpu.c mpu.h stm32l4xx_hal_msp.c"
 
 
 #
@@ -124,8 +124,8 @@ function update_prog() {
     # Update main.c to print the name of the test program when run it.
     echo "Updating the message printed in main.c"
     new_printf="\ \ \ \ printf(\"Start to run $1.\");"
-    sed -i '103d' $BEEBS_PROJ/src/main.c
-    sed -i "102a$new_printf" $BEEBS_PROJ/src/main.c
+    sed -i '187d' $BEEBS_PROJ/src/main.c
+    sed -i "186a$new_printf" $BEEBS_PROJ/src/main.c
 }
 
 
