@@ -165,73 +165,90 @@ int initialise_benchmark()
 }
 // each benchmark will need to override this function
 // otherwise this function returns -1 to indicate no verification done
-int verify_benchmark(int unused) 
+int verify_benchmark(int unused)
 {
     return -1;
 }
 // End of code from BEEBS's main.c
 int main(void)
 {
-//    //LL_FLASH_EnablePrefetch();
-//    LL_FLASH_DisableInstCache();
-//    LL_FLASH_DisableDataCache();
-    //LL_FLASH_EnableInstCacheReset();
-    //LL_FLASH_EnableDataCacheReset();
+#if 0
+	LL_FLASH_EnablePrefetch();
+	LL_FLASH_DisableInstCache();
+	LL_FLASH_DisableDataCache();
+	LL_FLASH_EnableInstCacheReset();
+	LL_FLASH_EnableDataCacheReset();
+#endif
 
 	initMPU();
 	SystemClock_Config();
 	Console_UART_Init();
-    uint32_t t_start, t_end, t;
 
+	printf("Start to run nettle-arcfour.");
+	printf("\r\n");
 
-    printf("Start to run nettle-arcfour.");
-    printf("\r\n");
-    int num_of_err;
-    //uint32_t useless_time = HAL_GetTick();
-    //for (int i = 0; i < 2000000; i++){
-//	uint32_t temp = HAL_GetTick();
-  //  	useless_time = (temp > useless_time) ? temp : useless_time;
-    //}
-    //printf("Useless time: %u", useless_time);
-    //printf("\r\n");
-	HAL_Init();
-//	flush();
-	t_start = HAL_GetTick();
-	// Testing CFI checks
 #if 0
-	unsigned int (*fuc)();
+	uint32_t useless_time = HAL_GetTick();
+	for (int i = 0; i < 2000000; i++){
+		uint32_t temp = HAL_GetTick();
+		useless_time = (temp > useless_time) ? temp : useless_time;
+	}
+	printf("Useless time: %u", useless_time);
+	printf("\r\n");
+#endif
+
+	HAL_Init();
+
+#if 0
+	flush();
+#endif
+
+#if 0
+	// Testing CFI checks
+	unsigned int (*func)();
 	unsigned int val;
 	if (t_start == 0){
-		fuc = &HAL_GetDEVID;
+		func = &HAL_GetDEVID;
 	} else {
-		fuc = &HAL_GetHalVersion;
+		func = &HAL_GetHalVersion;
 	}
 	flush();
-	val = (*fuc)();
+	val = (*func)();
 #endif
-	//KIN1_InitCycleCounter(); /* enable DWT hardware */
-	//KIN1_ResetCycleCounter(); /* reset cycle counter */
-	//KIN1_EnableCycleCounter(); /* start counting */
-    for (int i = 0; i < REPEAT_FACTOR; i++) {
-        initialise_benchmark();
-        num_of_err = benchmark();
-    }
-	t_end = HAL_GetTick();
-    t = t_end - t_start;
-    //t = KIN1_GetCycleCounter();
-    //t =  t / 4000;
-#if 0
-	printf("Start running benchmark. Time: %u\r\n", t0);
-#endif 
 
-	int result = verify_benchmark(num_of_err);
-	if (result == 1){
-		printf("Finished successfully: in %u ms.\r\n\n", t);
-	} else if (result == -1) {
-        printf("Finished in %u ms, but no verify_benchmark() run.\r\n\n", t);
-    } else{
-		printf("Finished in %u ms, but verify_benchmark() found errors.\r\n\n", t);
+#if 0
+	KIN1_InitCycleCounter(); /* enable DWT hardware */
+	KIN1_ResetCycleCounter(); /* reset cycle counter */
+	KIN1_EnableCycleCounter(); /* start counting */
+#else
+	uint32_t t_start, t_end, t;
+	t_start = HAL_GetTick();
+#endif
+	int result = 0;
+	for (int i = 0; i < REPEAT_FACTOR; i++) {
+		initialise_benchmark();
+		result = benchmark();
 	}
+#if 0
+	t = KIN1_GetCycleCounter();
+	t =  t / 4000;
+#else
+	t_end = HAL_GetTick();
+	t = t_end - t_start;
+#endif
+
+	switch (verify_benchmark(result)) {
+	case 1:
+		printf("Finished successfully: in %u ms.", t);
+		break;
+	case -1:
+		printf("Finished in %u ms, but no verify_benchmark() run.", t);
+		break;
+	default:
+		printf("Finished in %u ms, but verify_benchmark() found errors.", t);
+		break;
+	}
+	printf("\r\n\n");
 
 	return 0;
 }
