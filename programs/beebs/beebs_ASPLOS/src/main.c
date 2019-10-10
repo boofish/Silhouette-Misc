@@ -227,7 +227,9 @@ int main(void)
 	int result = 0;
 	for (int i = 0; i < REPEAT_FACTOR; i++) {
 		initialise_benchmark();
+		asm volatile ("" :: "r" (result) : "memory");
 		result = benchmark();
+		asm volatile ("" :: "r" (result) : "memory");
 	}
 #if 0
 	t = KIN1_GetCycleCounter();
