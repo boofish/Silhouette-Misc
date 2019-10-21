@@ -87,14 +87,14 @@ void initMPU(void){
 
 			/* Set up canary regions around RAM2 and RAM */
 #ifdef SS_SFI
-			/* Setup canary region below RAM2 */
-			portMPU_REGION_BASE_ADDRESS_REG =	( ( uint32_t ) (_RAM2_start) - 256 ) | /* Base address. */
+			/* Setup RAM2 region */
+			portMPU_REGION_BASE_ADDRESS_REG =	( ( uint32_t ) (_RAM2_start) ) | /* Base address. */
 												( portMPU_REGION_VALID ) |
 												( portSFI_RAM_HOLE_REGION );
 
-			portMPU_REGION_ATTRIBUTE_REG =	( portMPU_REGION_PRIVILEGED_READ_ONLY ) | (portMPU_REGION_EXECUTE_NEVER) |
+			portMPU_REGION_ATTRIBUTE_REG =	( portMPU_REGION_READ_WRITE ) | (portMPU_REGION_EXECUTE_NEVER) |
 												( portMPU_REGION_CACHEABLE_BUFFERABLE ) |  /* noMPU: portMPU_REGION_CACHEABLE_WT */
-												(prvGetMPURegionSizeSetting( ( uint32_t ) 256 ) ) |
+												(prvGetMPURegionSizeSetting( ( uint32_t ) _RAM2_end - ( uint32_t ) _RAM2_start ) ) |
 												( portMPU_REGION_ENABLE );
 
 			type = portMPU_TYPE_REG;
