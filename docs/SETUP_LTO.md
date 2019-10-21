@@ -68,6 +68,7 @@ git checkout release_90
 7. In 'Miscellaneous' inside 'MCU GCC Linker' settings, add `-flto` to 'Linker flags'.
    Add Silhouette flags if you need.  Note that if a Silhouette flag is in the form of `-mllvm -xxxx`,
    the corresponding linker flag should be `-Wl,-mllvm,-xxxx`.
+   See [LLVM_CLI_Options.md](LLVM_CLI_Options.md).
 
 8. In 'Miscellaneous' inside 'MCU GCC Linker' settings, add the following entries to 'Other objects'.
    Each line takes one entry.
