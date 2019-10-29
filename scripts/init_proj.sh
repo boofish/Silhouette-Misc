@@ -126,6 +126,56 @@ function update_prog() {
     new_printf="\ \ \ \ printf(\"Start to run $1.\");"
     sed -i '187d' $BEEBS_PROJ/src/main.c
     sed -i "186a$new_printf" $BEEBS_PROJ/src/main.c
+
+    # Add macro definitions for some benchmarks
+    case $1 in
+    "ctl-stack" )
+        sed -i "1i#define CTL_STACK" $BEEBS_PROJ/src/ctl.c
+        ;;
+    "ctl-vector" )
+        sed -i "1i#define CTL_VECTOR" $BEEBS_PROJ/src/ctl.c
+        ;;
+    "matmult-float" )
+        sed -i "1i#define MATMULT_FLOAT" $BEEBS_PROJ/src/matmult.c
+        ;;
+    "matmult-int" )
+        sed -i "1i#define MATMULT_INT" $BEEBS_PROJ/src/matmult.c
+        ;;
+    "sglib-arrayheapsort" )
+        sed -i "1i#define HEAP_SORT" $BEEBS_PROJ/src/arraysort.c
+        ;;
+    "sglib-arrayquicksort" )
+        sed -i "1i#define QUICK_SORT" $BEEBS_PROJ/src/arraysort.c
+        ;;
+    "trio-snprintf" )
+        sed -i "39i#define TRIO_DEPRECATED 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_ERRORS 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_EXTENSION 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_FEATURE_FLOAT 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_MICROSOFT 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_SNPRINTF" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_SNPRINTF_ONLY" $BEEBS_PROJ/src/triodef.h
+        ;;
+    "trio-sscanf" )
+        sed -i "39i#define TRIO_DEPRECATED 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_ERRORS 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_EMBED_NAN 1" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_EMBED_STRING 1" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_EXTENSION 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_FEATURE_CLOSURE 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_FEATURE_DYNAMICSTRING 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_FEATURE_FD 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_FEATURE_FILE 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_FEATURE_FLOAT 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_FEATURE_LOCALE 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_FEATURE_STDIO 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_FEATURE_STRERR 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_MICROSOFT 0" $BEEBS_PROJ/src/triodef.h
+        sed -i "39i#define TRIO_SSCANF" $BEEBS_PROJ/src/triodef.h
+        ;;
+    * )
+        ;;
+    esac
 }
 
 

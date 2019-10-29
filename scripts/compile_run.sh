@@ -34,18 +34,19 @@ OBJDUMP=`which arm-none-eabi-objdump`
 
 SRC_BLACKLIST="crc32 ctl ctl-stack ctl-vector fdct"
 SRC_WHITELIST="
-aha-compress aha-mont64 bubblesort cnt compress crc   \
-ctl-string cubic dijkstra dtoa duff edn expint fac fasta fdct  \
-fir frac huffbench insertsort  jfdctint lcdnum levenshtein \
-ludcmp matmult-float matmult-int miniz minver nbody ndes nettle-aes 
+aha-compress aha-mont64 bs bubblesort cnt compress cover crc crc32 ctl-stack
+ctl-string ctl-vector cubic dijkstra dtoa duff edn expint fac fasta fdct
+fir frac huffbench insertsort  jfdctint lcdnum levenshtein
+ludcmp matmult-float matmult-int mergesort miniz minver nbody ndes nettle-aes
 nettle-arcfour nettle-cast128 nettle-des nettle-md5 nettle-sha256"
 
 SRC_WHITELIST2="
-newlib-log  newlib-sqrt nsichneu picojpeg prime qrduino
+newlib-exp newlib-log newlib-mod newlib-sqrt ns nsichneu picojpeg prime qrduino
 qsort qurt recursion rijndael select sglib-arraybinsearch sglib-arrayheapsort
 sglib-arrayquicksort
 sglib-dllist sglib-hashtable sglib-listinsertsort sglib-listsort sglib-queue
-sglib-rbtree slre sqrt st statemate stb_perlin stringsearch1 strstr tarai ud whetstone"
+sglib-rbtree slre sqrt st statemate stb_perlin stringsearch1 strstr tarai
+trio-snprintf trio-sscanf ud whetstone"
 
 SRC_ALL="$SRC_WHITELIST $SRC_WHITELIST2"
 
