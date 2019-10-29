@@ -11,6 +11,10 @@
 #         "ss" for "shadow stack", or
 #         "sp" for "store promotion", or
 #         "cfi" for "control-flow integrity"
+#         "silhouette" for "Silhouette"
+#         "invert" for "Silhouette-Invert"
+#         "sfisel" for "Selective SFI"
+#         "sfifull" for "Full SFI"
 #   $2 - This is optional. It can only be the name of a BEEBS program. When 
 #        present, the script only compiles this single program.
 #   $3 - Optional. Can only be run. When present, it runs the just compiled 
@@ -26,6 +30,8 @@ BEEBS_RUN_CFG="$BEEBS_PROJ/beebs Run.cfg"
 BEEBS_CODE_SIZE_SS_STAT="$BEEBS_PROJ/Release/code_size_ss.stat"
 BEEBS_CODE_SIZE_SP_STAT="$BEEBS_PROJ/Release/code_size_sp.stat"
 BEEBS_CODE_SIZE_CFI_STAT="$BEEBS_PROJ/Release/code_size_cfi.stat"
+BEEBS_CODE_SIZE_SFISEL_STAT="$BEEBS_PROJ/Release/code_size_sfisel.stat"
+BEEBS_CODE_SIZE_SFIFULL_STAT="$BEEBS_PROJ/Release/code_size_sfifull.stat"
 BEEBS_JMP_TBL_STAT="$BEEBS_PROJ/Release/jump_table_jump.stat"
 BEEBS_SRC=$SILHOUETTE/silhouette-misc/programs/beebs/beebs/src
 
@@ -123,6 +129,10 @@ function compile() {
             mem_data_file=$BEEBS_CODE_SIZE_SS_STAT
         elif [[ $2 == "sp" ]]; then
             mem_data_file=$BEEBS_CODE_SIZE_SP_STAT
+        elif [[ $2 == "sfisel" ]]; then
+            mem_data_file=$BEEBS_CODE_SIZE_SFISEL_STAT
+        elif [[ $2 == "sfifull" ]]; then
+            mem_data_file=$BEEBS_CODE_SIZE_SFIFULL_STAT
         elif [[ $2 == "cfi" ]] || [[ $2 == "silhouette" ]]; then
             mem_data_file=$BEEBS_CODE_SIZE_CFI_STAT
         else 
@@ -163,13 +173,12 @@ function run() {
     screen -X 'kill'
 }
 
-
 # 
 # Entrance of the script.
 #
 if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
     [[ $1 == "baseline" ]] || [[ $1 == "silhouette" ]] || [[ $# == 0 ]] || 
-    [[ $1 == "invert" ]]; then
+    [[ $1 == "invert" ]] || [[ $1 == "sfisel" ]] || [[ $1 == "sfifull" ]]; then
     if [[ $# == 1 ]] || [[ $# == 0 ]]; then
         # Clean the old data.
         data_dir=$SILHOUETTE/silhouette-misc/data
@@ -188,30 +197,17 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
             run $prog
         done
 
-        if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
-            [[ $1 == "invert" ]]; then
-            echo "Compute code size overhead of all programs."
-            $SCRIPTS_DIR/mem-overhead.py $1
-        elif [[ $# == 0 ]]; then
-            echo "Compute code size overhead of all programs."
-            $SCRIPTS_DIR/mem-overhead.py "silhouette"
-        fi
+        echo "Compute code size overhead of all programs."
+        $SCRIPTS_DIR/mem-overhead.py $1
 
         # Collect the peformance data
         if [ -d $data_dir/perf ]; then
             mkdir -p $data_dir/perf
         fi
-        if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
-            [[ $1 == "baseline" ]] || [[ $1 == "invert" ]]; then
-            mv $data_dir/perf/*.stat $data_dir/perf/$1
-            # generate cvs file
-            $SCRIPTS_DIR/build_csv.py $data_dir/perf/$1/perf.csv $data_dir/perf/$1
-        else
-            # We just ran tests with all passed turned on.
-            mv $data_dir/perf/*.stat $data_dir/perf/silhouette
-            # generate cvs file
-            $SCRIPTS_DIR/build_csv.py $data_dir/perf/silhouette/perf.csv $data_dir/perf/silhouette
-        fi
+        mkdir -p $data_dir/perf/$1
+        mv $data_dir/perf/*.stat $data_dir/perf/$1
+        # generate cvs file
+        $SCRIPTS_DIR/build_csv.py $data_dir/perf/$1/perf.csv $data_dir/perf/$1
     elif [[ $# > 1 ]]; then
         # Only compile and run one program.
         compile $2 $1
