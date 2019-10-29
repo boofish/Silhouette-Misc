@@ -123,7 +123,7 @@ function update_prog() {
 
     # Update main.c to print the name of the test program when run it.
     echo "Updating the message printed in main.c"
-    new_printf="\ \ \ \ printf(\"Start to run $1.\");"
+    new_printf="\\\\tprintf(\"Start to run $1.\");"
     sed -i '187d' $BEEBS_PROJ/src/main.c
     sed -i "186a$new_printf" $BEEBS_PROJ/src/main.c
 
