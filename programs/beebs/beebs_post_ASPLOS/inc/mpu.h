@@ -17,7 +17,7 @@
 
 /* Use SFI instead of costly store promotions */
 #ifndef SS_SFI
-#define SS_SFI
+//#define SS_SFI
 #endif
 
 
