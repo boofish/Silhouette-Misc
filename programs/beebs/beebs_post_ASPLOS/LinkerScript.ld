@@ -28,14 +28,10 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-/* _estack = 0x20018000;    /* end of RAM */
-_estack = 0x20003FFC; /* 4KB shadow stack in RAM */
+_estack = 0x20003FFC; /* End of RAM */
 
 /* Highest address of the shadow stack */
-/* _esstack = 0x10008000; /* end of RAM_SS */
-_esstack = 0x20006000; /* end of RAM_SS*/
-
-_offset_sstack = _esstack - _estack; /* constant offset between normal stack and shadow stack, should be -0x1001,0000, or +0x1000 , or +0x800*/
+_esstack = 0x20006000; /* End of RAM_SS */
 
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size  = 0x200; /* required amount of heap  */
@@ -45,10 +41,9 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 MEMORY
 {
 FLASH (rx)     : ORIGIN = 0x8000000,  LENGTH = 1024K
-RAM_SS(xrw)    : ORIGIN = 0x20004000, LENGTH = 8K /* shadow stack top: 0x2000,6000 */
-RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 16K /* stack top: 0x2000,4000 */
 RAM2 (xrw)     : ORIGIN = 0x10000000, LENGTH = 16K /* heap top: 0x1000,4000 */
-/* RAM_SS (xrw)      : ORIGIN = 0x10000000, LENGTH = 32K *//* sstack base: 0x1000,8000 */
+RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 16K /* stack top: 0x2000,4000 */
+RAM_SS(xrw)    : ORIGIN = 0x20004000, LENGTH = 8K /* shadow stack top: 0x2000,6000 */
 }
 
 /* Define output sections */
@@ -88,10 +83,10 @@ SECTIONS
     . = ALIGN(8);
   } >FLASH
 
-  .ARM.extab   : 
-  { 
+  .ARM.extab   :
+  {
     . = ALIGN(8);
-	*(.ARM.extab* .gnu.linkonce.armextab.*) 
+	*(.ARM.extab* .gnu.linkonce.armextab.*)
     . = ALIGN(8);
   } >FLASH
 
@@ -131,13 +126,13 @@ SECTIONS
     KEEP (*(.fini_array*))
     PROVIDE_HIDDEN (__fini_array_end = .);
     . = ALIGN(8);
- } >FLASH
+  } >FLASH
 
   /* used by the startup to initialize data */
   _sidata = LOADADDR(.data);
 
   /* Initialized data sections goes into RAM, load LMA copy after code */
-  .data : 
+  .data :
   {
     . = ALIGN(8);
     _sdata = .;        /* create a global symbol at data start */
@@ -183,7 +178,7 @@ SECTIONS
     *(.shadow_stack)
     . = ALIGN(0x20);
   } >RAM_SS
-  
+
   /* Remove information from the standard libraries */
   /DISCARD/ :
   {
@@ -195,19 +190,14 @@ SECTIONS
   .ARM.attributes 0 : { *(.ARM.attributes) }
 }
 
-_FLASH_segment_start = ORIGIN( FLASH );
-_FLASH_segment_end = _FLASH_segment_start + LENGTH( FLASH );
+_FLASH_segment_start = ORIGIN(FLASH);
+_FLASH_segment_end = _FLASH_segment_start + LENGTH(FLASH);
 
-_RAM_start = ORIGIN( RAM );
-_RAM_end = _RAM_start + LENGTH( RAM );
+_RAM_start = ORIGIN(RAM);
+_RAM_end = _RAM_start + LENGTH(RAM);
 
-_RAM2_start = ORIGIN( RAM2 );
-_RAM2_end = _RAM2_start + LENGTH( RAM2 );
+_RAM2_start = ORIGIN(RAM2);
+_RAM2_end = _RAM2_start + LENGTH(RAM2);
 
-
-_shadow_stack_start = ORIGIN( RAM_SS );
-_shadow_stack_end = _shadow_stack_start + LENGTH( RAM_SS );
-
-
-    
-
+_shadow_stack_start = ORIGIN(RAM_SS);
+_shadow_stack_end = _shadow_stack_start + LENGTH(RAM_SS);
