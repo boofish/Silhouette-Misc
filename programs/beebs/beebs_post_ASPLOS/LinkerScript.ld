@@ -33,7 +33,7 @@ _estack = 0x20003FFC; /* 4KB shadow stack in RAM */
 
 /* Highest address of the shadow stack */
 /* _esstack = 0x10008000; /* end of RAM_SS */
-_esstack = 0x20005000; /* end of RAM_SS*/
+_esstack = 0x20006000; /* end of RAM_SS*/
 
 _offset_sstack = _esstack - _estack; /* constant offset between normal stack and shadow stack, should be -0x1001,0000, or +0x1000 , or +0x800*/
 
@@ -45,9 +45,9 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 MEMORY
 {
 FLASH (rx)     : ORIGIN = 0x8000000,  LENGTH = 1024K
-RAM_SS(xrw)    : ORIGIN = 0x20004000, LENGTH = 4K /* shadow stack top: 0x2000,5000 */
+RAM_SS(xrw)    : ORIGIN = 0x20004000, LENGTH = 8K /* shadow stack top: 0x2000,6000 */
 RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 16K /* stack top: 0x2000,4000 */
-RAM2 (xrw)     : ORIGIN = 0x10000000, LENGTH = 16K /* stack top: 0x2000,4000 */
+RAM2 (xrw)     : ORIGIN = 0x10000000, LENGTH = 16K /* heap top: 0x1000,4000 */
 /* RAM_SS (xrw)      : ORIGIN = 0x10000000, LENGTH = 32K *//* sstack base: 0x1000,8000 */
 }
 
