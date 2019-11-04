@@ -15,12 +15,6 @@
 //#define SS_FLIP_USER_KERNEL_PERM
 #endif
 
-/* Use SFI instead of costly store promotions */
-#ifndef SS_SFI
-//#define SS_SFI
-#endif
-
-
 #ifdef MPU_TESTING
 #define StackSize 6
 extern char shadow_stack_data[];
@@ -34,10 +28,8 @@ extern char pub_stack_data[];
 #define portALL_RAM_REGION					( 2UL )
 #define portPRIVILEGED_RAM_REGION			( 3UL )
 #define portGENERAL_PERIPHERALS_REGION		( 4UL )
-#ifdef SS_SFI
 #define portSFI_RAM_HOLE_REGION				( 5UL )
 #define portSFI_RAM2_REGION					( 6UL )
-#endif
 //#define portSTACK_REGION					( 4UL )
 //#define portFIRST_CONFIGURABLE_REGION	    ( 5UL )
 #define portLAST_CONFIGURABLE_REGION		( 7UL )
