@@ -28,7 +28,7 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-_estack = 0x20003FFC; /* End of RAM */
+_estack = 0x20003ff0; /* End of RAM */
 
 /* Highest address of the shadow stack */
 _esstack = 0x20006000; /* End of RAM_SS */
@@ -43,7 +43,7 @@ MEMORY
 FLASH (rx)     : ORIGIN = 0x8000000,  LENGTH = 1024K
 RAM2 (xrw)     : ORIGIN = 0x10000000, LENGTH = 16K /* heap top: 0x1000,4000 */
 RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 16K /* stack top: 0x2000,4000 */
-RAM_SS(xrw)    : ORIGIN = 0x20004000, LENGTH = 8K /* shadow stack top: 0x2000,6000 */
+RAM_SS(xrw)    : ORIGIN = 0x20004100, LENGTH = 0x1f00 /* shadow stack top: 0x2000,6000 */
 }
 
 /* Define output sections */
