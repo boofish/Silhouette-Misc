@@ -1,3 +1,6 @@
 [submodule "programs/beebs/beebs"]
 	path = programs/beebs/beebs
 	url = git@github.com:chaosdefinition/beebs.git
+[submodule "programs/coremark/coremark"]
+	path = programs/coremark/coremark
+	url = git@github.com:chaosdefinition/coremark.git
