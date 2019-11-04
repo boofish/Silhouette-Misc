@@ -22,3 +22,5 @@ build:
 build-all:
 	$(ECLIPSE) $(BUILD_ALL)
 
+coremark:
+	$(ECLIPSE) $(BUILD) coremark
