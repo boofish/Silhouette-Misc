@@ -8,6 +8,7 @@
 #   no arugment - Compile and run all programs based on the assumption that 
 #                 all passes are turned on.
 #   $1 - The first argument can be 
+#         "baseline" for baseline or
 #         "ss" for "shadow stack", or
 #         "sp" for "store promotion", or
 #         "cfi" for "control-flow integrity"
@@ -221,5 +222,5 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
         cat $perf_dat
     fi
 else
-    echo "The first argument can only be \"ss\", \"sp\", \"cfi\", or \"silhouette\"."
+    echo "The first argument can only be \"baseline\", \"ss\", \"sp\", \"cfi\", or \"silhouette\"."
 fi
