@@ -53,7 +53,7 @@ qsort qurt recursion rijndael select sglib-arraybinsearch sglib-arrayheapsort
 sglib-arrayquicksort
 sglib-dllist sglib-hashtable sglib-listinsertsort sglib-listsort sglib-queue
 sglib-rbtree slre sqrt st statemate stb_perlin stringsearch1 strstr tarai
-trio-snprintf trio-sscanf ud whetstone"
+trio-snprintf trio-sscanf ud whetstone wikisort"
 
 SRC_ALL="$SRC_WHITELIST $SRC_WHITELIST2"
 
