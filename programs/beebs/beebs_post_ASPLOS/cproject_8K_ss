@@ -93,7 +93,7 @@
 									<listOptionValue builtIn="false" value="&quot;${openstm32_compiler_path}/../lib/gcc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${openstm32_compiler_path}/../arm-none-eabi/lib&quot;"/>
 								</option>
-								<option id="gnu.c.link.option.ldflags.1700954235" name="Linker flags" superClass="gnu.c.link.option.ldflags" useByScannerDiscovery="false" value="-flto -fmessage-length=0 --target=arm-none-eabi -Wl,-O0 -Wl,-g -Wl,-mllvm,-enable-arm-silhouette-shadowstack -Wl,-mllvm,-arm-silhouette-shadowstack-offset=8180" valueType="string"/>
+								<option id="gnu.c.link.option.ldflags.1700954235" name="Linker flags" superClass="gnu.c.link.option.ldflags" useByScannerDiscovery="false" value="-flto -fmessage-length=0 --target=arm-none-eabi -Wl,-O0 -Wl,-g -Wl,-mllvm,-enable-arm-silhouette-shadowstack -Wl,-mllvm,-arm-silhouette-shadowstack-offset=8184" valueType="string"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.link.option.userobjs.843631058" name="Other objects" superClass="gnu.c.link.option.userobjs" useByScannerDiscovery="false" valueType="userObjs">
 									<listOptionValue builtIn="false" value="&quot;${openstm32_compiler_path}/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/fpv4-sp/hard/crti.o&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${openstm32_compiler_path}/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o&quot;"/>
@@ -244,7 +244,7 @@
 							</tool>
 							<tool command="/home/zshen10/projects/silhouette/llvm-build/bin/clang" id="fr.ac6.managedbuild.tool.gnu.cross.c.linker.975585124" name="MCU GCC Linker" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.linker">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="true" id="gnu.c.link.option.other.122274620" name="Other options (-Xlinker [option])" superClass="gnu.c.link.option.other" useByScannerDiscovery="false" valueType="stringList"/>
-								<option id="gnu.c.link.option.ldflags.1739260151" name="Linker flags" superClass="gnu.c.link.option.ldflags" useByScannerDiscovery="false" value="-flto -fmessage-length=0 --target=arm-none-eabi -Wl,-O3 -Wl,-mllvm,-enable-arm-silhouette-shadowstack -Wl,-mllvm,-arm-silhouette-shadowstack-offset=8180" valueType="string"/>
+								<option id="gnu.c.link.option.ldflags.1739260151" name="Linker flags" superClass="gnu.c.link.option.ldflags" useByScannerDiscovery="false" value="-flto -fmessage-length=0 --target=arm-none-eabi -Wl,-O3 -Wl,-mllvm,-enable-arm-silhouette-shadowstack -Wl,-mllvm,-arm-silhouette-shadowstack-offset=8184" valueType="string"/>
 								<option id="fr.ac6.managedbuild.tool.gnu.cross.c.linker.script.838803961" name="Linker Script (-T)" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.linker.script" useByScannerDiscovery="false" value="${workspace_loc:/${ProjName}}/LinkerScript.ld" valueType="string"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.link.option.libs.5105264" name="Libraries (-l)" superClass="gnu.c.link.option.libs" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="gcc"/>
