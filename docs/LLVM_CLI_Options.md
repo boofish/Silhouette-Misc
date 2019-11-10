@@ -13,6 +13,10 @@
    Silhouette-Invert to take effect.
 5. `-enable-arm-silhouette-sfi=xxx`: This option takes a argument (`none`,
    `selective`, or `full`) to indicate to what degree we want to use SFI.
+   The default value is `none`.
+6. `-arm-silhouette-shadowstack-offset=xxx`: This option takes a integer
+   argument to indicate the shadow stack offset we want to use.  The default
+   value is `4092`.
 
 ## Combinations
 
@@ -27,8 +31,12 @@
 
 * If not using LTO, add the following option(s) to `CFLAGS`:
   * `-mllvm -enable-arm-silhouette-shadowstack`
+  * `-mllvm -arm-silhouette-shadowstack=8184` for programs requiring a larger
+    shadow stack
 * If using LTO, add the following option(s) to `LDFLAGS`:
   * `-Wl,-mllvm,-enable-arm-silhouette-shadowstack`
+  * `-Wl,-mllvm,-arm-silhouette-shadowstack=8184` for programs requiring a
+    larger shadow stack
 
 ### CFI Only
 
@@ -43,10 +51,14 @@
   * `-mllvm -enable-arm-silhouette-str2strt`
   * `-mllvm -enable-arm-silhouette-shadowstack`
   * `-mllvm -enable-arm-silhouette-cfi`
+  * `-mllvm -arm-silhouette-shadowstack=8184` for programs requiring a larger
+    shadow stack
 * If using LTO, add the following option(s) to `LDFLAGS`:
   * `-Wl,-mllvm,-enable-arm-silhouette-str2strt`
   * `-Wl,-mllvm,-enable-arm-silhouette-shadowstack`
   * `-Wl,-mllvm,-enable-arm-silhouette-cfi`
+  * `-Wl,-mllvm,-arm-silhouette-shadowstack=8184` for programs requiring a
+    larger shadow stack
 
 ### Silhouette-Invert
 
@@ -54,10 +66,14 @@
   * `-mllvm -enable-arm-silhouette-invert`
   * `-mllvm -enable-arm-silhouette-shadowstack`
   * `-mllvm -enable-arm-silhouette-cfi`
+  * `-mllvm -arm-silhouette-shadowstack=8184` for programs requiring a larger
+    shadow stack
 * If using LTO, add the following option(s) to `LDFLAGS`:
   * `-Wl,-mllvm,-enable-arm-silhouette-invert`
   * `-Wl,-mllvm,-enable-arm-silhouette-shadowstack`
   * `-Wl,-mllvm,-enable-arm-silhouette-cfi`
+  * `-Wl,-mllvm,-arm-silhouette-shadowstack=8184` for programs requiring a
+    larger shadow stack
 
 ### Selective SFI
 
@@ -66,11 +82,15 @@
   * `-mllvm -enable-arm-silhouette-shadowstack`
   * `-mllvm -enable-arm-silhouette-cfi`
   * `-mllvm -enable-arm-silhouette-sfi=selective`
+  * `-mllvm -arm-silhouette-shadowstack=8184` for programs requiring a larger
+    shadow stack
 * If using LTO, add the following option(s) to `LDFLAGS`:
   * `-Wl,-mllvm,-enable-arm-silhouette-str2strt`
   * `-Wl,-mllvm,-enable-arm-silhouette-shadowstack`
   * `-Wl,-mllvm,-enable-arm-silhouette-cfi`
   * `-Wl,-mllvm,-enable-arm-silhouette-sfi=selective`
+  * `-Wl,-mllvm,-arm-silhouette-shadowstack=8184` for programs requiring a
+    larger shadow stack
 
 ### Full SFI
 
@@ -78,7 +98,11 @@
   * `-mllvm -enable-arm-silhouette-shadowstack`
   * `-mllvm -enable-arm-silhouette-cfi`
   * `-mllvm -enable-arm-silhouette-sfi=full`
+  * `-mllvm -arm-silhouette-shadowstack=8184` for programs requiring a larger
+    shadow stack
 * If using LTO, add the following option(s) to `LDFLAGS`:
   * `-Wl,-mllvm,-enable-arm-silhouette-shadowstack`
   * `-Wl,-mllvm,-enable-arm-silhouette-cfi`
   * `-Wl,-mllvm,-enable-arm-silhouette-sfi=full`
+  * `-Wl,-mllvm,-arm-silhouette-shadowstack=8184` for programs requiring a
+    larger shadow stack
