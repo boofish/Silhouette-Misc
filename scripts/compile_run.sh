@@ -1,8 +1,7 @@
 #!/bin/bash
 
 #
-# This script compiles and runs all the test programs in BEEBS, except those 
-# that failed to compile or run even with original Clang 4.0.
+# This script compiles and runs the test programs in BEEBS.
 #
 # Command line arguments:
 #   no arugment - Compile and run all programs based on the assumption that 
@@ -23,6 +22,7 @@
 #
 
 SILHOUETTE=~/projects/silhouette
+SILHOUETTE_MISC="$SILHOUETTE/silhouette-misc"
 SCRIPTS_DIR=`pwd`
 
 BEEBS_PROJ=$SILHOUETTE/projs/beebs
@@ -34,7 +34,8 @@ BEEBS_CODE_SIZE_CFI_STAT="$BEEBS_PROJ/Release/code_size_cfi.stat"
 BEEBS_CODE_SIZE_SFISEL_STAT="$BEEBS_PROJ/Release/code_size_sfisel.stat"
 BEEBS_CODE_SIZE_SFIFULL_STAT="$BEEBS_PROJ/Release/code_size_sfifull.stat"
 BEEBS_JMP_TBL_STAT="$BEEBS_PROJ/Release/jump_table_jump.stat"
-BEEBS_SRC=$SILHOUETTE/silhouette-misc/programs/beebs/beebs/src
+BEEBS_SRC=$SILHOUETTE_MISC/programs/beebs/beebs/src
+BEEBS_SUPPORT=$SILHOUETTE_MISC/programs/beebs/beebs_post_ASPLOS
 
 # GNU ARM toolchain
 OBJDUMP=`which arm-none-eabi-objdump`
@@ -174,13 +175,33 @@ function run() {
     screen -X 'kill'
 }
 
+
+#
+# Copy the correct cproject file to the BEEBS project directory.
+#
+function setup_cproject() {
+    if [[ $# == 0 ]]; then
+        echo "Copy cproject_silhuette to the beebs project directory."
+        cp $BEEBS_PROJ/cproject_silhouette $BEEBS_PROJ/.cproject
+    else
+        echo "Copy cproject_$1 to the beebs project directory."
+        cp $BEEBS_PROJ/cproject_$1 $BEEBS_PROJ/.cproject
+    fi
+
+    echo ""
+}
+
+
 # 
 # Entrance of the script.
 #
 if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
     [[ $1 == "baseline" ]] || [[ $1 == "silhouette" ]] || [[ $# == 0 ]] || 
     [[ $1 == "invert" ]] || [[ $1 == "sfisel" ]] || [[ $1 == "sfifull" ]]; then
+    # First, copy the correct .cproject to the BEEBS project directory.
+    setup_cproject $1
     if [[ $# == 1 ]] || [[ $# == 0 ]]; then
+        # Compile and run all BEEBS programs.
         # Clean the old data.
         data_dir=$SILHOUETTE/silhouette-misc/data
         rm -f $data_dir/perf/*.stat
