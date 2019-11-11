@@ -104,9 +104,9 @@ function compile() {
     # compile
     cd $SCRIPTS_DIR
     echo "Compiling $1 ......"
-    make build >& $DEBUG_DIR/build.log 
+    make beebs >& $DEBUG_DIR/build.log
     echo -e "Done compiling $1"
-    
+
     # update the Run.cfg file
     sed -i 's/.*stlink.*/source \[find interface\/stlink-v2-1.cfg]/' "$BEEBS_RUN_CFG"
 
@@ -192,7 +192,7 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
             else
                 compile $prog $1
             fi
-             
+
             echo ""
             # run_minicom $prog
             run $prog

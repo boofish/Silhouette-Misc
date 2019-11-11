@@ -1,26 +1,25 @@
 #
-# Compile BEEBS programs in a terminal rather than in IDE.
-# 
+# Compile programs in a terminal rather than in IDE.
 #
+
 ECLIPSE = eclipse
-ECLIPSE_OPTIONS = -nosplash \
-				  --launcher.suppressErrors \
-                  -application  \
-				   org.eclipse.cdt.managedbuilder.core.headlessbuild \
-                  -data
+ECLIPSE_OPTIONS = -nosplash						\
+		  --launcher.suppressErrors				\
+		  -application org.eclipse.cdt.managedbuilder.core.headlessbuild \
+		  -data
 WORKSPACE = ~/projects/silhouette/projs
 BUILD = -cleanBuild
-BUILD_ALL = $(BUILD) all
 
 ECLIPSE += $(ECLIPSE_OPTIONS) $(WORKSPACE)
 
-PROJ_NAME = beebs
+beebs:
+	$(ECLIPSE) $(BUILD) beebs/Release
 
-build:
-	$(ECLIPSE) $(BUILD) $(PROJ_NAME) 
-
-build-all:
-	$(ECLIPSE) $(BUILD_ALL)
+beebs-debug:
+	$(ECLIPSE) $(BUILD) beebes/Debug
 
 coremark:
-	$(ECLIPSE) $(BUILD) coremark
+	$(ECLIPSE) $(BUILD) coremark/Release
+
+coremark-debug:
+	$(ECLIPSE) $(BUILD) coremark/Debug
