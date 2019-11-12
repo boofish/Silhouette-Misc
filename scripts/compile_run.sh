@@ -180,33 +180,40 @@ function run() {
 # Copy the correct cproject file to the BEEBS project directory.
 #
 function setup_cproject() {
-    if [[ $# == 0 ]]; then
-        echo "Copy cproject_silhuette to the beebs project directory."
-        cp $BEEBS_PROJ/cproject_silhouette $BEEBS_PROJ/.cproject
-    else
-        echo "Copy cproject_$1 to the beebs project directory."
-        cp $BEEBS_PROJ/cproject_$1 $BEEBS_PROJ/.cproject
-    fi
+    local cproject="cproject_$2"
+    case "$1" in
+    "trio-sscanf" | "wikisort")
+        case "$2" in
+        "ss" | "silhouette" | "invert" | "sfisel" | "sfifull" )
+            cproject="cproject_8K_$2"
+            ;;
+        * )
+            ;;
+        esac
+        ;;
+    * )
+        ;;
+    esac
 
-    echo ""
+    echo "Linking $cproject to the beebs project directory."
+    ln -sf "$BEEBS_PROJ/$cproject" "$BEEBS_PROJ/.cproject"
 }
 
 
 # 
 # Entrance of the script.
 #
-if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] || 
-    [[ $1 == "baseline" ]] || [[ $1 == "silhouette" ]] || [[ $# == 0 ]] || 
+if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
+    [[ $1 == "baseline" ]] || [[ $1 == "silhouette" ]] ||
     [[ $1 == "invert" ]] || [[ $1 == "sfisel" ]] || [[ $1 == "sfifull" ]]; then
-    # First, copy the correct .cproject to the BEEBS project directory.
-    setup_cproject $1
-    if [[ $# == 1 ]] || [[ $# == 0 ]]; then
-        # Compile and run all BEEBS programs.
+    # Compile and run all BEEBS programs.
+    if [[ $# == 1 ]]; then
         # Clean the old data.
         data_dir=$SILHOUETTE/silhouette-misc/data
         rm -f $data_dir/perf/*.stat
         # Compile and run all test programs.
         for prog in $SRC_TO_RUN; do
+            setup_cproject $prog $1
             echo "Compile $prog"
             if [[ $# == 0 ]]; then
                 compile $prog "silhouette"
@@ -231,6 +238,7 @@ if [[ $1 == "ss" ]] || [[ $1 == "sp" ]] || [[ $1 == "cfi" ]] ||
         # generate cvs file
         $SCRIPTS_DIR/build_csv.py $data_dir/perf/$1/perf.csv $data_dir/perf/$1
     elif [[ $# > 1 ]]; then
+        setup_cproject $2 $1
         # Only compile and run one program.
         compile $2 $1
         $SCRIPTS_DIR/mem-overhead.py $1 $2
