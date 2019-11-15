@@ -65,7 +65,7 @@ git checkout release_90
 "${openstm32_compiler_path}/../arm-none-eabi/lib"
 ```
 
-7. In 'Miscellaneous' inside 'MCU GCC Linker' settings, add `-flto -fuse-ld=lld` to 'Linker flags'.
+7. In 'Miscellaneous' inside 'MCU GCC Linker' settings, add `-flto -fuse-ld=lld` to 'Linker flags', also add '--target=arm-none-eabi' if not already exists.
    Add Silhouette flags if you need.  Note that if a Silhouette flag is in the form of `-mllvm -xxxx`,
    the corresponding linker flag should be `-Wl,-mllvm,-xxxx`.
    See [LLVM_CLI_Options.md](LLVM_CLI_Options.md).
