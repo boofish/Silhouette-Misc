@@ -3,6 +3,7 @@ UART_WaitOnFlagUntilTimeout:0
 __io_putchar:0
 main:0
 Console_UART_Init:0
+init_heap:0
 mz_adler32:0
 mz_deflateInit:0
 mz_deflateInit2:1
@@ -11,6 +12,8 @@ def_alloc_func:0
 def_free_func:0
 tdefl_init:0
 mz_deflateEnd:1
+free_beebs:0
+malloc_beebs:0
 mz_deflate:0
 tdefl_compress:0
 tdefl_get_adler32:0

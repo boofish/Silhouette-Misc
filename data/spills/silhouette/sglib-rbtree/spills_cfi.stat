@@ -15,7 +15,10 @@ sglib_rbtree_it_init:0
 sglib_rbtree_it_init_inorder:0
 sglib_rbtree_it_next:0
 initialise_benchmark:0
+init_heap:0
 benchmark:0
+malloc_beebs:0
+free_beebs:0
 verify_benchmark:0
 NMI_Handler:0
 HardFault_Handler:0

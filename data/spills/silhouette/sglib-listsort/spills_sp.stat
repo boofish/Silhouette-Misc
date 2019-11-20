@@ -1,7 +1,10 @@
 HAL_UART_MspInit:0
 UART_WaitOnFlagUntilTimeout:0
 initialise_benchmark:0
+init_heap:0
 benchmark:0
+malloc_beebs:0
+free_beebs:0
 verify_benchmark:0
 __io_putchar:0
 main:0

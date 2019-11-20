@@ -1,10 +1,13 @@
 HAL_UART_MspInit:0
 UART_WaitOnFlagUntilTimeout:0
 enqueue:0
+qmalloc_beebs:0
 dequeue:0
 qcount:0
 dijkstra:0
+qfree_beebs:0
 initialise_benchmark:0
+qinit_heap:0
 benchmark:0
 verify_benchmark:3
 __io_putchar:0

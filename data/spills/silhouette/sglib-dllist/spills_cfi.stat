@@ -9,7 +9,10 @@ sglib_dllist_it_next:2
 sglib_dllist_it_init:0
 verify_benchmark:0
 initialise_benchmark:0
+init_heap:0
 benchmark:0
+malloc_beebs:0
+free_beebs:0
 __io_putchar:0
 main:0
 Console_UART_Init:0

@@ -1,6 +1,7 @@
 HAL_UART_MspInit:0
 UART_WaitOnFlagUntilTimeout:0
 crc32pseudo:0
+rand_beebs:0
 initialise_benchmark:0
 benchmark:0
 verify_benchmark:0

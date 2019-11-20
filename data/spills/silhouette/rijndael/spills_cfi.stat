@@ -5,6 +5,7 @@ encrypt:0
 decrypt:0
 fillrand:0
 encfile:0
+rand_beebs:0
 decfile:0
 verify_benchmark:0
 initialise_benchmark:0

@@ -13,14 +13,17 @@ SVC_Handler:0
 DebugMon_Handler:0
 PendSV_Handler:0
 ctl_StringInitSize:0
+malloc_beebs:0
 ctl_StringInit:0
 ctl_StringFree:0
+free_beebs:0
 ctl_StringSet:0
 ctl_StringSetString:0
 ctl_StringAppend:0
 ctl_StringCmpNoCase:0
 benchmark:0
 initialise_benchmark:0
+init_heap:0
 verify_benchmark:0
 _kill:0
 _exit:0

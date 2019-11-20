@@ -41,6 +41,7 @@ TrioCopyParameter:0
 TrioGetPosition:0
 TrioIsQualifier:0
 trio_to_long:0
+init_heap:0
 verify_benchmark:0
 initialise_benchmark:0
 benchmark:0

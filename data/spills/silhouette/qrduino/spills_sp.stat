@@ -15,13 +15,17 @@ ismasked:0
 initrspoly:0
 appendrs:0
 modnn:0
+init_heap:0
 initframe:0
+calloc_beebs:0
+malloc_beebs:0
 putfind:0
 doaligns:0
 setmask:0
 putvpat:0
 putalign:0
 freeframe:0
+free_beebs:0
 initecc:0
 initeccsize:0
 freeecc:0
