@@ -12,14 +12,14 @@ BUILD = -cleanBuild
 
 ECLIPSE += $(ECLIPSE_OPTIONS) $(WORKSPACE)
 
-beebs:
-	$(ECLIPSE) $(BUILD) beebs/Release
-
-beebs-debug:
-	$(ECLIPSE) $(BUILD) beebes/Debug
+beebs/%:
+	$(ECLIPSE) $(BUILD) $@
 
 coremark:
 	$(ECLIPSE) $(BUILD) coremark/Release
 
 coremark-debug:
 	$(ECLIPSE) $(BUILD) coremark/Debug
+
+coremark-pro/%:
+	$(ECLIPSE) $(BUILD) $@
