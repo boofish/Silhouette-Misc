@@ -102,7 +102,7 @@ compile() {
         echo "No cproject_$1 found in $BEEBS_PROJ!"
         echo "Generate one by:"
         echo
-        echo "./gen_cproject -c $1"
+        echo "./gen_cproject.py"
         exit 1
     fi
     (cd "$BEEBS_PROJ"; ln -sf "cproject_$1" .cproject;)
