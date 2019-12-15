@@ -114,6 +114,13 @@ compile() {
     fi
     rm -rf "$debug_dir"/*
 
+    # Make an empty code size directory
+    local code_size_dir="$SILHOUETTE_MISC/data/mem/$PROJ-$1"
+    if [[ ! -d $code_size_dir ]]; then
+        mkdir -p $code_size_dir
+    fi
+    rm -rf $code_size_dir/*
+
     # Compile each benchmark program
     for program in ${PROGRAMS[@]}; do
         local elf="$BEEBS_PROJ/$program/$program.elf"
@@ -140,6 +147,23 @@ compile() {
         else
             echo "arm-none-eabi-objdump not found, skipped disassembly"
         fi
+
+        # Copy the generated code_size stat file to the data directory.
+        local program_dir=$BEEBS_PROJ/$program
+        local program_stat=$code_size_dir/$program.stat
+        case $1 in
+            "ss" | "cfi" | "sp")
+                cp $program_dir/code_size_$1.stat $program_stat
+                ;;
+            "silhouette")
+                # For Silhouette, CFI is the last executed pass.
+                cp $program_dir/code_size_cfi.stat $program_stat
+                ;;
+            "invert")
+                # For Silhouette-Invert, CFI is the last executed pass.
+                cp $program_dir/code_size_cfi.stat $program_stat
+                ;;
+        esac
     done
 
     echo Done
