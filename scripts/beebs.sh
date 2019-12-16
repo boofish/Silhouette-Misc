@@ -149,6 +149,7 @@ compile() {
         fi
 
         # Copy the generated code_size stat file to the data directory.
+        echo "Copying code size stat file(s) to data/mem/$PROJ-$1 ......"
         local program_dir=$BEEBS_PROJ/$program
         local program_stat=$code_size_dir/$program.stat
         case $1 in
@@ -156,14 +157,19 @@ compile() {
                 cp $program_dir/code_size_$1.stat $program_stat
                 ;;
             "silhouette")
-                # For Silhouette, CFI is the last executed pass.
-                cp $program_dir/code_size_cfi.stat $program_stat
+                mkdir $code_size_dir/$program
+                cp $program_dir/code_size_ss.stat $code_size_dir/$program
+                cp $program_dir/code_size_sp.stat $code_size_dir/$program
+                cp $program_dir/code_size_cfi.stat $code_size_dir/$program
                 ;;
             "invert")
-                # For Silhouette-Invert, CFI is the last executed pass.
-                cp $program_dir/code_size_cfi.stat $program_stat
+                mkdir $code_size_dir/$program
+                cp $program_dir/code_size_ss.stat $code_size_dir/$program
+                cp $program_dir/code_size_cfi.stat $code_size_dir/$program
                 ;;
         esac
+        echo "Done compiling $program"
+        echo
     done
 
     echo Done
