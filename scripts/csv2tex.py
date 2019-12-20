@@ -20,29 +20,25 @@ def write_tex_header(f, csv_type):
 
     # Write \begin{table}
     f.write('\\begin{table}[ptb]\n')
-    # Write \caption{}
-    if csv_type == 'perf':
-        f.write('\\caption{Performance Overhead on BEEBS Benchmarks.}\n')
-    else:
-        f.write('\\caption{Code Size Overhead on BEEBS Benchmarks.}\n')
     # Write \centering
     f.write('\\centering\n')
     # Write \sffamily
     f.write('\\sffamily\n')
     # Write \footnotesize{
     f.write('\\footnotesize{\n')
-
+    # Restrict everything within column width
+    f.write('\\resizebox{\\columnwidth}{!}{\n')
     # Write \begin{tabular}
-    f.write('\\begin{tabular}{@{}lrrrrr@{}}\n')
+    f.write('\\begin{tabular}{@{}lrrrrrrr@{}}\n')
     # Write \toprule
     f.write('\\toprule\n')
     # Write 1st row of table header
-    f.write('& \\textbf{Baseline} & \\textbf{SS} & \\textbf{SP} ' +
-            '& \\textbf{CFI} & \\textbf{Overall} \\\\\n')
+    f.write('& \\textbf{Baseline} & {\\bf SS} & {\\bf SP} & {\\bf CFI} & ' +
+            '{\\bf Silhoue-} & {\\bf Invert} & {\\bf SSFI} \\\\\n')
     # Write 2nd row of table header
     if csv_type == 'perf':
-        f.write('& \\textbf{(ms)} & \\textbf{(\\%)} & \\textbf{(\\%)} ' +
-                '& \\textbf{(\\%)} & \\textbf{(\\%)} \\\\\n')
+        f.write('& {\\bf (ms)} & {\\bf (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} &' +
+                '{\\bf tte (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} \\\\\n')
     else:
         f.write('& \\textbf{(\\# bytes)} & \\textbf{(\\%)} & \\textbf{(\\%)} ' +
                 '& \\textbf{(\\%)} & \\textbf{(\\%)} \\\\\n')
@@ -62,7 +58,13 @@ def write_tex_footer(f, csv_type):
     # Write \end{tabular}
     f.write('\\end{tabular}\n')
     # Write end of \footnotesize{
-    f.write('}\n')
+    f.write('}}\n')
+    # Write \caption{}
+    if csv_type == 'perf':
+        f.write('\\caption{Performance Overhead on BEEBS Benchmarks.' +
+                'SS: Shadow Stack; SP: Store Promotion.}\n')
+    else:
+        f.write('\\caption{Code Size Overhead on BEEBS Benchmarks.}\n')
     # Write \label
     if csv_type == 'perf':
         f.write('\\label{table:perf}\n')
@@ -84,6 +86,7 @@ def write_tex(tex_path, configs, data, csv_type):
     with open(tex_path, 'w') as f:
         # Write header
         write_tex_header(f, csv_type)
+
         # Write data
         for benchmark in data:
             f.write(benchmark.replace('_', '\\_'))
@@ -97,6 +100,7 @@ def write_tex(tex_path, configs, data, csv_type):
                     number = '{0:.2f}'.format(100 * (float(number) - baseline) / baseline)
                 f.write(' & ' + number)
             f.write(' \\\\\n')
+
         # Write footer
         write_tex_footer(f, csv_type)
 
@@ -126,11 +130,13 @@ def main():
             'silhouette': prefix + '/mem/silhouette/code_size.csv',
         },
         'perf': {
-            'baseline': prefix + '/perf/baseline/perf.csv',
-            'ss': prefix + '/perf/ss/perf.csv',
-            'sp': prefix + '/perf/sp/perf.csv',
-            'cfi': prefix + '/perf/cfi/perf.csv',
-            'silhouette': prefix + '/perf/silhouette/perf.csv',
+            'baseline': prefix + '/perf/beebs-baseline/perf.csv',
+            'ss': prefix + '/perf/beebs-ss/perf.csv',
+            'sp': prefix + '/perf/beebs-sp/perf.csv',
+            'cfi': prefix + '/perf/beebs-cfi/perf.csv',
+            'silhouette': prefix + '/perf/beebs-silhouette/perf.csv',
+            'invert' : prefix + '/perf/beebs-invert/perf.csv',
+            'ssfi' : prefix + '/perf/beebs-sfifull/perf.csv',
         },
     }
 
