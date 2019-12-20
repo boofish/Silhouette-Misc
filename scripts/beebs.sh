@@ -167,6 +167,12 @@ compile() {
                 cp $program_dir/code_size_ss.stat $code_size_dir/$program
                 cp $program_dir/code_size_cfi.stat $code_size_dir/$program
                 ;;
+            "sfifull")
+                mkdir $code_size_dir/$program
+                cp $program_dir/code_size_ss.stat $code_size_dir/$program
+                cp $program_dir/code_size_sfi.stat $code_size_dir/$program
+                cp $program_dir/code_size_cfi.stat $code_size_dir/$program
+                ;;
         esac
         echo "Done compiling $program"
         echo
