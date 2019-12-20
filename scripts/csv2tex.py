@@ -3,6 +3,7 @@
 import argparse
 import csv
 import os
+from scipy.stats.mstats import gmean  # require the scipy library
 
 
 #
@@ -75,6 +76,36 @@ def write_tex_footer(f, csv_type):
 
 
 #
+# Write the LaTex code for the geometric mean data.
+#
+# @f: a file object of the opened output file
+# @configs: an array of configurations
+# @data: a dictionary containing data
+#
+def write_tex_geomean(f, configs, data):
+    f.write("\\midrule\n")
+    f.write("{\\bf geo. mean (\\%)} &")
+
+    # We compute overhead as config / baseline.
+    overhead = { }
+    # Collect the overhead for all configs.
+    for benchmark in data:
+        for config in configs:
+            if config == "baseline":
+                continue
+            if config not in overhead:
+                overhead[config] = []
+            baseline = float(data[benchmark]["baseline"])
+            overhead[config] += [float(data[benchmark][config]) / baseline]
+
+    # Write geo. mean to file.
+    for config in overhead:
+        geo_mean = "{0:.2f}".format(100 * (gmean(overhead[config]) - 1))
+        f.write(" & " + geo_mean)
+    f.write(" \\\\\n")
+
+
+#
 # Write the LaTeX code of the generated table to an output file.
 #
 # @tex_path: path to the output file
@@ -100,6 +131,9 @@ def write_tex(tex_path, configs, data, csv_type):
                     number = '{0:.2f}'.format(100 * (float(number) - baseline) / baseline)
                 f.write(' & ' + number)
             f.write(' \\\\\n')
+
+        # Write geo. mean data
+        write_tex_geomean(f, configs, data)
 
         # Write footer
         write_tex_footer(f, csv_type)
