@@ -153,7 +153,7 @@ compile() {
         local program_dir=$BEEBS_PROJ/$program
         local program_stat=$code_size_dir/$program.stat
         case $1 in
-            "ss" | "cfi" | "sp")
+            "ss" | "cfi" | "sp" | "sfi")
                 cp $program_dir/code_size_$1.stat $program_stat
                 ;;
             "silhouette")
@@ -251,6 +251,7 @@ usage() {
     echo "    cfi               - compile for CFI only"
     echo "    silhouette        - compile for Silhouette"
     echo "    invert            - compile for Silhouette-Invert"
+    echo "    sfi               - compile for SFI"
     echo "    sfisel            - compile for selective SFI"
     echo "    sfifull           - compile for full SFI"
     echo "    run <conf>        - run all the compiled binaries of <conf>"
@@ -262,12 +263,12 @@ usage() {
 # Entrance of the script.
 #
 case $1 in
-"baseline" | "ss" | "sp" | "cfi" | "silhouette" | "invert" | "sfisel" | "sfifull" )
+"baseline" | "ss" | "sp" | "cfi" | "silhouette" | "invert" | "sfi" | "sfisel" | "sfifull" )
     compile $1
     ;;
 "run" )
     case $2 in
-    "baseline" | "ss" | "sp" | "cfi" | "silhouette" | "invert" | "sfisel" | "sfifull" )
+    "baseline" | "ss" | "sp" | "cfi" | "silhouette" | "invert" | "sfi" | "sfisel" | "sfifull" )
         ;;
     * )
         usage
