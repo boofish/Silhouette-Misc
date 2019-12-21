@@ -178,6 +178,10 @@ compile() {
         echo
     done
 
+    # Summarize all code size data to a code_size.csv file
+    echo "Building code_size.csv ......"
+    ./build_mem_csv.py -c $1 -b $PROJ
+
     echo Done
 }
 
@@ -285,7 +289,7 @@ case $1 in
             run $2 $program
         done
         # Summarize all performance data to a perf.csv file.
-        ./build_csv.py ../data/perf/beebs-$2/perf.csv ../data/perf/beebs-$2
+        ./build_perf_csv.py ../data/perf/beebs-$2/perf.csv ../data/perf/beebs-$2
     else
         run $2 $3
     fi
