@@ -41,8 +41,8 @@ def write_tex_header(f, csv_type):
         f.write('& {\\bf (ms)} & {\\bf (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} &' +
                 '{\\bf tte (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} \\\\\n')
     else:
-        f.write('& \\textbf{(\\# bytes)} & \\textbf{(\\%)} & \\textbf{(\\%)} ' +
-                '& \\textbf{(\\%)} & \\textbf{(\\%)} \\\\\n')
+        f.write('& {\\bf (\# bytes)} & {\\bf (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} &' +
+                '{\\bf tte (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} \\\\\n')
     # Write \midrule
     f.write('\\midrule\n')
 
@@ -65,7 +65,8 @@ def write_tex_footer(f, csv_type):
         f.write('\\caption{Performance Overhead on BEEBS Benchmarks.' +
                 'SS: Shadow Stack; SP: Store Promotion.}\n')
     else:
-        f.write('\\caption{Code Size Overhead on BEEBS Benchmarks.}\n')
+        f.write('\\caption{Code Size Overhead on BEEBS Benchmarks.' +
+                'SS: Shadow Stack; SP: Store Promotion.}\n')
     # Write \label
     if csv_type == 'perf':
         f.write('\\label{table:perf}\n')
@@ -171,11 +172,13 @@ def main():
     prefix = '../data'
     csvs = {
         'mem': {
-            'baseline': prefix + '/mem/baseline/code_size.csv',
-            'ss': prefix + '/mem/ss/code_size.csv',
-            'sp': prefix + '/mem/sp/code_size.csv',
-            'cfi': prefix + '/mem/cfi/code_size.csv',
-            'silhouette': prefix + '/mem/silhouette/code_size.csv',
+            'baseline': prefix + '/mem/beebs-baseline/code_size.csv',
+            'ss': prefix + '/mem/beebs-ss/code_size.csv',
+            'sp': prefix + '/mem/beebs-sp/code_size.csv',
+            'cfi': prefix + '/mem/beebs-cfi/code_size.csv',
+            'silhouette': prefix + '/mem/beebs-silhouette/code_size.csv',
+            'invert' : prefix + '/mem/beebs-invert/code_size.csv',
+            'ssfi' : prefix + '/mem/beebs-sfifull/code_size.csv',
         },
         'perf': {
             'baseline': prefix + '/perf/beebs-baseline/perf.csv',
