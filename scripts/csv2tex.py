@@ -76,15 +76,14 @@ def write_tex_footer(f, csv_type):
 
 
 #
-# Write the LaTex code for the geometric mean data.
+# Write the LaTex code for data summary: min, max, and geometric mean.
 #
 # @f: a file object of the opened output file
 # @configs: an array of configurations
 # @data: a dictionary containing data
 #
-def write_tex_geomean(f, configs, data):
+def write_tex_summary(f, configs, data):
     f.write("\\midrule\n")
-    f.write("{\\bf geo. mean (\\%)} &")
 
     # We compute overhead as config / baseline.
     overhead = { }
@@ -98,7 +97,22 @@ def write_tex_geomean(f, configs, data):
             baseline = float(data[benchmark]["baseline"])
             overhead[config] += [float(data[benchmark][config]) / baseline]
 
+    # Write min to file.
+    f.write("{\\bf min (\\%)} &")
+    for config in overhead:
+        min_overhead = "{0:.2f}".format(100 * (min(overhead[config]) - 1))
+        f.write(" & " + min_overhead)
+    f.write(" \\\\\n")
+
+    # Write max to file.
+    f.write("{\\bf max (\\%)} &")
+    for config in overhead:
+        max_overhead = "{0:.2f}".format(100 * (max(overhead[config]) - 1))
+        f.write(" & " + max_overhead)
+    f.write(" \\\\\n")
+
     # Write geo. mean to file.
+    f.write("{\\bf geo. mean (\\%)} &")
     for config in overhead:
         geo_mean = "{0:.2f}".format(100 * (gmean(overhead[config]) - 1))
         f.write(" & " + geo_mean)
@@ -132,8 +146,8 @@ def write_tex(tex_path, configs, data, csv_type):
                 f.write(' & ' + number)
             f.write(' \\\\\n')
 
-        # Write geo. mean data
-        write_tex_geomean(f, configs, data)
+        # Write data summary: min, max, and geometric mean.
+        write_tex_summary(f, configs, data)
 
         # Write footer
         write_tex_footer(f, csv_type)
