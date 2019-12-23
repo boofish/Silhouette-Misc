@@ -179,8 +179,10 @@ compile() {
     done
 
     # Summarize all code size data to a code_size.csv file
-    echo "Building code_size.csv ......"
-    ./build_mem_csv.py -c $1 -b $PROJ
+    if [[ ! $1 == "baseline" ]]; then
+        echo "Building code_size.csv ......"
+        ./build_mem_csv.py -c $1 -b $PROJ
+    fi
 
     echo Done
 }
