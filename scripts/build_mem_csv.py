@@ -26,6 +26,9 @@ programs. It will directly return if it finds code_size.csv has existed.
 def get_baseline(benchmark):
     baseline_dir = DATA_DIR + benchmark + "-baseline"
 
+    if not os.path.exists(baseline_dir):
+        os.mkdir(baseline_dir)
+
     if len(os.listdir(baseline_dir)) > 0:
         # We have already had baseline data.
         return
@@ -49,18 +52,23 @@ def get_baseline(benchmark):
 
 
 '''
-get_transformed() constructs a code size csv file for transformed programs.
+build_csv() constructs a code size csv file for transformed programs.
 
 @benchmark - BEEBS or CoreMark Pro
 @config    - SS, SP, CFI, Silhouette, Silhouette-Invert, SSFI
 '''
-def get_transformed(benchmark, config):
+def build_csv(benchmark, config):
     data_dir = DATA_DIR + benchmark + "-" + config + "/"
     transformed = {}  # code size data of transformed programs
     code_size_files = {}
 
+    # For Shadow Stack, extract baseline data if this has not been done.
+    if config == "ss":
+        get_baseline(benchmark)
+
     # Get all program names from the baseline directory.
-    for prog_data in open(DATA_DIR + benchmark + "-baseline/code_size.csv").readlines():
+    baseline_data_file = DATA_DIR + benchmark + "-baseline/code_size.csv"
+    for prog_data in open(baseline_data_file).readlines():
         if "Benchmark" in prog_data:
             continue
         code_size_files[prog_data.split(',')[0]] = ""
@@ -104,5 +112,4 @@ if __name__ == "__main__":
     config = args.configure
             
     # Generate csv file.
-    get_baseline(benchmark)
-    get_transformed(benchmark, config)
+    build_csv(benchmark, config)
