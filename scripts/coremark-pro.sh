@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 SILHOUETTE=~/projects/silhouette
+SILHOUETTE_MISC=$SILHOUETTE/silhouette-misc
 PROJ=coremark-pro
 
 PROGRAMS=(
@@ -41,6 +42,13 @@ compile() {
     fi
     rm -rf "$debug_dir"/*
 
+    # Make an empty code size directory
+    local code_size_dir=$SILHOUETTE_MISC/data/mem/$PROJ-$1
+    if [[ ! -d $code_size_dir ]]; then
+        mkdir -p $code_size_dir
+    fi
+    rm -rf $code_size_dir/*
+
     # Compile each benchmark program
     for program in ${PROGRAMS[@]}; do
         local elf="$CMKP_PROJ/$program/$program.elf"
@@ -67,7 +75,42 @@ compile() {
         else
             echo "arm-none-eabi-objdump not found, skipped disassembly"
         fi
+
+        # Copy the generated code_size stat file to the data directory.
+        echo "Copying code size stat file(s) to data/mem/$PROJ-$1 ......"
+        local program_dir=$CMKP_PROJ/$program
+        local program_stat=$code_size_dir/$program.stat
+        case $1 in
+            "ss" | "cfi" | "sp" | "sfi")
+                cp $program_dir/code_size_$1.stat $program_stat
+                ;;
+            "silhouette")
+                mkdir $code_size_dir/$program
+                cp $program_dir/code_size_ss.stat $code_size_dir/$program
+                cp $program_dir/code_size_sp.stat $code_size_dir/$program
+                cp $program_dir/code_size_cfi.stat $code_size_dir/$program
+                ;;
+            "invert")
+                mkdir $code_size_dir/$program
+                cp $program_dir/code_size_ss.stat $code_size_dir/$program
+                cp $program_dir/code_size_cfi.stat $code_size_dir/$program
+                ;;
+            "sfifull")
+                mkdir $code_size_dir/$program
+                cp $program_dir/code_size_ss.stat $code_size_dir/$program
+                cp $program_dir/code_size_sfi.stat $code_size_dir/$program
+                cp $program_dir/code_size_cfi.stat $code_size_dir/$program
+                ;;
+        esac
+        echo "Done compiling $program"
+        echo
     done
+
+    # Summarize all code size data to a code_size.csv file
+    if [[ ! $1 == "baseline" ]]; then
+        echo "Building code_size.csv ......"
+        ./build_mem_csv.py -c $1 -b $PROJ
+    fi
 
     echo Done
 }
