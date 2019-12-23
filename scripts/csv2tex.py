@@ -164,29 +164,32 @@ def main():
                      help='Path to the output LaTeX file')
     opt.add_argument('-t', '--type', choices=['mem', 'perf'], default='perf',
                      help='Type of input CSV files')
+    opt.add_argument('-b', '--benchmark', choices=['beebs', 'coremark-pro'],
+                     default='beebs', help='Benchmark: BEEBS or CoreMark Pro')
     args = opt.parse_args()
     csv_type = args.type
+    benchmark = args.benchmark
     tex_path = args.output
 
     # Hard-coded CSV paths
     prefix = '../data'
     csvs = {
         'mem': {
-            'baseline': prefix + '/mem/beebs-baseline/code_size.csv',
-            'ss': prefix + '/mem/beebs-ss/code_size.csv',
-            'sp': prefix + '/mem/beebs-sp/code_size.csv',
-            'cfi': prefix + '/mem/beebs-cfi/code_size.csv',
-            'silhouette': prefix + '/mem/beebs-silhouette/code_size.csv',
-            'invert' : prefix + '/mem/beebs-invert/code_size.csv',
-            'ssfi' : prefix + '/mem/beebs-sfifull/code_size.csv',
+            'baseline': prefix + '/mem/' + benchmark + '-baseline/code_size.csv',
+            'ss': prefix + '/mem/' + benchmark + '-ss/code_size.csv',
+            'sp': prefix + '/mem/' + benchmark + '-sp/code_size.csv',
+            'cfi': prefix + '/mem/' + benchmark + '-cfi/code_size.csv',
+            'silhouette': prefix + '/mem/' + benchmark + '-silhouette/code_size.csv',
+            'invert': prefix + '/mem/' + benchmark + '-invert/code_size.csv',
+            'ssfi': prefix + '/mem/' + benchmark + '-sfifull/code_size.csv',
         },
         'perf': {
-            'baseline': prefix + '/perf/beebs-baseline/perf.csv',
-            'ss': prefix + '/perf/beebs-ss/perf.csv',
-            'sp': prefix + '/perf/beebs-sp/perf.csv',
-            'cfi': prefix + '/perf/beebs-cfi/perf.csv',
-            'silhouette': prefix + '/perf/beebs-silhouette/perf.csv',
-            'invert' : prefix + '/perf/beebs-invert/perf.csv',
+            'baseline': prefix + '/perf/' + benchmark + '-baseline/code_size.csv',
+            'ss': prefix + '/perf/' + benchmark + '-ss/code_size.csv',
+            'sp': prefix + '/perf/' + benchmark + '-sp/code_size.csv',
+            'cfi': prefix + '/perf/' + benchmark + '-cfi/code_size.csv',
+            'silhouette': prefix + '/perf/' + benchmark + '-silhouette/code_size.csv',
+            'invert': prefix + '/perf/' + benchmark + '-invert/code_size.csv',
             'ssfi' : prefix + '/perf/beebs-sfifull/perf.csv',
         },
     }
