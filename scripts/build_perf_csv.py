@@ -1,13 +1,21 @@
 #!/usr/bin/python3
 
+'''
+This script builds perf csv files from the stat files generated
+by Baseline and Silhouette passes.
+'''
+
 import argparse
 import csv
 import os
 import re
 
-parser = argparse.ArgumentParser(description='Take performance data and generate CSV table')
-parser.add_argument('csv_path', help='Path of output CSV file')
-parser.add_argument('perf_path', help='Path of perf directory that contains all runtime data')
+# paths
+HOME_DIR = os.path.expanduser("~")
+SILHOUETTE = HOME_DIR + "/projects/silhouette"
+SILHOUETTE_MISC = SILHOUETTE + "/silhouette-misc"
+DATA_DIR = SILHOUETTE_MISC + "/data/perf/"
+
 
 def writeData(csvPath, benchName, benchTime):
     if not os.path.exists(csvPath):
@@ -20,7 +28,7 @@ def writeData(csvPath, benchName, benchTime):
             writer = csv.writer(csvFile)
             writer.writerow([benchName, benchTime])
 
-def readFile(csvPath, perfDir):
+def build_csv_beebs(csvPath, perfDir):
     bench = os.listdir(perfDir)
     bench = sorted(bench)
     os.chdir(perfDir)
@@ -33,9 +41,56 @@ def readFile(csvPath, perfDir):
                 name = perfFilename.replace('.stat', '')
                 writeData(csvPath, name, time)
 
-args = parser.parse_args()
-csvPath = os.path.abspath(args.csv_path)
-perfDir = os.path.abspath(args.perf_path)
-if os.path.exists(csvPath):
-    os.remove(csvPath)
-readFile(csvPath, perfDir)
+
+'''
+build_csv() constructs a perf.csv file.
+
+@benchmark - BEEBS or CoreMark Pro
+@config    - Baseline, SS, SP, CFI, Silhouette, Silhouette-Invert, SSFI
+'''
+def build_csv(benchmark, config):
+    data_dir = DATA_DIR + benchmark + "-" + config
+    perf_csv_path = data_dir + "/perf.csv"
+    data = {}  # perf data of transformed programs
+
+    # Remove old perf.csv
+    if os.path.exists(perf_csv_path):
+        os.remove(perf_csv_path)
+
+    # Construct csv for BEEBS
+    if benchmark == "beebs":
+        build_csv_beebs(data_dir, perf_csv_path)
+        return
+
+    # Construct csv for CoreMark Pro
+    for perf_file in os.listdir(data_dir):
+        prog_name = perf_file[:-5]
+        for line in open(data_dir + "/" + perf_file).readlines():
+            if "time(secs)" in line:
+                data [prog_name] = line.split('=')[-1][2:]
+                break
+
+    perf_csv = open(perf_csv_path, "w")
+    perf_csv.write("Benchmark,Time\n")
+    for prog in sorted(data):
+        # The "time" str extracted above has already had a newline;
+        # so we do not need append a new line at the end.
+        perf_csv.write(prog + "," + data[prog])
+
+
+#
+# entrance of this script
+#
+if __name__ == "__main__":
+    # Parse commond line arguments
+    parser = argparse.ArgumentParser(description='Build performance csv file.')
+    parser.add_argument('-b', '--benchmark', choices=['beebs', 'coremark-pro'],
+                        default='beebs', help='BEEBS or CoreMark-Pro')
+    parser.add_argument('-c', '--configure', required=True, metavar='configuration',
+                        help='ss, sp, cfi, silhouette, invert, ssfi')
+
+    args = parser.parse_args()
+    benchmark = args.benchmark
+    config = args.configure
+
+    build_csv(benchmark, config)

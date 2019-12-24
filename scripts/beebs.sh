@@ -291,7 +291,7 @@ case $1 in
             run $2 $program
         done
         # Summarize all performance data to a perf.csv file.
-        ./build_perf_csv.py ../data/perf/beebs-$2/perf.csv ../data/perf/beebs-$2
+        ./build_perf_csv.py -b $PROJ -c $2
     else
         run $2 $3
     fi

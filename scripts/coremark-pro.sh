@@ -5,7 +5,7 @@ SILHOUETTE_MISC=$SILHOUETTE/silhouette-misc
 PROJ=coremark-pro
 
 PROGRAMS=(
-    "cjpeg-rose7-preset"
+    # "cjpeg-rose7-preset"
     "core"
     "linear_alg-mid-100x100-sp"
     "loops-all-mid-10k-sp"
@@ -217,6 +217,8 @@ case $1 in
         for program in ${PROGRAMS[@]}; do
             run $2 $program
         done
+        # Summarize all performance data to a perf.csv file.
+        ./build_perf_csv.py -b $PROJ -c $2
     else
         run $2 $3
     fi
