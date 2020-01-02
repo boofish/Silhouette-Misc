@@ -5,7 +5,7 @@ SILHOUETTE_MISC=$SILHOUETTE/silhouette-misc
 PROJ=coremark-pro
 
 PROGRAMS=(
-    # "cjpeg-rose7-preset"
+    "cjpeg-rose7-preset"
     "core"
     "linear_alg-mid-100x100-sp"
     "loops-all-mid-10k-sp"
