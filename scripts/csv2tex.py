@@ -11,8 +11,9 @@ from scipy.stats.mstats import gmean  # require the scipy library
 #
 # @f: a file object of the opened output file
 # @csv_type: 'mem' or 'perf'
+# @is_fulltable: whether to generate a table with only summarized data
 #
-def write_tex_header(f, csv_type):
+def write_tex_header(f, csv_type, is_fulltable):
     # Write a comment
     if csv_type == 'perf':
         f.write('%\n% Performance table.\n%\n')
@@ -30,19 +31,29 @@ def write_tex_header(f, csv_type):
     # Restrict everything within column width
     f.write('\\resizebox{\\columnwidth}{!}{\n')
     # Write \begin{tabular}
-    f.write('\\begin{tabular}{@{}lrrrrrrr@{}}\n')
+    if is_fulltable:
+        f.write('\\begin{tabular}{@{}lrrrrrrr@{}}\n')
+    else:
+        f.write('\\begin{tabular}{@{}lrrrrrr@{}}\n')
     # Write \toprule
     f.write('\\toprule\n')
     # Write 1st row of table header
-    f.write('& \\textbf{Baseline} & {\\bf SS} & {\\bf SP} & {\\bf CFI} & ' +
-            '{\\bf Silhoue-} & {\\bf Invert} & {\\bf SSFI} \\\\\n')
+    if is_fulltable:
+        f.write('& {\\bf Baseline} ')
+    f.write('& {\\bf SS} & {\\bf SP} & {\\bf CFI} & ')
+    f.write('{\\bf Silhoue-} ') if is_fulltable else f.write('{\\bf Silhouette} ')
+    f.write('& {\\bf Invert} & {\\bf SSFI} \\\\\n')
     # Write 2nd row of table header
     if csv_type == 'perf':
         f.write('& {\\bf (ms)} & {\\bf (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} &' +
                 '{\\bf tte (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} \\\\\n')
     else:
-        f.write('& {\\bf (\# bytes)} & {\\bf (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} &' +
-                '{\\bf tte (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} \\\\\n')
+        if is_fulltable:
+            f.write('& {\\bf (\# bytes)} & {\\bf (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} &' +
+                    '{\\bf tte (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} \\\\\n')
+        else:
+            f.write('& {\\bf (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} &' +
+                    '{\\bf (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} \\\\\n')
     # Write \midrule
     f.write('\\midrule\n')
 
@@ -82,10 +93,9 @@ def write_tex_footer(f, csv_type):
 # @f: a file object of the opened output file
 # @configs: an array of configurations
 # @data: a dictionary containing data
+# @is_fulltable: whether to generate a table with only summarized data
 #
-def write_tex_summary(f, configs, data):
-    f.write("\\midrule\n")
-
+def write_tex_summary(f, configs, data, is_fulltable):
     # We compute overhead as config / baseline.
     overhead = { }
     # Collect the overhead for all configs.
@@ -99,21 +109,21 @@ def write_tex_summary(f, configs, data):
             overhead[config] += [float(data[benchmark][config]) / baseline]
 
     # Write min to file.
-    f.write("{\\bf min (\\%)} &")
+    f.write("{\\bf min (\\%)}")
     for config in overhead:
         min_overhead = "{0:.2f}".format(100 * (min(overhead[config]) - 1))
         f.write(" & " + min_overhead)
     f.write(" \\\\\n")
 
     # Write max to file.
-    f.write("{\\bf max (\\%)} &")
+    f.write("{\\bf max (\\%)}")
     for config in overhead:
         max_overhead = "{0:.2f}".format(100 * (max(overhead[config]) - 1))
         f.write(" & " + max_overhead)
     f.write(" \\\\\n")
 
     # Write geo. mean to file.
-    f.write("{\\bf geo. mean (\\%)} &")
+    f.write("{\\bf geo. mean (\\%)}")
     for config in overhead:
         geo_mean = "{0:.2f}".format(100 * (gmean(overhead[config]) - 1))
         f.write(" & " + geo_mean)
@@ -127,28 +137,31 @@ def write_tex_summary(f, configs, data):
 # @configs: an array of configurations
 # @data: a dictionary containing data
 # @csv_type: 'mem' or 'perf'
+# @is_fulltable: whether to generate a table with only summarized data
 #
-def write_tex(tex_path, configs, data, csv_type):
+def write_tex(tex_path, configs, data, csv_type, is_fulltable):
     with open(tex_path, 'w') as f:
         # Write header
-        write_tex_header(f, csv_type)
+        write_tex_header(f, csv_type, is_fulltable)
 
         # Write data
-        for benchmark in data:
-            f.write(benchmark.replace('_', '\\_'))
-            for config in configs:
-                number = data[benchmark][config]
-                # Generate comma-separated numbers for baseline
-                if config == 'baseline':
-                    number = '{:,}'.format(int(number))
-                else:
-                    baseline = float(data[benchmark]['baseline'])
-                    number = '{0:.2f}'.format(100 * (float(number) - baseline) / baseline)
-                f.write(' & ' + number)
-            f.write(' \\\\\n')
+        if is_fulltable:
+            for benchmark in data:
+                f.write(benchmark.replace('_', '\\_'))
+                for config in configs:
+                    number = data[benchmark][config]
+                    # Generate comma-separated numbers for baseline
+                    if config == 'baseline':
+                        number = '{:,}'.format(int(number))
+                    else:
+                        baseline = float(data[benchmark]['baseline'])
+                        number = '{0:.2f}'.format(100 * (float(number) - baseline) / baseline)
+                    f.write(' & ' + number)
+                f.write(' \\\\\n')
+            f.write("\\midrule\n")
 
         # Write data summary: min, max, and geometric mean.
-        write_tex_summary(f, configs, data)
+        write_tex_summary(f, configs, data, is_fulltable)
 
         # Write footer
         write_tex_footer(f, csv_type)
@@ -166,10 +179,14 @@ def main():
                      help='Type of input CSV files')
     opt.add_argument('-b', '--benchmark', choices=['beebs', 'coremark-pro'],
                      default='beebs', help='Benchmark: BEEBS or CoreMark Pro')
+    opt.add_argument('--fulltable', type=bool, default=True, metavar='is_fulltable',
+                     help='Whether generate a full table or a small table ' +
+                           'only summarized data')
     args = opt.parse_args()
     csv_type = args.type
     benchmark = args.benchmark
     tex_path = args.output
+    is_fulltable = args.fulltable
 
     # Hard-coded CSV paths
     prefix = '../data'
@@ -214,7 +231,7 @@ def main():
                 data[row[0]][config] = row[1]
 
     # Write to LaTeX file
-    write_tex(tex_path, csvs[csv_type].keys(), data, csv_type)
+    write_tex(tex_path, csvs[csv_type].keys(), data, csv_type, is_fulltable)
 
 if __name__ == '__main__':
     main()
