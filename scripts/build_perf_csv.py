@@ -67,7 +67,7 @@ def build_csv(benchmark, config):
         prog_name = perf_file[:-5]
         for line in open(data_dir + "/" + perf_file).readlines():
             if "time(secs)" in line:
-                data [prog_name] = line.split('=')[-1][2:]
+                data [prog_name] = line.split('=')[-1].lstrip()
                 break
 
     perf_csv = open(perf_csv_path, "w")
