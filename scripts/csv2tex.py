@@ -63,8 +63,9 @@ def write_tex_header(f, csv_type, is_fulltable):
 #
 # @f: a file object of the opened output file
 # @csv_type: 'mem' or 'perf'
+# @benchmarks: 'beebs' or 'coremark-pro'
 #
-def write_tex_footer(f, csv_type):
+def write_tex_footer(f, csv_type, benchmarks):
     # Write \bottomrule
     f.write('\\bottomrule\n')
     # Write \end{tabular}
@@ -73,16 +74,30 @@ def write_tex_footer(f, csv_type):
     f.write('}}\n')
     # Write \caption{}
     if csv_type == 'perf':
-        f.write('\\caption{Performance Overhead on BEEBS Benchmarks.' +
-                'SS: Shadow Stack; SP: Store Promotion.}\n')
+        f.write('\\caption{Performance Overhead on ')
+        if benchmarks == 'beebs':
+            f.write('BEEBS ')
+        else:
+            f.write('CoreMark-Pro ')
+        f.write('Benchmarks.' + ' SS: Shadow Stack; SP: Store Promotion.}\n')
     else:
-        f.write('\\caption{Code Size Overhead on BEEBS Benchmarks.' +
-                'SS: Shadow Stack; SP: Store Promotion.}\n')
+        f.write('\\caption{Code Size Overhead on ')
+        if benchmarks == 'beebs':
+            f.write('BEEBS ')
+        else:
+            f.write('CoreMark-Pro')
+        f.write('Benchmarks.' + ' SS: Shadow Stack; SP: Store Promotion.}\n')
     # Write \label
     if csv_type == 'perf':
-        f.write('\\label{table:perf}\n')
+        if benchmarks == 'beebs':
+            f.write('\\label{table:beebs_perf}\n')
+        else:
+            f.write('\\label{table:coremarkpro_perf}\n')
     else:
-        f.write('\\label{table:codesize}\n')
+        if benchmark == 'bees':
+            f.write('\\label{table:beebs_codesize}\n')
+        else:
+            f.write('\\label{table:coremarkpro_codesize}\n')
     # Write \end{table}
     f.write('\\end{table}\n')
 
@@ -109,21 +124,21 @@ def write_tex_summary(f, configs, data, is_fulltable):
             overhead[config] += [float(data[benchmark][config]) / baseline]
 
     # Write min to file.
-    f.write("{\\bf min (\\%)}")
+    f.write("{\\bf min (\\%)} &")
     for config in overhead:
         min_overhead = "{0:.2f}".format(100 * (min(overhead[config]) - 1))
         f.write(" & " + min_overhead)
     f.write(" \\\\\n")
 
     # Write max to file.
-    f.write("{\\bf max (\\%)}")
+    f.write("{\\bf max (\\%)} &")
     for config in overhead:
         max_overhead = "{0:.2f}".format(100 * (max(overhead[config]) - 1))
         f.write(" & " + max_overhead)
     f.write(" \\\\\n")
 
     # Write geo. mean to file.
-    f.write("{\\bf geo. mean (\\%)}")
+    f.write("{\\bf geo. mean (\\%)} &")
     for config in overhead:
         geo_mean = "{0:.2f}".format(100 * (gmean(overhead[config]) - 1))
         f.write(" & " + geo_mean)
@@ -137,9 +152,10 @@ def write_tex_summary(f, configs, data, is_fulltable):
 # @configs: an array of configurations
 # @data: a dictionary containing data
 # @csv_type: 'mem' or 'perf'
+# @benchmarks: 'beebs' or 'coremark-pro'
 # @is_fulltable: whether to generate a table with only summarized data
 #
-def write_tex(tex_path, configs, data, csv_type, is_fulltable):
+def write_tex(tex_path, configs, data, csv_type, benchmarks, is_fulltable):
     with open(tex_path, 'w') as f:
         # Write header
         write_tex_header(f, csv_type, is_fulltable)
@@ -152,7 +168,10 @@ def write_tex(tex_path, configs, data, csv_type, is_fulltable):
                     number = data[benchmark][config]
                     # Generate comma-separated numbers for baseline
                     if config == 'baseline':
-                        number = '{:,}'.format(int(number))
+                        if benchmarks == 'beeb':
+                            number = '{:,}'.format(float(number))
+                        else:
+                            number = '{0:.2f}'.format(float(number))
                     else:
                         baseline = float(data[benchmark]['baseline'])
                         number = '{0:.2f}'.format(100 * (float(number) - baseline) / baseline)
@@ -164,7 +183,7 @@ def write_tex(tex_path, configs, data, csv_type, is_fulltable):
         write_tex_summary(f, configs, data, is_fulltable)
 
         # Write footer
-        write_tex_footer(f, csv_type)
+        write_tex_footer(f, csv_type, benchmarks)
 
 
 #
@@ -198,16 +217,16 @@ def main():
             'cfi': prefix + '/mem/' + benchmark + '-cfi/code_size.csv',
             'silhouette': prefix + '/mem/' + benchmark + '-silhouette/code_size.csv',
             'invert': prefix + '/mem/' + benchmark + '-invert/code_size.csv',
-            'ssfi': prefix + '/mem/' + benchmark + '-sfifull/code_size.csv',
+            'sfifull': prefix + '/mem/' + benchmark + '-sfifull/code_size.csv',
         },
         'perf': {
-            'baseline': prefix + '/perf/' + benchmark + '-baseline/code_size.csv',
-            'ss': prefix + '/perf/' + benchmark + '-ss/code_size.csv',
-            'sp': prefix + '/perf/' + benchmark + '-sp/code_size.csv',
-            'cfi': prefix + '/perf/' + benchmark + '-cfi/code_size.csv',
-            'silhouette': prefix + '/perf/' + benchmark + '-silhouette/code_size.csv',
-            'invert': prefix + '/perf/' + benchmark + '-invert/code_size.csv',
-            'ssfi' : prefix + '/perf/beebs-sfifull/perf.csv',
+            'baseline': prefix + '/perf/' + benchmark + '-baseline/perf.csv',
+            'ss': prefix + '/perf/' + benchmark + '-ss/perf.csv',
+            'sp': prefix + '/perf/' + benchmark + '-sp/perf.csv',
+            'cfi': prefix + '/perf/' + benchmark + '-cfi/perf.csv',
+            'silhouette': prefix + '/perf/' + benchmark + '-silhouette/perf.csv',
+            'invert': prefix + '/perf/' + benchmark + '-invert/perf.csv',
+            'sfifull' : prefix + '/perf/' + benchmark + '-sfifull/perf.csv',
         },
     }
 
@@ -231,7 +250,7 @@ def main():
                 data[row[0]][config] = row[1]
 
     # Write to LaTeX file
-    write_tex(tex_path, csvs[csv_type].keys(), data, csv_type, is_fulltable)
+    write_tex(tex_path, csvs[csv_type].keys(), data, csv_type, benchmark, is_fulltable)
 
 if __name__ == '__main__':
     main()
