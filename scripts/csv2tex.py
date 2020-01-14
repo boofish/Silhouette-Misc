@@ -85,7 +85,7 @@ def write_tex_footer(f, csv_type, benchmarks):
         if benchmarks == 'beebs':
             f.write('BEEBS ')
         else:
-            f.write('CoreMark-Pro')
+            f.write('CoreMark-Pro ')
         f.write('Benchmarks.' + ' SS: Shadow Stack; SP: Store Promotion.}\n')
     # Write \label
     if csv_type == 'perf':
@@ -94,7 +94,7 @@ def write_tex_footer(f, csv_type, benchmarks):
         else:
             f.write('\\label{table:coremarkpro_perf}\n')
     else:
-        if benchmark == 'bees':
+        if benchmarks == 'beebs':
             f.write('\\label{table:beebs_codesize}\n')
         else:
             f.write('\\label{table:coremarkpro_codesize}\n')
@@ -124,21 +124,27 @@ def write_tex_summary(f, configs, data, is_fulltable):
             overhead[config] += [float(data[benchmark][config]) / baseline]
 
     # Write min to file.
-    f.write("{\\bf min (\\%)} &")
+    f.write("{\\bf min (\\%)}")
+    if is_fulltable:
+        f.write(' &')
     for config in overhead:
         min_overhead = "{0:.2f}".format(100 * (min(overhead[config]) - 1))
         f.write(" & " + min_overhead)
     f.write(" \\\\\n")
 
     # Write max to file.
-    f.write("{\\bf max (\\%)} &")
+    f.write("{\\bf max (\\%)}")
+    if is_fulltable:
+        f.write(' &')
     for config in overhead:
         max_overhead = "{0:.2f}".format(100 * (max(overhead[config]) - 1))
         f.write(" & " + max_overhead)
     f.write(" \\\\\n")
 
     # Write geo. mean to file.
-    f.write("{\\bf geo. mean (\\%)} &")
+    f.write("{\\bf geo. mean (\\%)}")
+    if is_fulltable:
+        f.write(' &')
     for config in overhead:
         geo_mean = "{0:.2f}".format(100 * (gmean(overhead[config]) - 1))
         f.write(" & " + geo_mean)
