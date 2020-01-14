@@ -59,8 +59,13 @@ build_csv() constructs a code size csv file for transformed programs.
 '''
 def build_csv(benchmark, config):
     data_dir = DATA_DIR + benchmark + "-" + config + "/"
+    code_size_csv = data_dir + "code_size.csv"
     transformed = {}  # code size data of transformed programs
     code_size_files = {}
+
+    # Remove old data file
+    if os.path.exists(code_size_csv):
+        os.remove(code_size_csv)
 
     # For Shadow Stack, extract baseline data if this has not been done.
     if config == "ss":
@@ -89,7 +94,7 @@ def build_csv(benchmark, config):
             transformed[prog] += int(func_data.split(':')[2])
 
     # Write all programs' code size data into one csv file.
-    writer = csv.writer(open(data_dir + "code_size.csv", 'w'))
+    writer = csv.writer(open(code_size_csv, 'w'))
     writer.writerow(["Benchmark", "code_size"])
     for prog in transformed:
         writer.writerow([prog, transformed[prog]])
