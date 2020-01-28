@@ -28,7 +28,7 @@ def writeData(csvPath, benchName, benchTime):
             writer = csv.writer(csvFile)
             writer.writerow([benchName, benchTime])
 
-def build_csv_beebs(csvPath, perfDir):
+def build_csv_beebs(perfDir, csvPath):
     bench = os.listdir(perfDir)
     bench = sorted(bench)
     os.chdir(perfDir)
