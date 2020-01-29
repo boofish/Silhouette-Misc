@@ -174,10 +174,7 @@ def write_tex(tex_path, configs, data, csv_type, benchmarks, is_fulltable):
                     number = data[benchmark][config]
                     # Generate comma-separated numbers for baseline
                     if config == 'baseline':
-                        if benchmarks == 'beebs':
-                            number = '{:,}'.format(float(number))
-                        else:
-                            number = '{0:.2f}'.format(float(number))
+                        number = '{:,}'.format(int(number))
                     else:
                         baseline = float(data[benchmark]['baseline'])
                         number = '{0:.2f}'.format(100 * (float(number) - baseline) / baseline)
