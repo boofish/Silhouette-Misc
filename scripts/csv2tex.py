@@ -45,15 +45,15 @@ def write_tex_header(f, csv_type, is_fulltable):
     f.write('& {\\bf Invert} & {\\bf SSFI} \\\\\n')
     # Write 2nd row of table header
     if csv_type == 'perf':
-        f.write('& {\\bf (ms)} & {\\bf (ratio)} & {\\bf (ratio)} & {\\bf (ratio)} &' +
-                '{\\bf tte (ratio)} & {\\bf (ratio)} & {\\bf (ratio)} \\\\\n')
+        f.write('& {\\bf (ms)} & {\\bf (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} &' +
+                '{\\bf tte (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} \\\\\n')
     else:
         if is_fulltable:
-            f.write('& {\\bf (\# bytes)} & {\\bf (ratio)} & {\\bf (ratio)} & {\\bf (ratio)} &' +
-                    '{\\bf tte (ratio)} & {\\bf (ratio)} & {\\bf (ratio)} \\\\\n')
+            f.write('& {\\bf (\# bytes)} & {\\bf (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} &' +
+                    '{\\bf tte (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} \\\\\n')
         else:
-            f.write('& {\\bf (ratio)} & {\\bf (ratio)} & {\\bf (ratio)} &' +
-                    '{\\bf (ratio)} & {\\bf (ratio)} & {\\bf (ratio)} \\\\\n')
+            f.write('& {\\bf (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} &' +
+                    '{\\bf (\\%)} & {\\bf (\\%)} & {\\bf (\\%)} \\\\\n')
     # Write \midrule
     f.write('\\midrule\n')
 
@@ -124,29 +124,29 @@ def write_tex_summary(f, configs, data, is_fulltable):
             overhead[config] += [float(data[benchmark][config]) / baseline]
 
     # Write min to file.
-    f.write("{\\bf min (ratio)}")
+    f.write("{\\bf min (\\%)}")
     if is_fulltable:
         f.write(' &')
     for config in overhead:
-        min_overhead = "{0:.2f}".format(min(overhead[config]))
+        min_overhead = "{0:.2f}".format(100 * (min(overhead[config]) - 1))
         f.write(" & " + min_overhead)
     f.write(" \\\\\n")
 
     # Write max to file.
-    f.write("{\\bf max (ratio)}")
+    f.write("{\\bf max (\\%)}")
     if is_fulltable:
         f.write(' &')
     for config in overhead:
-        max_overhead = "{0:.2f}".format(max(overhead[config]))
+        max_overhead = "{0:.2f}".format(100 * (max(overhead[config]) - 1))
         f.write(" & " + max_overhead)
     f.write(" \\\\\n")
 
     # Write geo. mean to file.
-    f.write("{\\bf geo. mean (ratio)}")
+    f.write("{\\bf geo. mean (\\%)}")
     if is_fulltable:
         f.write(' &')
     for config in overhead:
-        geo_mean = "{0:.2f}".format(gmean(overhead[config]))
+        geo_mean = "{0:.2f}".format(100 * (gmean(overhead[config]) - 1))
         f.write(" & " + geo_mean)
     f.write(" \\\\\n")
 
@@ -180,7 +180,7 @@ def write_tex(tex_path, configs, data, csv_type, benchmarks, is_fulltable):
                             number = '{0:.2f}'.format(float(number))
                     else:
                         baseline = float(data[benchmark]['baseline'])
-                        number = '{0:.2f}'.format(float(number) / baseline)
+                        number = '{0:.2f}'.format(100 * (float(number) - baseline) / baseline)
                     f.write(' & ' + number)
                 f.write(' \\\\\n')
             f.write("\\midrule\n")
