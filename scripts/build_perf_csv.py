@@ -21,7 +21,7 @@ def writeData(csvPath, benchName, benchTime):
     if not os.path.exists(csvPath):
         with open(csvPath, mode='w') as csvFile:
             writer = csv.writer(csvFile)
-            writer.writerow(['Benchmark', 'Time'])
+            writer.writerow(['#Benchmark', 'Time'])
             writer.writerow([benchName, benchTime])
     else:
         with open(csvPath, mode='a') as csvFile:
@@ -71,7 +71,7 @@ def build_csv(benchmark, config):
                 break
 
     perf_csv = open(perf_csv_path, "w")
-    perf_csv.write("Benchmark,Time\n")
+    perf_csv.write("#Benchmark,Time\n")
     for prog in sorted(data):
         # The "time" str extracted above has already had a newline;
         # so we do not need append a new line at the end.
