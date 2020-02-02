@@ -46,7 +46,7 @@ def get_baseline(benchmark):
 
     # Write all the data into one csv file.
     writer = csv.writer(open(baseline_dir + "/code_size.csv", "w"))
-    writer.writerow(["Benchmark", "code_size"])
+    writer.writerow(["#Benchmark", "code_size"])
     for prog in baseline:
         writer.writerow([prog, baseline[prog]])
 
@@ -95,7 +95,7 @@ def build_csv(benchmark, config):
 
     # Write all programs' code size data into one csv file.
     writer = csv.writer(open(code_size_csv, 'w'))
-    writer.writerow(["Benchmark", "code_size"])
+    writer.writerow(["#Benchmark", "code_size"])
     for prog in transformed:
         writer.writerow([prog, transformed[prog]])
             
