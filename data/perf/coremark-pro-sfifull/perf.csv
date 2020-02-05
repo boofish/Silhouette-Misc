@@ -1,0 +1,10 @@
+#Benchmark,Time
+cjpeg-rose7-preset,13378
+core,139922
+linear_alg-mid-100x100-sp,18550
+loops-all-mid-10k-sp,35714
+nnet_test,227035
+parser-125k,10060
+radix2-big-64k,17602
+sha-test,42625
+zip-test,20061

@@ -1,0 +1,10 @@
+#Benchmark,code_size
+cjpeg-rose7-preset,50800
+core,17814
+linear_alg-mid-100x100-sp,24746
+loops-all-mid-10k-sp,66318
+nnet_test,34294
+parser-125k,20374
+radix2-big-64k,19036
+sha-test,17898
+zip-test,49176
