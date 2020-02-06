@@ -128,7 +128,7 @@ def write_tex_summary(f, configs, data, is_fulltable):
     if is_fulltable:
         f.write(' &')
     for config in overhead:
-        min_overhead = "{0:.4f}".format(min(overhead[config]))
+        min_overhead = "{0:.3f}".format(min(overhead[config]))
         f.write(" & " + min_overhead)
     f.write(" \\\\\n")
 
@@ -137,7 +137,7 @@ def write_tex_summary(f, configs, data, is_fulltable):
     if is_fulltable:
         f.write(' &')
     for config in overhead:
-        max_overhead = "{0:.4f}".format(max(overhead[config]))
+        max_overhead = "{0:.3f}".format(max(overhead[config]))
         f.write(" & " + max_overhead)
     f.write(" \\\\\n")
 
@@ -146,7 +146,7 @@ def write_tex_summary(f, configs, data, is_fulltable):
     if is_fulltable:
         f.write(' &')
     for config in overhead:
-        geo_mean = "{0:.4f}".format(gmean(overhead[config]))
+        geo_mean = "{0:.3f}".format(gmean(overhead[config]))
         f.write(" & " + geo_mean)
     f.write(" \\\\\n")
 
@@ -177,7 +177,7 @@ def write_tex(tex_path, configs, data, csv_type, benchmarks, is_fulltable):
                         number = '{:,}'.format(int(number))
                     else:
                         baseline = float(data[benchmark]['baseline'])
-                        number = '{0:.4f}'.format(float(number) / baseline)
+                        number = '{0:.3f}'.format(float(number) / baseline)
                     f.write(' & ' + number)
                 f.write(' \\\\\n')
             f.write("\\midrule\n")
