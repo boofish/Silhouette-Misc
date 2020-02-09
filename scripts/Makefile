@@ -15,11 +15,8 @@ ECLIPSE += $(ECLIPSE_OPTIONS) $(WORKSPACE)
 beebs/%:
 	$(ECLIPSE) $(BUILD) $@
 
-coremark:
-	$(ECLIPSE) $(BUILD) coremark/Release
-
-coremark-debug:
-	$(ECLIPSE) $(BUILD) coremark/Debug
+coremark/%:
+	$(ECLIPSE) $(BUILD) $@
 
 coremark-pro/%:
 	$(ECLIPSE) $(BUILD) $@
