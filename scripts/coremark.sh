@@ -69,18 +69,21 @@ compile() {
         cp "$program_dir/code_size_$1.stat" "$program_stat"
         ;;
     "silhouette" )
-        cp "$program_dir/code_size_ss.stat" "$code_size_dir"
-        cp "$program_dir/code_size_sp.stat" "$code_size_dir"
-        cp "$program_dir/code_size_cfi.stat" "$code_size_dir"
+        mkdir -p "$code_size_dir/$PROJ"
+        cp "$program_dir/code_size_ss.stat" "$code_size_dir/$PROJ"
+        cp "$program_dir/code_size_sp.stat" "$code_size_dir/$PROJ"
+        cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$PROJ"
         ;;
     "invert" )
-        cp "$program_dir/code_size_ss.stat" "$code_size_dir"
-        cp "$program_dir/code_size_cfi.stat" "$code_size_dir"
+        mkdir -p "$code_size_dir/$PROJ"
+        cp "$program_dir/code_size_ss.stat" "$code_size_dir/$PROJ"
+        cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$PROJ"
         ;;
     "sfifull" )
-        cp "$program_dir/code_size_ss.stat" "$code_size_dir"
-        cp "$program_dir/code_size_sfi.stat" "$code_size_dir"
-        cp "$program_dir/code_size_cfi.stat" "$code_size_dir"
+        mkdir -p "$code_size_dir/$PROJ"
+        cp "$program_dir/code_size_ss.stat" "$code_size_dir/$PROJ"
+        cp "$program_dir/code_size_sfi.stat" "$code_size_dir/$PROJ"
+        cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$PROJ"
         ;;
     * ) # baseline
         ;;
