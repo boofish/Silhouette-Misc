@@ -88,6 +88,13 @@ compile() {
     * ) # baseline
         ;;
     esac
+
+    # Summarize all code size data to a code_size.csv file
+    if [[ ! $1 == "baseline" ]]; then
+        echo "Building code_size.csv ......"
+        ./build_mem_csv.py -c $1 -b $PROJ
+    fi
+
     echo Done
     echo
 }
@@ -180,6 +187,8 @@ case $1 in
         ;;
     esac
     run $2
+    # Summarize all performance data to a perf.csv file.
+    ./build_perf_csv.py -b $PROJ -c $2
     ;;
 * )
     usage
