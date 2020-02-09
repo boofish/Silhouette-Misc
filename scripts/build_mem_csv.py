@@ -107,7 +107,7 @@ if __name__ == "__main__":
     # Parse commond line arguments
     parser = argparse.ArgumentParser(description='Build code size csv file.')
     parser.add_argument('-b', '--benchmark', required=True, metavar='benchmark',
-                        help='BEEBS or CoreMark Pro')
+                        help='BEEBS, CoreMark, or CoreMark-Pro')
     parser.add_argument('-c', '--configure', required=True, metavar='configuration',
                         help='ss, sp, cfi, silhouette, invert, ssfi')
     parser.add_argument('-p', '--program', required=False, metavar='program',

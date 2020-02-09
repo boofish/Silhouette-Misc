@@ -45,7 +45,7 @@ def build_csv_beebs(perfDir, csvPath):
 '''
 build_csv() constructs a perf.csv file.
 
-@benchmark - BEEBS or CoreMark Pro
+@benchmark - BEEBS, CoreMark or CoreMark-Pro
 @config    - Baseline, SS, SP, CFI, Silhouette, Silhouette-Invert, SSFI
 '''
 def build_csv(benchmark, config):
@@ -62,13 +62,15 @@ def build_csv(benchmark, config):
         build_csv_beebs(data_dir, perf_csv_path)
         return
 
-    # Construct csv for CoreMark Pro
+    # Construct csv for CoreMark or CoreMark-Pro
     for perf_file in os.listdir(data_dir):
         prog_name = perf_file[:-5]
         for line in open(data_dir + "/" + perf_file).readlines():
             if "time(ns)" in line:
                 data [prog_name] = line.split('=')[-1].lstrip()
                 break
+            elif "Total ticks" in line:
+                data [prog_name] = line.split(':')[-1].lstrip()
 
     perf_csv = open(perf_csv_path, "w")
     perf_csv.write("#Benchmark,Time\n")
@@ -84,8 +86,8 @@ def build_csv(benchmark, config):
 if __name__ == "__main__":
     # Parse commond line arguments
     parser = argparse.ArgumentParser(description='Build performance csv file.')
-    parser.add_argument('-b', '--benchmark', choices=['beebs', 'coremark-pro'],
-                        default='beebs', help='BEEBS or CoreMark-Pro')
+    parser.add_argument('-b', '--benchmark', choices=['beebs', 'coremark', 'coremark-pro'],
+                        default='beebs', help='BEEBS, CoreMark, or CoreMark-Pro')
     parser.add_argument('-c', '--configure', required=True, metavar='configuration',
                         help='ss, sp, cfi, silhouette, invert, ssfi')
 
