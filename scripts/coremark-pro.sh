@@ -193,7 +193,6 @@ usage() {
     echo "    cfi               - compile for CFI only"
     echo "    silhouette        - compile for Silhouette"
     echo "    invert            - compile for Silhouette-Invert"
-    echo "    sfisel            - compile for selective SFI"
     echo "    sfifull           - compile for full SFI"
     echo "    run <conf>        - run all the compiled binaries of <conf>"
     echo "    run <conf> <prog> - run the compiled <prog> binary of <conf>"
