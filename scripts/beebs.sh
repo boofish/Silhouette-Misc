@@ -223,6 +223,10 @@ run() {
     local perf_data="$perf_dir/$2.stat"
     rm -rf "$perf_data"
 
+    # Open screen to receive the output
+    screen -dm -L -fn -Logfile "$perf_data" /dev/ttyACM0 115200
+    screen -X logfile flush 0
+
     # Flush the binary onto the board
     echo "Flushing $2.elf onto the board ......"
     openocd -f "$BEEBS_RUN_CFG" -c "program $elf reset exit" 2> openocd.log
@@ -231,10 +235,6 @@ run() {
         echo "Check openocd.log for details"
         exit 1
     fi
-
-    # Open screen to receive the output
-    screen -dm -L -fn -Logfile "$perf_data" /dev/ttyACM0 115200
-    screen -X logfile flush 0
 
     echo "Running $PROJ-$1/$2 ......"
     grep "Finished" "$perf_data" >& /dev/null
