@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SILHOUETTE=~/projects/silhouette
-SILHOUETTE_MISC=$SILHOUETTE/silhouette-misc
+SILHOUETTE_MISC="$SILHOUETTE/silhouette-misc"
 PROJ=coremark-pro
 
 PROGRAMS=(
@@ -28,9 +28,9 @@ compile() {
     # Updated the .cproject file
     if [[ ! -e "$CMKP_PROJ/cproject_$1" ]]; then
         echo "No cproject_$1 found in $CMKP_PROJ!"
-        echo "Checkout cproject_$1 by:"
+        echo "Generate one by:"
         echo
-        echo "git checkout cproject_$1"
+        echo "./gen_cproject.py"
         exit 1
     fi
     (cd "$CMKP_PROJ"; ln -sf "cproject_$1" .cproject;)
@@ -43,11 +43,11 @@ compile() {
     rm -rf "$debug_dir"/*
 
     # Make an empty code size directory
-    local code_size_dir=$SILHOUETTE_MISC/data/mem/$PROJ-$1
-    if [[ ! -d $code_size_dir ]]; then
-        mkdir -p $code_size_dir
+    local code_size_dir="$SILHOUETTE_MISC/data/mem/$PROJ-$1"
+    if [[ ! -d "$code_size_dir" ]]; then
+        mkdir -p "$code_size_dir"
     fi
-    rm -rf $code_size_dir/*
+    rm -rf "$code_size_dir"/*
 
     # Compile each benchmark program
     for program in ${PROGRAMS[@]}; do
@@ -56,7 +56,7 @@ compile() {
 
         # Do compile
         echo "Compiling $program for $1 ......"
-        make $PROJ/$program >& $debug_dir/build-$program.log
+        make $PROJ/$program >& "$debug_dir/build-$program.log"
         if [[ ! -x "$elf" ]]; then
             echo "Compiling $program failed!"
             echo "Check $debug_dir/build-$program.log for details"
@@ -78,29 +78,31 @@ compile() {
 
         # Copy the generated code_size stat file to the data directory.
         echo "Copying code size stat file(s) to data/mem/$PROJ-$1 ......"
-        local program_dir=$CMKP_PROJ/$program
-        local program_stat=$code_size_dir/$program.stat
+        local program_dir="$CMKP_PROJ/$program"
+        local program_stat="$code_size_dir/$program.stat"
         case $1 in
-            "ss" | "cfi" | "sp" | "sfi")
-                cp $program_dir/code_size_$1.stat $program_stat
-                ;;
-            "silhouette")
-                mkdir $code_size_dir/$program
-                cp $program_dir/code_size_ss.stat $code_size_dir/$program
-                cp $program_dir/code_size_sp.stat $code_size_dir/$program
-                cp $program_dir/code_size_cfi.stat $code_size_dir/$program
-                ;;
-            "invert")
-                mkdir $code_size_dir/$program
-                cp $program_dir/code_size_ss.stat $code_size_dir/$program
-                cp $program_dir/code_size_cfi.stat $code_size_dir/$program
-                ;;
-            "sfifull")
-                mkdir $code_size_dir/$program
-                cp $program_dir/code_size_ss.stat $code_size_dir/$program
-                cp $program_dir/code_size_sfi.stat $code_size_dir/$program
-                cp $program_dir/code_size_cfi.stat $code_size_dir/$program
-                ;;
+        "ss" | "cfi" | "sp" | "sfi" )
+            cp "$program_dir/code_size_$1.stat" "$program_stat"
+            ;;
+        "silhouette" )
+            mkdir -p "$code_size_dir/$program"
+            cp "$program_dir/code_size_ss.stat" "$code_size_dir/$program"
+            cp "$program_dir/code_size_sp.stat" "$code_size_dir/$program"
+            cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$program"
+            ;;
+        "invert" )
+            mkdir -p "$code_size_dir/$program"
+            cp "$program_dir/code_size_ss.stat" "$code_size_dir/$program"
+            cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$program"
+            ;;
+        "sfifull" )
+            mkdir -p "$code_size_dir/$program"
+            cp "$program_dir/code_size_ss.stat" "$code_size_dir/$program"
+            cp "$program_dir/code_size_sfi.stat" "$code_size_dir/$program"
+            cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$program"
+            ;;
+        * ) # baseline
+            ;;
         esac
         echo "Done compiling $program"
         echo
@@ -202,12 +204,12 @@ usage() {
 # Entrance of the script.
 #
 case $1 in
-"baseline" | "ss" | "sp" | "cfi" | "silhouette" | "invert" | "sfisel" | "sfifull" )
+"baseline" | "ss" | "sp" | "cfi" | "silhouette" | "invert" | "sfifull" )
     compile $1
     ;;
 "run" )
     case $2 in
-    "baseline" | "ss" | "sp" | "cfi" | "silhouette" | "invert" | "sfisel" | "sfifull" )
+    "baseline" | "ss" | "sp" | "cfi" | "silhouette" | "invert" | "sfifull" )
         ;;
     * )
         usage

@@ -1,76 +1,76 @@
 #!/usr/bin/env bash
 
 SILHOUETTE=~/projects/silhouette
-SILHOUETTE_MISC=$SILHOUETTE/silhouette-misc
+SILHOUETTE_MISC="$SILHOUETTE/silhouette-misc"
 PROJ=beebs
 
 BEEBS_PROJ="$SILHOUETTE/projs/$PROJ"
 BEEBS_RUN_CFG="$BEEBS_PROJ/$PROJ.cfg"
 
 PROGRAMS=(
-    # "aha-compress"
-    # "aha-mont64"
-    # "bs"
+#   "aha-compress"
+#   "aha-mont64"
+#   "bs"
     "bubblesort"
-    # "cnt"
-    # "compress"
-    # "cover"
-    # "crc"
-    # "crc32"
-    # "ctl-stack"
+#   "cnt"
+#   "compress"
+#   "cover"
+#   "crc"
+#   "crc32"
+#   "ctl-stack"
     "ctl-string"
-    # "ctl-vector"
+#   "ctl-vector"
     "cubic"
     "dijkstra"
-    # "dtoa"
-    # "duff"
+#   "dtoa"
+#   "duff"
     "edn"
-    # "expint"
-    # "fac"
+#   "expint"
+#   "fac"
     "fasta"
-    # "fdct"
+#   "fdct"
 #   "fibcall"
     "fir"
     "frac"
     "huffbench"
-    # "insertsort"
+#   "insertsort"
 #   "janne_complex"
-    # "jfdctint"
-    # "lcdnum"
+#   "jfdctint"
+#   "lcdnum"
     "levenshtein"
-    # "ludcmp"
-    # "matmult-float"
+#   "ludcmp"
+#   "matmult-float"
     "matmult-int"
-    # "mergesort"
-    # "miniz"
-    # "minver"
+#   "mergesort"
+#   "miniz"
+#   "minver"
     "nbody"
     "ndes"
     "nettle-aes"
-    # "nettle-arcfour"
-    # "nettle-cast128"
-    # "nettle-des"
-    # "nettle-md5"
-    # "nettle-sha256"
-    # "newlib-exp"
-    # "newlib-log"
-    # "newlib-mod"
-    # "newlib-sqrt"
-    # "ns"
-    # "nsichneu"
+#   "nettle-arcfour"
+#   "nettle-cast128"
+#   "nettle-des"
+#   "nettle-md5"
+#   "nettle-sha256"
+#   "newlib-exp"
+#   "newlib-log"
+#   "newlib-mod"
+#   "newlib-sqrt"
+#   "ns"
+#   "nsichneu"
     "picojpeg"
-    # "prime"
+#   "prime"
     "qrduino"
-    # "qsort"
-    # "qurt"
-    # "recursion"
+#   "qsort"
+#   "qurt"
+#   "recursion"
     "rijndael"
-    # "select"
-    # "sglib-arraybinsearch"
-    # "sglib-arrayheapsort"
-    # "sglib-arrayquicksort"
+#   "select"
+#   "sglib-arraybinsearch"
+#   "sglib-arrayheapsort"
+#   "sglib-arrayquicksort"
     "sglib-dllist"
-    # "sglib-hashtable"
+#   "sglib-hashtable"
     "sglib-listinsertsort"
     "sglib-listsort"
     "sglib-queue"
@@ -78,14 +78,14 @@ PROGRAMS=(
     "slre"
     "sqrt"
     "st"
-    # "statemate"
+#   "statemate"
     "stb_perlin"
-    # "stringsearch1"
-    # "strstr"
-    # "tarai"
-    # "trio-snprintf"
+#   "stringsearch1"
+#   "strstr"
+#   "tarai"
+#   "trio-snprintf"
     "trio-sscanf"
-    # "ud"
+#   "ud"
     "whetstone"
     "wikisort"
 )
@@ -116,10 +116,10 @@ compile() {
 
     # Make an empty code size directory
     local code_size_dir="$SILHOUETTE_MISC/data/mem/$PROJ-$1"
-    if [[ ! -d $code_size_dir ]]; then
-        mkdir -p $code_size_dir
+    if [[ ! -d "$code_size_dir" ]]; then
+        mkdir -p "$code_size_dir"
     fi
-    rm -rf $code_size_dir/*
+    rm -rf "$code_size_dir"/*
 
     # Compile each benchmark program
     for program in ${PROGRAMS[@]}; do
@@ -128,7 +128,7 @@ compile() {
 
         # Do compile
         echo "Compiling $program for $1 ......"
-        make $PROJ/$program >& $debug_dir/build-$program.log
+        make $PROJ/$program >& "$debug_dir/build-$program.log"
         if [[ ! -x "$elf" ]]; then
             echo "Compiling $program failed!"
             echo "Check $debug_dir/build-$program.log for details"
@@ -150,29 +150,31 @@ compile() {
 
         # Copy the generated code_size stat file to the data directory.
         echo "Copying code size stat file(s) to data/mem/$PROJ-$1 ......"
-        local program_dir=$BEEBS_PROJ/$program
-        local program_stat=$code_size_dir/$program.stat
+        local program_dir="$BEEBS_PROJ/$program"
+        local program_stat="$code_size_dir/$program.stat"
         case $1 in
-            "ss" | "cfi" | "sp" | "sfi")
-                cp $program_dir/code_size_$1.stat $program_stat
-                ;;
-            "silhouette")
-                mkdir $code_size_dir/$program
-                cp $program_dir/code_size_ss.stat $code_size_dir/$program
-                cp $program_dir/code_size_sp.stat $code_size_dir/$program
-                cp $program_dir/code_size_cfi.stat $code_size_dir/$program
-                ;;
-            "invert")
-                mkdir $code_size_dir/$program
-                cp $program_dir/code_size_ss.stat $code_size_dir/$program
-                cp $program_dir/code_size_cfi.stat $code_size_dir/$program
-                ;;
-            "sfifull")
-                mkdir $code_size_dir/$program
-                cp $program_dir/code_size_ss.stat $code_size_dir/$program
-                cp $program_dir/code_size_sfi.stat $code_size_dir/$program
-                cp $program_dir/code_size_cfi.stat $code_size_dir/$program
-                ;;
+        "ss" | "cfi" | "sp" | "sfi" )
+            cp "$program_dir/code_size_$1.stat" "$program_stat"
+            ;;
+        "silhouette" )
+            mkdir -p "$code_size_dir/$program"
+            cp "$program_dir/code_size_ss.stat" "$code_size_dir/$program"
+            cp "$program_dir/code_size_sp.stat" "$code_size_dir/$program"
+            cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$program"
+            ;;
+        "invert" )
+            mkdir -p "$code_size_dir/$program"
+            cp "$program_dir/code_size_ss.stat" "$code_size_dir/$program"
+            cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$program"
+            ;;
+        "sfifull" )
+            mkdir -p "$code_size_dir/$program"
+            cp "$program_dir/code_size_ss.stat" "$code_size_dir/$program"
+            cp "$program_dir/code_size_sfi.stat" "$code_size_dir/$program"
+            cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$program"
+            ;;
+        * ) # baseline
+            ;;
         esac
         echo "Done compiling $program"
         echo
