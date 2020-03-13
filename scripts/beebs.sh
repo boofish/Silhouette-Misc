@@ -4,8 +4,8 @@ SILHOUETTE=~/projects/silhouette
 SILHOUETTE_MISC="$SILHOUETTE/silhouette-misc"
 PROJ=beebs
 
-BEEBS_PROJ="$SILHOUETTE/projs/$PROJ"
-BEEBS_RUN_CFG="$BEEBS_PROJ/$PROJ.cfg"
+PROJ_DIR="$SILHOUETTE/projs/$PROJ"
+RUN_CFG="$PROJ_DIR/$PROJ.cfg"
 
 PROGRAMS=(
 #   "aha-compress"
@@ -98,14 +98,14 @@ PROGRAMS=(
 #
 compile() {
     # Updated the .cproject file
-    if [[ ! -e "$BEEBS_PROJ/cproject_$1" ]]; then
-        echo "No cproject_$1 found in $BEEBS_PROJ!"
+    if [[ ! -e "$PROJ_DIR/cproject_$1" ]]; then
+        echo "No cproject_$1 found in $PROJ_DIR!"
         echo "Generate one by:"
         echo
         echo "./gen_cproject.py"
         exit 1
     fi
-    (cd "$BEEBS_PROJ"; ln -sf "cproject_$1" .cproject;)
+    (cd "$PROJ_DIR"; ln -sf "cproject_$1" .cproject;)
 
     # Make an empty debug directory
     local debug_dir="$SILHOUETTE/debug/$PROJ-$1"
@@ -123,7 +123,7 @@ compile() {
 
     # Compile each benchmark program
     for program in ${PROGRAMS[@]}; do
-        local elf="$BEEBS_PROJ/$program/$program.elf"
+        local elf="$PROJ_DIR/$program/$program.elf"
         rm -rf "$elf"
 
         # Do compile
@@ -150,7 +150,7 @@ compile() {
 
         # Copy the generated code_size stat file to the data directory.
         echo "Copying code size stat file(s) to data/mem/$PROJ-$1 ......"
-        local program_dir="$BEEBS_PROJ/$program"
+        local program_dir="$PROJ_DIR/$program"
         local program_stat="$code_size_dir/$program.stat"
         case $1 in
         "ss" | "cfi" | "sp" | "sfi" )
@@ -229,7 +229,7 @@ run() {
 
     # Flush the binary onto the board
     echo "Flushing $2.elf onto the board ......"
-    openocd -f "$BEEBS_RUN_CFG" -c "program $elf reset exit" 2> openocd.log
+    openocd -f "$RUN_CFG" -c "program $elf reset exit" 2> openocd.log
     if (( $? != 0 )); then
         echo "OpenOCD failed!"
         echo "Check openocd.log for details"

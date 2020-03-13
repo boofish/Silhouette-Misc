@@ -4,9 +4,9 @@ SILHOUETTE=~/projects/silhouette
 SILHOUETTE_MISC="$SILHOUETTE/silhouette-misc"
 PROJ=coremark
 
-CMK_PROJ="$SILHOUETTE/projs/$PROJ"
-CMK_ELF="$CMK_PROJ/$PROJ/$PROJ.elf"
-CMK_RUN_CFG="$CMK_PROJ/$PROJ.cfg"
+PROJ_DIR="$SILHOUETTE/projs/$PROJ"
+ELF="$PROJ_DIR/$PROJ/$PROJ.elf"
+RUN_CFG="$PROJ_DIR/$PROJ.cfg"
 
 #
 # Compile the program.
@@ -15,14 +15,14 @@ CMK_RUN_CFG="$CMK_PROJ/$PROJ.cfg"
 #
 compile() {
     # Updated the .cproject file
-    if [[ ! -e "$CMK_PROJ/cproject_$1" ]]; then
-        echo "No cproject_$1 found in $CMK_PROJ!"
+    if [[ ! -e "$PROJ_DIR/cproject_$1" ]]; then
+        echo "No cproject_$1 found in $PROJ_DIR!"
         echo "Generate one by:"
         echo
         echo "./gen_cproject.py"
         exit 1
     fi
-    (cd "$CMK_PROJ"; ln -sf "cproject_$1" .cproject;)
+    (cd "$PROJ_DIR"; ln -sf "cproject_$1" .cproject;)
 
     # Make an empty debug directory
     local debug_dir="$SILHOUETTE/debug/$PROJ-$1"
@@ -41,7 +41,7 @@ compile() {
     # Do compile
     echo "Compiling $PROJ for $1 ......"
     make $PROJ/$PROJ >& "$debug_dir/build.log"
-    if [[ ! -x "$CMK_ELF" ]]; then
+    if [[ ! -x "$ELF" ]]; then
         echo "Compilation failed!"
         echo "Check $debug_dir/build.log for details"
         exit 1
@@ -49,20 +49,20 @@ compile() {
 
     # Copy the generated ELF binary to the debug directory
     echo "Copying $PROJ.elf to debug/$PROJ-$1 ......"
-    cp "$CMK_ELF" "$debug_dir/$PROJ.elf"
+    cp "$ELF" "$debug_dir/$PROJ.elf"
 
     # Generate disassembly
     local objdump=`which arm-none-eabi-objdump 2> /dev/null`
     if (( $? == 0 )); then
         echo "Disassembling generated binary ......"
-        "$objdump" -d "$CMK_ELF" > "$debug_dir/$PROJ.s"
+        "$objdump" -d "$ELF" > "$debug_dir/$PROJ.s"
     else
         echo "arm-none-eabi-objdump not found, skipped disassembly"
     fi
 
     # Copy the generated code_size stat file to the data directory.
     echo "Copying code size stat file(s) to data/mem/$PROJ-$1 ......"
-    local program_dir="$CMK_PROJ/$PROJ"
+    local program_dir="$PROJ_DIR/$PROJ"
     local program_stat="$code_size_dir/$PROJ.stat"
     case $1 in
     "ss" | "cfi" | "sp" | "sfi" )
@@ -129,7 +129,7 @@ run() {
 
     # Flush the binary onto the board
     echo "Flushing $PROJ.elf onto the board ......"
-    openocd -f "$CMK_RUN_CFG" -c "program $elf reset exit" 2> openocd.log
+    openocd -f "$RUN_CFG" -c "program $elf reset exit" 2> openocd.log
     if (( $? != 0 )); then
         echo "OpenOCD failed!"
         echo "Check openocd.log for details"
