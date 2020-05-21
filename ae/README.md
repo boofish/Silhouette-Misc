@@ -30,7 +30,7 @@ Simply run `./build.llvm.sh`.
 The script will download the original LLVM 9.0 compiler infrastructure,
 patch in our passes, and compile the new compiler.
 
-This process will take around xx minutes.
+This process will take around 25 minutes.
 
 ### Compile and Run Benchmarks
 We have three scripts `beebs.sh`, `coremark.sh`, and `coremark-pro.sh`
@@ -49,7 +49,7 @@ for each benchmark suite:
 The other two scripts also compile and run the respective benchmarks
 with all the six configurations (except for `coremark.sh` which we don't run for Silhouette-SFI).
 
-Compiling and running all the experiments will take around xx minutes.
+Compiling and running all the experiments will take around 4 hours.
 
 ### Collect Experiment Results
 After finishing compiling and running the benchmarks, there will be
