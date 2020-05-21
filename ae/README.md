@@ -76,7 +76,7 @@ For example, if you want to see how Silhouette performs on the `BEEBS` benchmark
 suite, run
 
 ```shell
-./gen_csv.py -b beebs -t perf`
+./gen_csv.py -b beebs -t perf
 ```
 
 and you will get an output file named `perf-beebs.csv` in the working directory.
