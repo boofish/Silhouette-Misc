@@ -4,10 +4,10 @@
 Log in by `ssh aeguest@212d.tplinkdns.com -p 65534`.
 
 ### Working Directory Hierarchy
-After logging in, you will be located in the working directory for the
+After logging in, you will be located in the root directory for the
 whole Silhouette project. The directories and files are organized as follows:
 
-```
+```shell
 silhouette
 |-- build.llvm.sh     # Script to download, patch, and compile LLVM 9.0
 |-- llvm-project      # To be downloaded by build.llvm.sh
@@ -40,38 +40,39 @@ for the BEEBS benchmarks.  To be more specific, we ran 6 sets of experiments
 for each benchmark suite:
 - **Baseline**: compile the benchmarks without any of our passes, denoted as `baseline`;
 - **Shadow Stack**: only turn on the shadow stack pass, denoted as `ss`;
-- **Store Hardening**: only turn on the store hardening, denoted as `sp`;
+- **Store Hardening**: only turn on the store hardening, denoted as `sp` (for historical reasons);
 - **CFI**: only turn on the CFI pass, denoted as `cfi`;
 - **Silhouette**: turn on all the three passes above, denoted as `silhouette`;
-- **Silhouette-Invert**: turn on the silhouette-invert pass, denoted as `invert`;
+- **Silhouette-Invert**: turn on the Silhouette-Invert passes, denoted as `invert`;
 - **Silhouette-SFI**: turn on the shadow stack, SFI, and CFI passes, denoted as `sfifull`.
 
 The other two scripts also compile and run the respective benchmarks
-with all the six configurations.
+with all the six configurations (except for `coremark.sh` which we don't run for Silhouette-SFI).
 
-Compiling and Running all experiments will take around xx minutes.
+Compiling and running all the experiments will take around xx minutes.
 
 ### Collect Experiment Results
 After finishing compiling and running the benchmarks, there will be
 experiment data generated for both code size and performance.
-All the raw data (code size and execution time) will be put in the
+All the raw data (code size and execution time) will be placed in the
 `data` directory.  The names of all the subdirectories and
 files are self-explanatory. For example, `data/perf/beebs-cfi/nbody.stat`
 contains the execution time of running the `nbody` program in the `BEEBS`
-benchmark with only the CFI pass turned on.
+benchmark suite with only the CFI pass turned on.
 
-In the working directory, use the `gen_csv.py` to collect the raw
+In the working directory, you can use the `gen_csv.py` to collect the raw
 experiment data, compute the overhead, and write the summarized results
-to a CSV file.  This script has three command line arguments:
+to a CSV file.  This script takes three command-line arguments:
+
 ```shell
 -b benchmark_name # "beebs", "coremark", or "coremark-pro"
 -t data_type      # "perf" or "mem"
--o output_file    # path of the output csv file; you can omit this argument
+-o output_file    # Path of the output CSV file; you can omit this argument
                   # and the output file with a default name will be placed
                   # in the working directory
 ```
 
-For example, if you want to see how Silhouette performs on the `BEEBS` benchamrk
+For example, if you want to see how Silhouette performs on the `BEEBS` benchmark
 suite, run
 
 ```shell
