@@ -12,6 +12,9 @@ BUILD = -cleanBuild
 
 ECLIPSE += $(ECLIPSE_OPTIONS) $(WORKSPACE)
 
+stm32f469i-disco_hal_lib/%:
+	$(ECLIPSE) $(BUILD) $@
+
 beebs/%:
 	$(ECLIPSE) $(BUILD) $@
 
