@@ -1,76 +1,76 @@
 #!/usr/bin/env bash
 
-SILHOUETTE=~/projects/silhouette
-SILHOUETTE_MISC="$SILHOUETTE/silhouette-misc"
+ROOT_DIR=`dirname $0 | sed 's/$/\/..\/../' | xargs realpath`
+DATA_DIR="$ROOT_DIR/silhouette-misc/data"
 PROJ=beebs
 
-PROJ_DIR="$SILHOUETTE/projs/$PROJ"
+PROJ_DIR="$ROOT_DIR/projs/$PROJ"
 RUN_CFG="$PROJ_DIR/$PROJ.cfg"
 
 PROGRAMS=(
-#   "aha-compress"
-#   "aha-mont64"
-#   "bs"
+    "aha-compress"
+    "aha-mont64"
+    "bs"
     "bubblesort"
-#   "cnt"
-#   "compress"
-#   "cover"
-#   "crc"
-#   "crc32"
-#   "ctl-stack"
+    "cnt"
+    "compress"
+    "cover"
+    "crc"
+    "crc32"
+    "ctl-stack"
     "ctl-string"
-#   "ctl-vector"
+    "ctl-vector"
     "cubic"
     "dijkstra"
-#   "dtoa"
-#   "duff"
+    "dtoa"
+    "duff"
     "edn"
-#   "expint"
-#   "fac"
+    "expint"
+    "fac"
     "fasta"
-#   "fdct"
-#   "fibcall"
+    "fdct"
+    "fibcall"
     "fir"
     "frac"
     "huffbench"
-#   "insertsort"
-#   "janne_complex"
-#   "jfdctint"
-#   "lcdnum"
+    "insertsort"
+    "janne_complex"
+    "jfdctint"
+    "lcdnum"
     "levenshtein"
-#   "ludcmp"
-#   "matmult-float"
+    "ludcmp"
+    "matmult-float"
     "matmult-int"
-#   "mergesort"
-#   "miniz"
-#   "minver"
+    "mergesort"
+    "miniz"
+    "minver"
     "nbody"
     "ndes"
     "nettle-aes"
-#   "nettle-arcfour"
-#   "nettle-cast128"
-#   "nettle-des"
-#   "nettle-md5"
-#   "nettle-sha256"
-#   "newlib-exp"
-#   "newlib-log"
-#   "newlib-mod"
-#   "newlib-sqrt"
-#   "ns"
-#   "nsichneu"
+    "nettle-arcfour"
+    "nettle-cast128"
+    "nettle-des"
+    "nettle-md5"
+    "nettle-sha256"
+    "newlib-exp"
+    "newlib-log"
+    "newlib-mod"
+    "newlib-sqrt"
+    "ns"
+    "nsichneu"
     "picojpeg"
-#   "prime"
+    "prime"
     "qrduino"
-#   "qsort"
-#   "qurt"
-#   "recursion"
+    "qsort"
+    "qurt"
+    "recursion"
     "rijndael"
-#   "select"
-#   "sglib-arraybinsearch"
-#   "sglib-arrayheapsort"
-#   "sglib-arrayquicksort"
+    "select"
+    "sglib-arraybinsearch"
+    "sglib-arrayheapsort"
+    "sglib-arrayquicksort"
     "sglib-dllist"
-#   "sglib-hashtable"
+    "sglib-hashtable"
     "sglib-listinsertsort"
     "sglib-listsort"
     "sglib-queue"
@@ -78,115 +78,146 @@ PROGRAMS=(
     "slre"
     "sqrt"
     "st"
-#   "statemate"
+    "statemate"
     "stb_perlin"
-#   "stringsearch1"
-#   "strstr"
-#   "tarai"
-#   "trio-snprintf"
+    "stringsearch1"
+    "strstr"
+    "tarai"
+    "trio-snprintf"
     "trio-sscanf"
-#   "ud"
+    "ud"
     "whetstone"
     "wikisort"
 )
 
+PROGRAMS_EXCLUDED=(
+    "aha-compress"
+    "aha-mont64"
+    "bs"
+    "cnt"
+    "compress"
+    "cover"
+    "crc"
+    "crc32"
+    "ctl-stack"
+    "ctl-vector"
+    "dtoa"
+    "duff"
+    "expint"
+    "fac"
+    "fdct"
+    "fibcall"
+    "insertsort"
+    "janne_complex"
+    "jfdctint"
+    "lcdnum"
+    "ludcmp"
+    "matmult-float"
+    "mergesort"
+    "miniz"
+    "minver"
+    "nettle-arcfour"
+    "nettle-cast128"
+    "nettle-des"
+    "nettle-md5"
+    "nettle-sha256"
+    "newlib-exp"
+    "newlib-log"
+    "newlib-mod"
+    "newlib-sqrt"
+    "ns"
+    "nsichneu"
+    "prime"
+    "qsort"
+    "qurt"
+    "recursion"
+    "select"
+    "sglib-arraybinsearch"
+    "sglib-arrayheapsort"
+    "sglib-arrayquicksort"
+    "sglib-hashtable"
+    "statemate"
+    "stringsearch1"
+    "strstr"
+    "tarai"
+    "trio-snprintf"
+    "ud"
+)
+
+CONFIGURATIONS=(
+    "baseline"
+    "ss"
+    "sp"
+    "cfi"
+    "silhouette"
+    "invert"
+    "sfifull"
+)
 
 #
-# Compile all the benchmark programs.
+# Compile a benchmark program.
 #
 # $1: the configuration.
+# $2: the program to compile.
 #
 compile() {
+    # Check if the configuration name is valid
+    if [[ ! " ${CONFIGURATIONS[@]} " =~ " $1 " ]]; then
+        echo "Configuration must be one of the following:"
+        echo "${CONFIGURATIONS[@]}"
+        exit 1
+    fi
+
+    # Check if the program name is valid
+    if [[ ! " ${PROGRAMS[@]} " =~ " $2 " ]]; then
+        echo "Program must be one of the following:"
+        echo "${PROGRAMS[@]}"
+        exit 1
+    fi
+
     # Updated the .cproject file
     if [[ ! -e "$PROJ_DIR/cproject_$1" ]]; then
         echo "No cproject_$1 found in $PROJ_DIR!"
         echo "Generate one by:"
         echo
-        echo "./gen_cproject.py"
+        echo "cd '$PROJ_DIR'; ./gen_cproject.py;"
         exit 1
     fi
     (cd "$PROJ_DIR"; ln -sf "cproject_$1" .cproject;)
 
-    # Make an empty debug directory
-    local debug_dir="$SILHOUETTE/debug/$PROJ-$1"
+    # Make a debug directory
+    local debug_dir="$ROOT_DIR/debug/$PROJ-$1"
     if [[ ! -d "$debug_dir" ]]; then
         mkdir -p "$debug_dir"
     fi
-    rm -rf "$debug_dir"/*
 
-    # Make an empty code size directory
-    local code_size_dir="$SILHOUETTE_MISC/data/mem/$PROJ-$1"
-    if [[ ! -d "$code_size_dir" ]]; then
-        mkdir -p "$code_size_dir"
-    fi
-    rm -rf "$code_size_dir"/*
+    local elf="$PROJ_DIR/$2/$2.elf"
+    rm -rf "$elf"
 
-    # Compile each benchmark program
-    for program in ${PROGRAMS[@]}; do
-        local elf="$PROJ_DIR/$program/$program.elf"
-        rm -rf "$elf"
-
-        # Do compile
-        echo "Compiling $program for $1 ......"
-        make $PROJ/$program >& "$debug_dir/build-$program.log"
-        if [[ ! -x "$elf" ]]; then
-            echo "Compiling $program failed!"
-            echo "Check $debug_dir/build-$program.log for details"
-            exit 1
-        fi
-
-        # Copy the generated ELF binary to the debug directory
-        echo "Copying $program.elf to debug/$PROJ-$1 ......"
-        cp "$elf" "$debug_dir/$program.elf"
-
-        # Generate disassembly
-        local objdump=`which arm-none-eabi-objdump 2> /dev/null`
-        if (( $? == 0 )); then
-            echo "Disassembling $program.elf ......"
-            "$objdump" -d "$elf" > "$debug_dir/$program.s"
-        else
-            echo "arm-none-eabi-objdump not found, skipped disassembly"
-        fi
-
-        # Copy the generated code_size stat file to the data directory.
-        echo "Copying code size stat file(s) to data/mem/$PROJ-$1 ......"
-        local program_dir="$PROJ_DIR/$program"
-        local program_stat="$code_size_dir/$program.stat"
-        case $1 in
-        "ss" | "cfi" | "sp" | "sfi" )
-            cp "$program_dir/code_size_$1.stat" "$program_stat"
-            ;;
-        "silhouette" )
-            mkdir -p "$code_size_dir/$program"
-            cp "$program_dir/code_size_ss.stat" "$code_size_dir/$program"
-            cp "$program_dir/code_size_sp.stat" "$code_size_dir/$program"
-            cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$program"
-            ;;
-        "invert" )
-            mkdir -p "$code_size_dir/$program"
-            cp "$program_dir/code_size_ss.stat" "$code_size_dir/$program"
-            cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$program"
-            ;;
-        "sfifull" )
-            mkdir -p "$code_size_dir/$program"
-            cp "$program_dir/code_size_ss.stat" "$code_size_dir/$program"
-            cp "$program_dir/code_size_sfi.stat" "$code_size_dir/$program"
-            cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$program"
-            ;;
-        * ) # baseline
-            ;;
-        esac
-        echo "Done compiling $program"
-        echo
-    done
-
-    # Summarize all code size data to a code_size.csv file
-    if [[ ! $1 == "baseline" ]]; then
-        echo "Building code_size.csv ......"
-        ./build_mem_csv.py -c $1 -b $PROJ
+    # Do compile
+    echo "Compiling $2 for $1 ......"
+    make $PROJ/$2 >& "$debug_dir/build-$2.log"
+    if [[ ! -x "$elf" ]]; then
+        echo "Compiling $2 failed!"
+        echo "Check $debug_dir/build-$2.log for details"
+        exit 1
     fi
 
-    echo Done
+    # Copy the generated ELF binary to the debug directory
+    echo "Copying $2.elf to debug/$PROJ-$1 ......"
+    cp "$elf" "$debug_dir/$2.elf"
+
+    # Generate disassembly
+    local objdump=`which arm-none-eabi-objdump 2> /dev/null`
+    if (( $? == 0 )); then
+        echo "Disassembling $2.elf ......"
+        "$objdump" -d "$elf" > "$debug_dir/$2.s"
+    else
+        echo "arm-none-eabi-objdump not found, skipped disassembly"
+    fi
+
+    echo "Done compiling $2"
+    echo
 }
 
 #
@@ -196,6 +227,13 @@ compile() {
 # $2: the program to run.
 #
 run() {
+    # Check if the configuration name is valid
+    if [[ ! " ${CONFIGURATIONS[@]} " =~ " $1 " ]]; then
+        echo "Configuration must be one of the following:"
+        echo "${CONFIGURATIONS[@]}"
+        exit 1
+    fi
+
     # Check if the program name is valid
     if [[ ! " ${PROGRAMS[@]} " =~ " $2 " ]]; then
         echo "Program must be one of the following:"
@@ -204,7 +242,7 @@ run() {
     fi
 
     # Check if the ELF binary is there
-    local debug_dir="$SILHOUETTE/debug/$PROJ-$1"
+    local debug_dir="$ROOT_DIR/debug/$PROJ-$1"
     local elf="$debug_dir/$2.elf"
     if [[ ! -x "$elf" ]]; then
         echo "No $elf found!"
@@ -215,7 +253,7 @@ run() {
     # Kill all screens first
     screen -X kill >& /dev/null
 
-    local perf_dir="$SILHOUETTE/silhouette-misc/data/perf/$PROJ-$1"
+    local perf_dir="$DATA_DIR/$PROJ-$1"
     if [[ ! -d "$perf_dir" ]]; then
         mkdir -p "$perf_dir"
     fi
@@ -229,10 +267,11 @@ run() {
 
     # Flush the binary onto the board
     echo "Flushing $2.elf onto the board ......"
-    openocd -f "$RUN_CFG" -c "program $elf reset exit" 2> openocd.log
+    local openocd_log=`mktemp -q`
+    openocd -f "$RUN_CFG" -c "program $elf reset exit" 2> "$openocd_log"
     if (( $? != 0 )); then
         echo "OpenOCD failed!"
-        echo "Check openocd.log for details"
+        echo "Check $openocd_log for details"
         exit 1
     fi
 
@@ -253,50 +292,34 @@ run() {
 }
 
 #
-# Print out usage and exit.
-#
-usage() {
-    echo "Usage: $0 <args>"
-    echo
-    echo "<args> can be:"
-    echo "    baseline          - compile for baseline"
-    echo "    ss                - compile for shadow stack only"
-    echo "    sp                - compile for store promotion only"
-    echo "    cfi               - compile for CFI only"
-    echo "    silhouette        - compile for Silhouette"
-    echo "    invert            - compile for Silhouette-Invert"
-    echo "    sfifull           - compile for full SFI"
-    echo "    run <conf>        - run all the compiled binaries of <conf>"
-    echo "    run <conf> <prog> - run the compiled <prog> binary of <conf>"
-    exit 1
-}
-
-#
 # Entrance of the script.
 #
 case $1 in
-"baseline" | "ss" | "sp" | "cfi" | "silhouette" | "invert" | "sfifull" )
-    compile $1
-    ;;
 "run" )
-    case $2 in
-    "baseline" | "ss" | "sp" | "cfi" | "silhouette" | "invert" | "sfifull" )
-        ;;
-    * )
-        usage
-        ;;
-    esac
     if (( $# == 2 )); then
-        for program in ${PROGRAMS[@]}; do
-            run $2 $program
+        for prog in ${PROGRAMS[@]}; do
+            if [[ " ${PROGRAMS_EXCLUDED[@]} " =~ " $prog " ]]; then
+                continue
+            fi
+            run $2 $prog
         done
-        # Summarize all performance data to a perf.csv file.
-        ./build_perf_csv.py -b $PROJ -c $2
     else
         run $2 $3
     fi
     ;;
 * )
-    usage
+    if (( $# == 1 )); then
+        # Compile each benchmark program
+        for prog in ${PROGRAMS[@]}; do
+            if [[ " ${PROGRAMS_EXCLUDED[@]} " =~ " $prog " ]]; then
+                continue
+            fi
+            compile $1 $prog
+        done
+
+        echo Done
+    else
+        compile $1 $2
+    fi
     ;;
 esac

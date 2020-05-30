@@ -1,111 +1,116 @@
 #!/usr/bin/env bash
 
-SILHOUETTE=~/projects/silhouette
-SILHOUETTE_MISC="$SILHOUETTE/silhouette-misc"
+ROOT_DIR=`dirname $0 | sed 's/$/\/..\/../' | xargs realpath`
+DATA_DIR="$ROOT_DIR/silhouette-misc/data"
 PROJ=coremark
 
-PROJ_DIR="$SILHOUETTE/projs/$PROJ"
-ELF="$PROJ_DIR/$PROJ/$PROJ.elf"
+PROJ_DIR="$ROOT_DIR/projs/$PROJ"
 RUN_CFG="$PROJ_DIR/$PROJ.cfg"
 
+PROGRAMS=(
+    "coremark"
+)
+
+CONFIGURATIONS=(
+    "baseline"
+    "ss"
+    "sp"
+    "cfi"
+    "silhouette"
+    "invert"
+    "sfifull"
+)
+
 #
-# Compile the program.
+# Compile a benchmark program.
 #
 # $1: the configuration.
+# $2: the program to compile.
 #
 compile() {
+    # Check if the configuration name is valid
+    if [[ ! " ${CONFIGURATIONS[@]} " =~ " $1 " ]]; then
+        echo "Configuration must be one of the following:"
+        echo "${CONFIGURATIONS[@]}"
+        exit 1
+    fi
+
+    # Check if the program name is valid
+    if [[ ! " ${PROGRAMS[@]} " =~ " $2 " ]]; then
+        echo "Program must be one of the following:"
+        echo "${PROGRAMS[@]}"
+        exit 1
+    fi
+
     # Updated the .cproject file
     if [[ ! -e "$PROJ_DIR/cproject_$1" ]]; then
         echo "No cproject_$1 found in $PROJ_DIR!"
         echo "Generate one by:"
         echo
-        echo "./gen_cproject.py"
+        echo "cd '$PROJ_DIR'; ./gen_cproject.py;"
         exit 1
     fi
     (cd "$PROJ_DIR"; ln -sf "cproject_$1" .cproject;)
 
-    # Make an empty debug directory
-    local debug_dir="$SILHOUETTE/debug/$PROJ-$1"
+    # Make a debug directory
+    local debug_dir="$ROOT_DIR/debug/$PROJ-$1"
     if [[ ! -d "$debug_dir" ]]; then
         mkdir -p "$debug_dir"
     fi
-    rm -rf "$debug_dir"/*
 
-    # Make an empty code size directory
-    local code_size_dir="$SILHOUETTE_MISC/data/mem/$PROJ-$1"
-    if [[ ! -d "$code_size_dir" ]]; then
-        mkdir -p "$code_size_dir"
-    fi
-    rm -rf "$code_size_dir"/*
+    local elf="$PROJ_DIR/$2/$2.elf"
+    rm -rf "$elf"
 
     # Do compile
-    echo "Compiling $PROJ for $1 ......"
-    make $PROJ/$PROJ >& "$debug_dir/build.log"
-    if [[ ! -x "$ELF" ]]; then
-        echo "Compilation failed!"
-        echo "Check $debug_dir/build.log for details"
+    echo "Compiling $2 for $1 ......"
+    make $PROJ/$2 >& "$debug_dir/build-$2.log"
+    if [[ ! -x "$elf" ]]; then
+        echo "Compiling $2 failed!"
+        echo "Check $debug_dir/build-$2.log for details"
         exit 1
     fi
 
     # Copy the generated ELF binary to the debug directory
-    echo "Copying $PROJ.elf to debug/$PROJ-$1 ......"
-    cp "$ELF" "$debug_dir/$PROJ.elf"
+    echo "Copying $2.elf to debug/$PROJ-$1 ......"
+    cp "$elf" "$debug_dir/$2.elf"
 
     # Generate disassembly
     local objdump=`which arm-none-eabi-objdump 2> /dev/null`
     if (( $? == 0 )); then
-        echo "Disassembling generated binary ......"
-        "$objdump" -d "$ELF" > "$debug_dir/$PROJ.s"
+        echo "Disassembling $2.elf ......"
+        "$objdump" -d "$elf" > "$debug_dir/$2.s"
     else
         echo "arm-none-eabi-objdump not found, skipped disassembly"
     fi
 
-    # Copy the generated code_size stat file to the data directory.
-    echo "Copying code size stat file(s) to data/mem/$PROJ-$1 ......"
-    local program_dir="$PROJ_DIR/$PROJ"
-    local program_stat="$code_size_dir/$PROJ.stat"
-    case $1 in
-    "ss" | "cfi" | "sp" | "sfi" )
-        cp "$program_dir/code_size_$1.stat" "$program_stat"
-        ;;
-    "silhouette" )
-        mkdir -p "$code_size_dir/$PROJ"
-        cp "$program_dir/code_size_ss.stat" "$code_size_dir/$PROJ"
-        cp "$program_dir/code_size_sp.stat" "$code_size_dir/$PROJ"
-        cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$PROJ"
-        ;;
-    "invert" )
-        mkdir -p "$code_size_dir/$PROJ"
-        cp "$program_dir/code_size_ss.stat" "$code_size_dir/$PROJ"
-        cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$PROJ"
-        ;;
-    "sfifull" )
-        mkdir -p "$code_size_dir/$PROJ"
-        cp "$program_dir/code_size_ss.stat" "$code_size_dir/$PROJ"
-        cp "$program_dir/code_size_sfi.stat" "$code_size_dir/$PROJ"
-        cp "$program_dir/code_size_cfi.stat" "$code_size_dir/$PROJ"
-        ;;
-    * ) # baseline
-        ;;
-    esac
-
-    # Summarize all code size data to a code_size.csv file
-    if [[ ! $1 == "baseline" ]]; then
-        echo "Building code_size.csv ......"
-        ./build_mem_csv.py -c $1 -b $PROJ
-    fi
-
-    echo Done
+    echo "Done compiling $2"
     echo
 }
 
 #
-# Run the already compiled program.
+# Run an already compiled benchmark program.
 #
 # $1: the configuration to use.
+# $2: the program to run.
 #
 run() {
-    local elf="$SILHOUETTE/debug/$PROJ-$1/$PROJ.elf"
+    # Check if the configuration name is valid
+    if [[ ! " ${CONFIGURATIONS[@]} " =~ " $1 " ]]; then
+        echo "Configuration must be one of the following:"
+        echo "${CONFIGURATIONS[@]}"
+        exit 1
+    fi
+
+    # Check if the program name is valid
+    if [[ ! " ${PROGRAMS[@]} " =~ " $2 " ]]; then
+        echo "Program must be one of the following:"
+        echo "${PROGRAMS[@]}"
+        exit 1
+    fi
+
+    # Check if the ELF binary is there
+    local debug_dir="$ROOT_DIR/debug/$PROJ-$1"
+    local elf="$debug_dir/$2.elf"
     if [[ ! -x "$elf" ]]; then
         echo "No $elf found!"
         echo "Try to compile first!"
@@ -115,12 +120,12 @@ run() {
     # Kill all screens first
     screen -X kill >& /dev/null
 
-    local perf_dir="$SILHOUETTE/silhouette-misc/data/perf/$PROJ-$1"
+    local perf_dir="$DATA_DIR/$PROJ-$1"
     if [[ ! -d "$perf_dir" ]]; then
         mkdir -p "$perf_dir"
     fi
 
-    local perf_data="$perf_dir/$PROJ.stat"
+    local perf_data="$perf_dir/$2.stat"
     rm -rf "$perf_data"
 
     # Open screen to receive the output
@@ -128,15 +133,16 @@ run() {
     screen -X logfile flush 0
 
     # Flush the binary onto the board
-    echo "Flushing $PROJ.elf onto the board ......"
-    openocd -f "$RUN_CFG" -c "program $elf reset exit" 2> openocd.log
+    echo "Flushing $2.elf onto the board ......"
+    local openocd_log=`mktemp -q`
+    openocd -f "$RUN_CFG" -c "program $elf reset exit" 2> "$openocd_log"
     if (( $? != 0 )); then
         echo "OpenOCD failed!"
-        echo "Check openocd.log for details"
+        echo "Check $openocd_log for details"
         exit 1
     fi
 
-    echo "Running $PROJ-$1 ......"
+    echo "Running $PROJ-$1/$2 ......"
     grep "CoreMark 1.0 :" "$perf_data" >& /dev/null
     while (( $? != 0 )); do
         sleep 1
@@ -153,44 +159,28 @@ run() {
 }
 
 #
-# Print out usage and exit.
-#
-usage() {
-    echo "Usage: $0 <arg>"
-    echo
-    echo "<arg> can be:"
-    echo "    baseline   - compile for baseline"
-    echo "    ss         - compile for shadow stack only"
-    echo "    sp         - compile for store promotion only"
-    echo "    cfi        - compile for CFI only"
-    echo "    silhouette - compile for full Silhouette"
-    echo "    invert     - compile for Silhouette-Invert"
-    echo "    sfifull    - compile for Silhouette + full SFI"
-    echo "    run <conf> - run the compiled $PROJ binary of <conf>"
-    exit 1
-
-}
-
-#
 # Entrance of the script.
 #
 case $1 in
-"baseline" | "ss" | "sp" | "cfi" | "silhouette" | "invert" | "sfifull" )
-    compile $1
-    ;;
 "run" )
-    case $2 in
-    "baseline" | "ss" | "sp" | "cfi" | "silhouette" | "invert" | "sfifull" )
-        ;;
-    * )
-        usage
-        ;;
-    esac
-    run $2
-    # Summarize all performance data to a perf.csv file.
-    ./build_perf_csv.py -b $PROJ -c $2
+    if (( $# == 2 )); then
+        for program in ${PROGRAMS[@]}; do
+            run $2 $program
+        done
+    else
+        run $2 $3
+    fi
     ;;
 * )
-    usage
+    if (( $# == 1 )); then
+        # Compile each benchmark program
+        for program in ${PROGRAMS[@]}; do
+            compile $1 $program
+        done
+
+        echo Done
+    else
+        compile $1 $2
+    fi
     ;;
 esac
