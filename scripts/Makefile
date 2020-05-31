@@ -9,6 +9,7 @@ ECLIPSE_OPTIONS = -nosplash						\
 		  -data
 WORKSPACE = ~/projects/silhouette/projs
 BUILD = -cleanBuild
+IMPORT = -import
 
 ECLIPSE += $(ECLIPSE_OPTIONS) $(WORKSPACE)
 
@@ -23,3 +24,9 @@ coremark/%:
 
 coremark-pro/%:
 	$(ECLIPSE) $(BUILD) $@
+
+import:
+	test -d $(WORKSPACE)/beebs && $(ECLIPSE) $(IMPORT) $(WORKSPACE)/beebs
+	test -d $(WORKSPACE)/coremark && $(ECLIPSE) $(IMPORT) $(WORKSPACE)/coremark
+	test -d $(WORKSPACE)/coremark-pro && $(ECLIPSE) $(IMPORT) $(WORKSPACE)/coremark-pro
+	test -d $(WORKSPACE)/stm32f469i-disco_hal_lib && $(ECLIPSE) $(IMPORT) $(WORKSPACE)/stm32f469i-disco_hal_lib
