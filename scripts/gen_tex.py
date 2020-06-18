@@ -102,11 +102,11 @@ def write_tex_header(f, benchmark, typ, ieee):
     # Write \centering
     f.write('\\centering\n')
     # Write \sffamily
-    f.write('\\sffamily\n')
-    # Write \footnotesize{
+    f.write('{\\sffamily\n')
+    # Write \footnotesize
     f.write('\\footnotesize{\n')
     # Restrict everything within column width
-    f.write('\\resizebox{\\columnwidth}{!}{\n')
+    f.write('\\resizebox{\\columnwidth}{!}{%\n')
     # Write \begin{tabular}
     f.write('\\begin{tabular}{@{}l' + ''.join(['r' for c in configs]) + '@{}}\n')
     # Write \toprule
@@ -141,8 +141,8 @@ def write_tex_footer(f, benchmark, typ, ieee):
     f.write('\\bottomrule\n')
     # Write \end{tabular}
     f.write('\\end{tabular}\n')
-    # Write end of \footnotesize{
-    f.write('}}\n')
+    # Write end of \resizebox, \footnotesize, and \sffamily
+    f.write('}}}\n')
     if not ieee:
         # Write caption and label
         f.write('\\caption{' + caption + '}\n')
