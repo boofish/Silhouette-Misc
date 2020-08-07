@@ -1,9 +1,0 @@
-Initiating HAL...
-Finished in 114 ms, but no verify_benchmark() run.
-
-Initiating HAL...
-Finished successfully: in 3 ms.
-
-Initiating HAL...
-Finished successfully: in 3 ms.
-
